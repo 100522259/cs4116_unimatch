@@ -2,6 +2,10 @@ drop table interests;
 drop table academic_info;
 drop table personal_info;
 drop table credentials;
+drop table images;
+drop table blocked;
+drop table offense;
+drop table reports;
 
 create table credentials (
     user_id number(9),
@@ -60,4 +64,54 @@ create table interests (
     primary key(user_id),
     foreign key(user_id) references credentials(user_id)
 );
+
+create table reports (
+    report_id number(9) not null,
+    user_id1 number(9) not null,
+    user_id2 number(9) not null,
+    timestamp timestamp not null,
+    report_msg varchar(2500) not null,
+    category varchar(250) not null,
+
+    primary key(report_id),
+    foreign key(user_id1) references credentials(user_id),
+    foreign key(user_id2) references credentials(user_id)
+);
+
+create table offense (
+    user_id number(9),
+    phone_warning bit not null,
+    offence_num number(2) not null,
+    blocked bit not null,
+    reported bit not null,
+    last_modified timestamp not null,
+    ban_time number(9),
+
+    primary key(user_id),
+    foreign key(user_id) references credentials(user_id)
+);
+
+create table blocked (
+    user_id number(9),
+    student_blocked number(9),
+
+    primary key(user_id, student_blocked),
+    foreign key(user_id) references credentials(user_id),
+    foreign key(student_blocked) references credentials(user_id)
+);
+
+create table images (
+    user_id number(9),
+    profile_pic varchar(200) not null,
+    pic_1 varchar(200),
+    pic_2 varchar(200),
+    pic_3 varchar(200),
+    pic_4 varchar(200),
+    pic_5 varchar(200),
+    pic_num number(1) not null,
+
+    primary key(user_id),
+    foreign key(user_id) references credentials(user_id)
+);
+
 
