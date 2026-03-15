@@ -1,0 +1,12 @@
+drop table relationship;
+drop table text_messages;
+drop table clubs_societies;
+drop table activity;
+drop table interests;
+drop table academic_info;
+drop table personal_info;
+drop table credentials;
+drop table images;
+drop table blocked;
+drop table offense;
+drop table reports;

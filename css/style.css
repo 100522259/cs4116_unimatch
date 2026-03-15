@@ -1,0 +1,95 @@
+body {
+    font-family: Arial, sans-serif;
+    background: #e8f5e9;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background: #2e7d32;
+    color: white;
+    padding: 10px 20px;
+}
+
+header h1 {
+    margin: 0;
+    display: inline-block;
+}
+
+nav a {
+    color: white;
+    margin-left: 15px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.container {
+    padding: 20px;
+}
+
+.banner {
+    background: #a5d6a7;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+}
+
+.card, .chat-thread {
+    background: white;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+}
+
+.card img {
+    border-radius: 50%;
+    margin-right: 15px;
+}
+
+.card-content {
+    flex: 1;
+}
+
+.stats {
+    display: flex;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.stat {
+    background: #c8e6c9;
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+.badge.friendship {
+    background: #4caf50;
+    color: white;
+    padding: 3px 6px;
+    border-radius: 3px;
+}
+
+.badge.dating {
+    background: #388e3c;
+    color: white;
+    padding: 3px 6px;
+    border-radius: 3px;
+}
+
+.message.sent {
+    background: #a5d6a7;
+    padding: 8px;
+    margin-bottom: 5px;
+    border-radius: 5px;
+    text-align: right;
+}
+
+.message.received {
+    background: #c8e6c9;
+    padding: 8px;
+    margin-bottom: 5px;
+    border-radius: 5px;
+    text-align: left;
+}
