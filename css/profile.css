@@ -1,0 +1,156 @@
+*{ /* reset and base styles: */
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+} 
+
+body {
+    font-family: Arial, sans-serif;
+    background: #fafffa;
+}
+
+.container {
+    display: flex;
+    background-color: #a5d6a7;
+    border: 1px solid blue;
+}
+
+.index {
+    flex: 15%;
+    background-color: rgba(21, 109, 21, 0.477);
+    border: 1px solid blue;
+    padding: 10px;
+}
+
+.logo {
+    max-width: 100%;
+}
+
+.logo img {
+    border: 1px solid green;
+    width: 100%;
+    height: auto;
+}
+
+.idx_icons{
+    border: 1px solid pink;
+    padding-top: 30px;
+    max-width: auto;
+}
+
+.pages {
+    max-width: 100%;
+    display: flex;
+    margin: 10px;
+    justify-content: center;
+    align-items: center;
+}
+
+.icons{
+    flex:60%;
+    display: flex;
+}
+
+.icons img {
+    padding-left: 10px;
+    width: 40%;
+    height: auto;
+    border: 1px solid yellow;
+}
+
+.text{
+    display: flex;
+    flex: 40%;
+    border: 1px solid yellow;
+    justify-content: center;
+    align-items: center;
+}
+
+.page {
+    flex: 85%;
+    margin: 20px 20px;
+    margin-top: 80px;
+    border: 1px solid blue;
+}
+
+.main_info {
+    display: flex;
+}
+
+.pfp {
+    flex: 25%;
+    border: 1px solid red;
+    max-width: 300px;
+}
+.pfp img {
+    width: 100%;
+    height: auto;
+    border-radius: 10%;
+}
+
+.info{
+    flex: 75%;
+    border: 1px solid red;
+    margin-left: 30px;
+    padding: 0 10px;
+}
+
+.user_title{
+    border: 1px solid green;
+    height: 20%;
+}
+
+.bio {
+    border: 1px solid green;
+    height: 30%;
+}
+
+.interests {
+    border: 1px solid green;
+    height: 15%;
+    display: flex;
+    gap: 10px;
+}
+
+.int_box {
+    height: 70%;
+    align-items: center;
+    border-radius: 10%;
+    background-color: rgb(126, 155, 132);
+    border-color: rgb(95, 95, 95);
+    text-align: center;
+    font-size: 15px;
+    width: 100%;
+}
+
+.about_uni {
+    border: 1px solid green;
+    height: 35%;
+}
+
+.my_images_txt {
+    max-width: 100%;
+    margin: 10px 0px;
+}
+
+.my_images_txt h1 {
+    font-family: Verdana, sans-serif;
+    font-size: 20px;
+    margin-left: 10px;
+}
+
+.my_images {
+    display: flex;
+    flex: 1;
+    justify-content: space-between;
+    gap: 30px;
+
+}
+
+.photo {
+}
+
+.photo img {
+    border-radius: 10%;
+    max-width: 100%;
+}
