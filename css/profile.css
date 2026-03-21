@@ -7,6 +7,7 @@
 body {
     font-family: Arial, sans-serif;
     background: #fafffa;
+    color: white;
 }
 
 .container {
@@ -16,7 +17,7 @@ body {
 }
 
 .index {
-    flex: 15%;
+    flex: 1;
     background-color: rgba(21, 109, 21, 0.477);
     border: 1px solid blue;
     padding: 10px;
@@ -34,44 +35,38 @@ body {
 
 .idx_icons{
     border: 1px solid pink;
-    padding-top: 30px;
+    margin-top: 30px;
     max-width: auto;
 }
 
 .pages {
-    max-width: 100%;
     display: flex;
     margin: 10px;
-    justify-content: center;
-    align-items: center;
-}
-
-.icons{
-    flex:60%;
-    display: flex;
+    justify-content:flex-start;
+    align-items:center;
+    border: 1px solid hotpink;
 }
 
 .icons img {
-    padding-left: 10px;
-    width: 40%;
+    max-width: 40px;
+    min-width: 30px;
+    width: 100%;
     height: auto;
     border: 1px solid yellow;
 }
 
-.text{
-    display: flex;
-    flex: 40%;
+.icons p {
     border: 1px solid yellow;
     justify-content: center;
+    text-transform: uppercase;
     align-items: center;
 }
 
 .page {
-    flex: 85%;
+    flex: 6;
     margin: 20px 20px;
-    margin-right: 50px;
-    margin-top: 80px;
-    /*border: 1px solid blue;*/
+    margin-top: 100px;
+    border: 1px solid blue;
 }
 
 .main_info {
@@ -79,9 +74,10 @@ body {
 }
 
 .pfp {
-    flex: 25%;
+    flex: 3;
     border: 1px solid red;
     max-width: 300px;
+    min-width: 150px;
 }
 .pfp img {
     width: 100%;
@@ -90,32 +86,50 @@ body {
 }
 
 .info{
-    flex: 75%;
+    flex: 5;
     border: 1px solid red;
-    margin-left: 30px;
+    margin-left: 20px;
     padding: 0 10px;
+    align-content: space-around;
 }
 
 .user_title{
     border: 1px solid green;
-    height: 20%;
+    display: flex;
+    align-items:end;
+    flex: 1;
+}
+
+.name h1 {
+    font-size: 25px;
+}
+
+.age h4 {
+    margin-left: 20px;
+    text-transform: uppercase;
+    font-size: 15px;
+    font-weight: 100;
+
 }
 
 .bio {
+    flex: 4;
     border: 1px solid green;
     height: 30%;
+    padding: 10px 0px;
 }
 
 .interests {
+    height: 25px;
     border: 1px solid green;
-    height: 15%;
     display: flex;
-    gap: 10px;
+    justify-content: space-around;
+    gap: 20px;
 }
 
 .int_box {
-    height: 70%;
-    align-items: center;
+    height: 100%;
+    align-items: stretch;
     border-radius: 10%;
     background-color: rgb(126, 155, 132);
     border-color: rgb(95, 95, 95);
@@ -125,8 +139,43 @@ body {
 }
 
 .about_uni {
+    flex: 2;
     border: 1px solid green;
     height: 35%;
+    padding: 10px 0px;
+}
+
+.admin {
+    flex: 2;
+    margin-left: 20px;
+    border: 1px solid red;
+    background-color: rgb(192, 216, 190);
+    border-color: rgb(141, 153, 140);;
+    border-radius: 10px;
+    align-content: space-around;
+}
+
+.admin_activity {
+    display: flex;
+    margin: 10px 5px;
+    padding: 0 10px;
+    background-color: rgb(157, 183, 154);
+    border-radius: 5px;
+    justify-content:flex-start;
+    align-items: center;
+    height: 30px;
+}
+
+.admin_act p {
+    text-transform: uppercase;
+    font-size: 10px;
+    margin-left: 5px;
+}
+
+.admin_act img {
+    margin: 10px 10px;
+    margin-right: 20px;
+    max-width: 20px;
 }
 
 .my_images_txt {
@@ -142,16 +191,17 @@ body {
 
 .my_images {
     display: flex;
-    flex: 1;
-    justify-content: space-between;
-    gap: 30px;
-
+    flex-wrap: wrap;
+    justify-content: space-evenly;
 }
 
 .photo {
+    max-width: 100%;
 }
 
 .photo img {
+    width: 100%;
+    height: auto;
     border-radius: 10%;
-    max-width: 100%;
+    max-width: 150px;
 }

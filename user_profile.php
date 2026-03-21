@@ -14,33 +14,19 @@
             <!--vertical container for page index-->
             <div class="index">
                 <div class="logo">
-                    <img class="logo" src="images\logo3.png">
+                    <img class="logo" src="images\logo4.png">
                 </div>
                 <div class="idx_icons">
-                    <div class="pages">
-                        <div class="icons"><img src="images\home.png"></div>
-                        <div class="text">Home</div>
-                    </div>
-                    <div class="pages">
-                        <div class="icons"><img src="images\heart.png"></div>
-                        <div class="text">Dates</div>
-                    </div>
-                    <div class="pages">
-                        <div class="icons"><img src="images\star.png"></div>
-                        <div class="text">Friends</div>
-                    </div>
-                    <div class="pages">
-                        <div class="icons"><img src="images\chat.png"></div>
-                        <div class="text">Chat</div>
-                    </div>
-                    <div class="pages">
-                        <div class="icons"><img src="images\account.png"></div>
-                        <div class="text">User</div>
-                    </div>
-                    <div class="pages">
-                        <div class="icons"><img src="images\settings.png"></div>
-                        <div class="text">Settings</div>
-                    </div>
+                    <?php
+                    $icons = array("home", "dates", "friends","chat","user","settings","admin");
+                    foreach ($icons as $icon) {
+                        echo "<div class=\"pages\">";
+                        echo "<div class=\"icons\"><img src=\"images\\{$icon}.png\"></div>";
+                        echo "<div class=\"icons\"><p>{$icon}</p></div>";
+                        echo "</div>";
+                    }
+                    ?>
+                
                 </div>
             </div>
             <!--Container for the rest of the page-->
@@ -50,7 +36,9 @@
                         <img src="https://dummyimage.com/400x400/636363/fff.png&text=profile+photo+(400x400)">
                     </div>
                     <div class="info">
-                        <div class="user_title"><p>User name and age</p></div>
+                        <div class="user_title">
+                            <div class="name"><h1>Name</h1></div>
+                            <div class="age"><h4>Age</h4></div></div>
                         <div class="bio"><p>This is some bio text</p></div>
                         <div class="interests">
                             <?php
@@ -59,7 +47,20 @@
                             }
                             ?>
                         </div>
-                        <div class="about_uni"><p>display interests and information</p></div>
+                        <div class="about_uni"><p>interests and information</p></div>
+                    </div>
+                    <!--Will be in a php section, query if user admin, it will display this-->
+                    <div class="admin">
+                        <?php
+                            $admin_activities = array("report","block","edit bio","edit name","rmv photo",
+                            "rmv interest","disable acc");
+                            foreach ($admin_activities as $act) {
+                                echo "<div class=\"admin_activity\">";
+                                echo "<div class=\"admin_act\"><img src=\"images\\$act.png\"></div>";
+                                echo "<div class=\"admin_act\"><p>{$act}</p></div>";
+                                echo "</div>";
+                            }
+                        ?>
                     </div>
                 </div>
                 <div class="my_images_txt">
