@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UniMatch - Log In</title>
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/login.css">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+</head>
+<body>
+
+    <!-- ===== LEFT PANEL ===== -->
+    <div class="auth-left">
+
+        <!-- Decorative background icons -->
+        <i class="fa-solid fa-heart       decor-icon d1"></i>
+        <i class="fa-solid fa-star        decor-icon d2"></i>
+        <i class="fa-solid fa-heart       decor-icon d3"></i>
+        <i class="fa-solid fa-star        decor-icon d4"></i>
+        <i class="fa-solid fa-heart       decor-icon d5"></i>
+        <i class="fa-solid fa-star        decor-icon d6"></i>
+        <i class="fa-solid fa-heart       decor-icon d7"></i>
+        <i class="fa-solid fa-star        decor-icon d8"></i>
+
+        <!-- Brand -->
+        <div class="auth-brand">
+            <div class="brand-logo">
+                <img src="../images/logo3.png" alt="UniMatch Logo">
+            </div>
+            <div class="brand-name">unimatch</div>
+            <p class="brand-tagline">Connect with University of Limerick students</p>
+        </div>
+
+    </div>
+
+    <!-- ===== RIGHT PANEL ===== -->
+    <div class="auth-right">
+
+        <div class="auth-card">
+
+            <h1>Welcome back to Unimatch!</h1>
+            <p class="auth-subtext">Log in to connect with other University of Limerick students.</p>
+
+            <form id="login-form" action="../login.php" method="POST" novalidate>
+
+                <!-- Email -->
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-envelope input-icon"></i>
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            placeholder="Enter your UL email"
+                            required
+                            autocomplete="email"
+                        >
+                    </div>
+                </div>
+
+                <!-- Password -->
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-lock input-icon"></i>
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            placeholder="Enter your password"
+                            required
+                            autocomplete="current-password"
+                        >
+                        <button
+                            type="button"
+                            class="toggle-password"
+                            onclick="togglePassword('password', this)"
+                            aria-label="Toggle password visibility"
+                        >
+                            <i class="fa-solid fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <a href="../forgot_password.php" class="forgot-link">Forgot password?</a>
+
+                <button type="submit" class="btn-primary">Log In</button>
+
+            </form>
+
+            <p class="auth-alt-text">
+                Don't have an account? <a href="signup_step1.html">Sign Up</a>
+            </p>
+
+        </div>
+
+        <p class="auth-footer">© 2024 Unimatch</p>
+
+    </div>
+
+    <script>
+        function togglePassword(fieldId, btn) {
+            const input = document.getElementById(fieldId);
+            const icon  = btn.querySelector('i');
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.replace('fa-eye', 'fa-eye-slash');
+            } else {
+                input.type = 'password';
+                icon.classList.replace('fa-eye-slash', 'fa-eye');
+            }
+        }
+    </script>
+
+</body>
+</html>
