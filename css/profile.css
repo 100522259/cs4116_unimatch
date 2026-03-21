@@ -69,8 +69,9 @@ body {
 .page {
     flex: 85%;
     margin: 20px 20px;
+    margin-right: 50px;
     margin-top: 80px;
-    border: 1px solid blue;
+    /*border: 1px solid blue;*/
 }
 
 .main_info {
