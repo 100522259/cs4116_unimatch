@@ -2,6 +2,7 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>unimatch - user profile page</title>
         <!--Bootstrap css-->
         
@@ -14,16 +15,18 @@
             <!--vertical container for page index-->
             <div class="index">
                 <div class="logo">
-                    <img class="logo" src="images\logo4.png">
+                    <img class="logo" src="images\logo5.png">
                 </div>
                 <div class="idx_icons">
                     <?php
-                    $icons = array("home", "dates", "friends","chat","user","settings","admin");
+                    $icons = array("home", "dates", "friends","chat",
+                                    "user","settings","admin");
                     foreach ($icons as $icon) {
+                        echo "<a href=\"{$icon}.php\">";
                         echo "<div class=\"pages\">";
                         echo "<div class=\"icons\"><img src=\"images\\{$icon}.png\"></div>";
                         echo "<div class=\"icons\"><p>{$icon}</p></div>";
-                        echo "</div>";
+                        echo "</div></a>";
                     }
                     ?>
                 

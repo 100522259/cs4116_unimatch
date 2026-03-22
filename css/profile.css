@@ -12,23 +12,32 @@ TODO: ADAPT TO 3 SCREEN SIZES:
     padding: 0;
 } 
 
+/* GENERAL */
+
 body {
     font-family: Arial, sans-serif;
     background: #fafffa;
-    color: white;
+    color: rgba(46, 98, 69);
 }
 
 .container {
     display: flex;
     background-color: #a5d6a7;
-    border: 1px solid blue;
+    /*border: 1px solid blue;*/
 }
 
 .index {
     flex: 1;
-    background-color: rgba(21, 109, 21, 0.477);
-    border: 1px solid blue;
+    background-color: rgba(46, 98, 69);
+    /*border: 1px solid blue;*/
     padding: 10px;
+}
+
+.index a {
+    text-decoration: none;
+    text-size-adjust: inherit;
+    color: white;
+    font-size: 15px;
 }
 
 .logo {
@@ -36,7 +45,7 @@ body {
 }
 
 .logo img {
-    border: 1px solid green;
+    /*border: 1px solid green;*/
     width: 100%;
     height: auto;
 }
@@ -52,7 +61,7 @@ body {
     margin: 10px;
     justify-content:flex-start;
     align-items:center;
-    border: 1px solid hotpink;
+    /*border: 1px solid hotpink;*/
 }
 
 .icons img {
@@ -60,6 +69,7 @@ body {
     min-width: 30px;
     width: 100%;
     height: auto;
+    margin-right: 10px;
     border: 1px solid yellow;
 }
 
@@ -72,10 +82,13 @@ body {
 
 .page {
     flex: 6;
-    margin: 20px 20px;
+    margin: 0px 20px;
     margin-top: 100px;
-    border: 1px solid blue;
+    /*border: 1px solid blue;*/
+    height: 84vh;
 }
+
+/* USER PROFILE */
 
 .main_info {
     display: flex;
@@ -83,7 +96,7 @@ body {
 
 .pfp {
     flex: 3;
-    border: 1px solid red;
+    /*border: 1px solid red;*/
     max-width: 300px;
     min-width: 150px;
 }
@@ -95,17 +108,23 @@ body {
 
 .info{
     flex: 5;
-    border: 1px solid red;
+    /*border: 1px solid red;*/
+    background-color: rgb(232, 241, 236);
+    border-radius: 15px;
     margin-left: 20px;
     padding: 0 10px;
     align-content: space-around;
 }
 
 .user_title{
-    border: 1px solid green;
+    background-color: rgb(214, 227, 220);
+    border-radius: 10px;
+    /*border: 1px solid green;*/
     display: flex;
-    align-items:end;
-    flex: 1;
+    align-items: end;
+    padding-left: 10px;
+    padding-bottom: 5px;
+    height: 40px;
 }
 
 .name h1 {
@@ -120,70 +139,31 @@ body {
 
 }
 
-.bio {
-    flex: 4;
-    border: 1px solid green;
+.bio, .about_uni {
+    /*border: 1px solid green;*/
+    background-color: rgb(214, 227, 220);
+    border-radius: 10px;
+    margin: 10px 0px;
     height: 30%;
-    padding: 10px 0px;
+    padding: 10px;
 }
 
 .interests {
     height: 25px;
-    border: 1px solid green;
+    /*border: 1px solid green;*/
     display: flex;
     justify-content: space-around;
-    gap: 20px;
+    gap: 15px;
 }
 
 .int_box {
     height: 100%;
     align-items: stretch;
-    border-radius: 10%;
-    background-color: rgb(126, 155, 132);
-    border-color: rgb(95, 95, 95);
+    border-radius: 5px;
+    background-color: rgb(214, 227, 220);
     text-align: center;
     font-size: 15px;
     width: 100%;
-}
-
-.about_uni {
-    flex: 2;
-    border: 1px solid green;
-    height: 35%;
-    padding: 10px 0px;
-}
-
-.admin {
-    flex: 2;
-    margin-left: 20px;
-    border: 1px solid red;
-    background-color: rgb(192, 216, 190);
-    border-color: rgb(141, 153, 140);;
-    border-radius: 10px;
-    align-content: space-around;
-}
-
-.admin_activity {
-    display: flex;
-    margin: 10px 5px;
-    padding: 0 10px;
-    background-color: rgb(157, 183, 154);
-    border-radius: 5px;
-    justify-content:flex-start;
-    align-items: center;
-    height: 30px;
-}
-
-.admin_act p {
-    text-transform: uppercase;
-    font-size: 10px;
-    margin-left: 5px;
-}
-
-.admin_act img {
-    margin: 10px 10px;
-    margin-right: 20px;
-    max-width: 20px;
 }
 
 .my_images_txt {
@@ -199,12 +179,16 @@ body {
 
 .my_images {
     display: flex;
-    flex-wrap: wrap;
     justify-content: space-evenly;
+    gap: 30px;
+    background-color: rgb(232, 241, 236);
+    border-radius: 10px;
+    padding: 10px;
 }
 
 .photo {
     max-width: 100%;
+    align-self: center;
 }
 
 .photo img {
@@ -213,3 +197,117 @@ body {
     border-radius: 10%;
     max-width: 150px;
 }
+
+
+
+/* ADMIN PROFILE VIEW */
+
+.admin {
+    flex: 2;
+    margin-left: 20px;
+    /*border: 1px solid red;*/
+    background-color: rgb(232, 241, 236);
+    border-color: rgb(141, 153, 140);
+    border-radius: 10px;
+    align-content: space-around;
+}
+
+.admin_activity {
+    display: flex;
+    margin: 10px 5px;
+    padding: 0 10px;
+    background-color: rgb(214, 227, 220);
+    border-radius: 5px;
+    justify-content:flex-start;
+    align-items: center;
+    height: 30px;
+}
+
+.admin_act p {
+    text-transform: uppercase;
+    font-size: 10px;
+    font-weight: 800;
+}
+
+.admin_act img {
+    margin: 10px 10px;
+    margin-right: 10px;
+    max-width: 20px;
+}
+
+
+
+/* ADMIN PAGE */
+.header-text {
+    border: 1px solid red;
+    text-transform: capitalize;
+    font-size: 15px;
+    font-weight: 10px;
+    height: 30px;
+}
+
+.data {
+    border: 1px solid blueviolet;
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    height: 90%;
+}
+
+.data-tables {
+    border: 1px solid red;
+    flex-direction: column;
+    flex: 3;
+    display: flex;
+    gap: 10px;
+}
+
+.data-statistics {
+    border: 1px solid red;
+    flex-direction: column;
+    flex: 2;
+    display: flex;
+    gap: 10px;
+}
+
+.stat-tables {
+    background-color: rgb(232, 241, 236);
+    border-radius: 10px;
+    flex: 1;
+    padding: 15px;
+}
+
+
+/* SCROLLING TABLE: */
+table.scroll {
+    width: 100%;
+    border-spacing: 0;
+    display: block;
+    margin-top: 20px;
+}
+
+table.scroll thead {
+    display: block;
+}
+
+table.scroll tr {
+    height: 30px;
+    text-align: center;
+}
+
+table.scroll tbody {
+    display: block;
+    height: 120px;
+    overflow-y: auto; /* sets vertical scroll */
+    overflow-x: hidden; /* hide horizontal scroll */
+    border-top: 1px solid rgb(46, 98, 69);
+}
+
+table.scroll tbody td, table.scroll thead th {
+    width: 200px;
+    border-bottom: 1px solid rgb(46, 98, 69);
+    border: 1px red dotted;
+    text-align: center;
+}
+
