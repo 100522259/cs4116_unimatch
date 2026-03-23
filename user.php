@@ -45,12 +45,16 @@
                         <div class="bio"><p>This is some bio text</p></div>
                         <div class="interests">
                             <?php
-                            for ($i = 0; $i < 5; $i++) {
+                            // A query would be done here to obtain the interests
+                            for ($i = 0; $i < 3; $i++) {
                                 echo "<div class=\"int_box\">Interest</div>";
                             }
                             ?>
                         </div>
-                        <div class="about_uni"><p>interests and information</p></div>
+                        <!--This would also have a php query for "display" information & uni info-->
+                        <div class="about_uni">
+                            <p>Uni degree & other info</p>
+                        </div>
                     </div>
                     <!--Will be in a php section, query if user admin, it will display this-->
                     <div class="admin">

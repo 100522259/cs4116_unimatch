@@ -4,8 +4,13 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>unimatch - admin page</title>
-        <!--Bootstrap css-->
-        
+        <!--Bootstrap css--
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+            rel="stylesheet">
+        <link rel="stylesheet" 
+            href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/css/bootstrap-grid.min.css" 
+            integrity="sha512-dOjUSaLkr6G2pwQ7ry9juX+iXw5602zg1kg8yH+guR3uSEidGyCnOEQnGlr7xwu/8WE+pVm1ZNqaIs5ETTIJQg==" 
+            crossorigin="anonymous" referrerpolicy="no-referrer"/>-->
         <link href="css\profile.css" rel="stylesheet">
     </head>
 
@@ -42,13 +47,12 @@
                             <h4>Reported Users</h4>
                             <?php
                             // IN THIS SECTION WE'D QUERY FROM THE DB TO SELECT APPROPIATE TABLE CONTENT
-                            echo "<table class=\"scroll\">";
+                            echo "<table>";
                             echo "<thead><tr><th>User</th><th>Reported by</th><th>Category</th><th>Date</th></tr></thead>";
                             echo "<tbody>";
                             for ($i = 0; $i < 5; $i++) {
                                 echo "<tr><td>Username</td><td>Username</td><td>Some text</td><td>Some date</td>";
                             }
-
                             echo "</tbody></table>";
                             ?>
                         </div>
@@ -57,10 +61,10 @@
                             <?php
                             // IN THIS SECTION WE'D QUERY FROM THE DB TO SELECT APPROPIATE TABLE CONTENT
                             echo "<table class=\"scroll\">";
-                            echo "<thead><tr><th>User</th><th>Reported by</th><th>Category</th><th>Date</th></tr></thead>";
+                            echo "<thead><tr><th>User</th><th>#Offenses</th><th>Reported</th><th>Ban time</th></tr></thead>";
                             echo "<tbody>";
                             for ($i = 0; $i < 5; $i++) {
-                                echo "<tr><td>Username</td><td>Username</td><td>Some text</td><td>Some date</td>";
+                                echo "<tr><td>Username</td><td>Number</td><td>Y/N</td><td>Some date</td>";
                             }
 
                             echo "</tbody></table>";
