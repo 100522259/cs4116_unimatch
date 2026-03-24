@@ -7,6 +7,7 @@
         <!--Bootstrap css-->
         
         <link href="css\profile.css" rel="stylesheet">
+        <link href="css\profile_mobile.css" rel="stylesheet">
     </head>
 
     <body>
@@ -57,7 +58,7 @@
                         </div>
                     </div>
                     <!--Will be in a php section, query if user admin, it will display this-->
-                    <div class="admin">
+                    <!-- <div class="admin">
                         <?php
                             $admin_activities = array("report","block","edit bio","edit name","rmv photo",
                             "rmv interest","disable acc");
@@ -68,7 +69,7 @@
                                 echo "</div>";
                             }
                         ?>
-                    </div>
+                    </div>-->
                 </div>
                 <div class="my_images_txt">
                     <h1>My photos</h1>
@@ -76,6 +77,7 @@
                 <div class="my_images">
                 <!--temp code; using php we'd request the number of photos and create as many
                     divs as photos available-->
+
                     <div class="photo">
                         <img src="https://dummyimage.com/200x200/636363/fff.png&text=my+photos+(200x200)">
                     </div>

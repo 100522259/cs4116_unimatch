@@ -1,0 +1,65 @@
+
+@media screen and (max-width:600px) {
+    /* GENERAL CONTENT */
+    body {
+        height:fit-content;
+        overflow-y: scroll; /* make screen scrollable vertically*/
+    }
+
+    .pages {
+        justify-content: center;
+    }
+
+    .icons img {margin: 0px;}
+    .icons p {display: none;}
+
+    .page {
+        margin-top: 20px;
+    }
+
+    /*USER PROFILE */
+    .main_info {
+        flex-direction: column;
+        justify-content: center;
+        height: 500px;
+    }
+    .pfp {
+        max-width: 150px;
+        min-width: 100px;
+        flex: 1;
+        align-self: center;
+        margin-bottom: 10px;
+    }
+    .pfp img {
+        border-radius: 50%;
+    }
+
+    .info {
+        margin: 0px;
+    }
+    .user_title {
+        margin-top: 5px;
+        padding-top: 5px;
+        height: 30px;
+    }
+
+    h1 {font-size: 20px;}
+    h4 {font-size: 15px;}
+
+    .interests {
+        flex-wrap: wrap;
+        gap: 5px;
+        margin: 5px 0px;
+    }
+
+    .my_images {
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+
+    .photo img {
+        max-width: 80px;
+        min-width: 50px;
+        
+    }
+}

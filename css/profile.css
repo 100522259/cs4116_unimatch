@@ -15,16 +15,19 @@ TODO: ADAPT TO 3 SCREEN SIZES:
 /* GENERAL */
 
 body {
-    font-family: Arial, sans-serif;
+    font-family:Verdana, sans-serif;
     background: #fafffa;
     color: rgba(46, 98, 69);
+    height: 100%;
 }
 
 .container {
     display: flex;
     background-color: #a5d6a7;
     width: 100%;
+    min-height: 100vh; /* ensure it occupies full screen of device*/
     /*border: 1px solid blue;*/
+    height: fit-content;
 }
 
 .index {
@@ -104,6 +107,7 @@ body {
     width: 100%;
     height: auto;
     border-radius: 10%;
+    border: 2px double white;
 }
 
 .info{
@@ -122,16 +126,17 @@ body {
     /*border: 1px solid green;*/
     display: flex;
     align-items: end;
+    margin-top:15px;
     padding-left: 10px;
     padding-bottom: 5px;
     height: 40px;
 }
 
-.name h1 {
+h1 {
     font-size: 25px;
 }
 
-.age h4 {
+h4 {
     margin-left: 20px;
     text-transform: uppercase;
     font-size: 15px;
@@ -144,26 +149,25 @@ body {
     background-color: rgb(214, 227, 220);
     border-radius: 10px;
     margin: 10px 0px;
-    height: 30%;
     padding: 10px;
+    height: 80px;
 }
 
 .interests {
     height: 25px;
-    /*border: 1px solid green;*/
+    border: 1px solid green;
     display: flex;
-    justify-content: space-around;
+    justify-content: space-evenly;
     gap: 15px;
 }
 
 .int_box {
-    height: 100%;
-    align-items: stretch;
-    border-radius: 5px;
+    border-radius: 10px;
     background-color: rgb(214, 227, 220);
     text-align: center;
-    font-size: 15px;
-    width: 100%;
+    padding: 0px 10px;
+    width: fit-content;
+    height: fit-content;
 }
 
 .my_images_txt {
@@ -192,6 +196,7 @@ body {
 }
 
 .photo img {
+    max-width: 200px;
     width: 100%;
     height: auto;
     border-radius: 10%;
