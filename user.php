@@ -34,11 +34,12 @@
                 </div>
             </div>
             <!--Container for the rest of the page-->
-            <div class="page">
+            <div class="main">
                 <div class="main_info">
+                                    
                     <div class="pfp">
                         <img src="https://dummyimage.com/400x400/636363/fff.png&text=profile+photo+(400x400)">
-                    </div>
+                    </div> 
                     <div class="info">
                         <div class="user_title">
                             <div class="name"><h1>Name</h1></div>
@@ -47,7 +48,7 @@
                         <div class="interests">
                             <?php
                             // A query would be done here to obtain the interests
-                            for ($i = 0; $i < 3; $i++) {
+                            for ($i = 0; $i < 5; $i++) {
                                 echo "<div class=\"int_box\">Interest</div>";
                             }
                             ?>
@@ -57,8 +58,10 @@
                             <p>Uni degree & other info</p>
                         </div>
                     </div>
+
+                    
                     <!--Will be in a php section, query if user admin, it will display this-->
-                    <!-- <div class="admin">
+                    <div class="admin">
                         <?php
                             $admin_activities = array("report","block","edit bio","edit name","rmv photo",
                             "rmv interest","disable acc");
@@ -69,8 +72,9 @@
                                 echo "</div>";
                             }
                         ?>
-                    </div>-->
-                </div>
+                    </div>
+
+                </div>   
                 <div class="my_images_txt">
                     <h1>My photos</h1>
                 </div>

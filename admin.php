@@ -38,7 +38,7 @@
                 </div>
             </div>
             <!--Container for the rest of the page-->
-            <div class="page">
+            <div class="main">
                 <div class="header-text">
                     <h1>admin dashboard</h1>
                 </div>
@@ -48,7 +48,7 @@
                             <h4>Reported Users</h4>
                             <?php
                             // IN THIS SECTION WE'D QUERY FROM THE DB TO SELECT APPROPIATE TABLE CONTENT
-                            echo "<table>";
+                            echo "<table class=\"scroll\">";
                             echo "<thead><tr><th>User</th><th>Reported by</th><th>Category</th><th>Date</th></tr></thead>";
                             echo "<tbody>";
                             for ($i = 0; $i < 5; $i++) {
@@ -75,9 +75,19 @@
                     <div class="data-statistics">
                         <div class="stat-tables">
                             <h4>User Info</h4>
+                            <?php
+                            for ($i = 0; $i < 5; $i++) {
+                                echo "<p>Something will go here</p>";
+                            }
+                            ?>
                         </div>
                         <div class="stat-tables">
                             <h4>Matches</h4>
+                            <?php
+                            for ($i = 0; $i < 5; $i++) {
+                                echo "<p>Something will go here</p>";
+                            }
+                            ?>
                         </div>
                     </div>
                 </div>

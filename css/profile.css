@@ -13,26 +13,33 @@ TODO: ADAPT TO 3 SCREEN SIZES:
 } 
 
 /* GENERAL */
+html {
+    min-height: 100vh;
+}
 
 body {
     font-family:Verdana, sans-serif;
-    background: #fafffa;
+    background: #a5d6a7;
     color: rgba(46, 98, 69);
-    height: 100%;
+    min-height: 100vh;
 }
 
 .container {
     display: flex;
-    background-color: #a5d6a7;
     width: 100%;
     min-height: 100vh; /* ensure it occupies full screen of device*/
     /*border: 1px solid blue;*/
-    height: fit-content;
 }
 
 .index {
+    /*Stick index to the side so it won't scroll with content*/
+    position: sticky;
+    align-self: flex-start;
+    height: 100vh;
+    top: 0;
+
     flex: 1;
-    background-color: rgba(46, 98, 69);
+    background-color: rgb(46, 98, 69);
     /*border: 1px solid blue;*/
     padding: 10px;
 }
@@ -83,12 +90,12 @@ body {
     align-items: center;
 }
 
-.page {
+.main {
     flex: 8;
-    margin: 0px 20px;
+    margin: 20px 20px;
     margin-top: 100px;
     /*border: 1px solid blue;*/
-    height: 84vh;
+    height: auto;
 }
 
 /* USER PROFILE */
@@ -106,7 +113,7 @@ body {
 .pfp img {
     width: 100%;
     height: auto;
-    border-radius: 10%;
+    border-radius: 50px;
     border: 2px double white;
 }
 
@@ -155,10 +162,11 @@ h4 {
 
 .interests {
     height: 25px;
-    border: 1px solid green;
+    /*border: 1px solid green;*/
     display: flex;
     justify-content: space-evenly;
-    gap: 15px;
+    gap: 10px;
+    font-size: 14px;
 }
 
 .int_box {
@@ -167,7 +175,8 @@ h4 {
     text-align: center;
     padding: 0px 10px;
     width: fit-content;
-    height: fit-content;
+    height: auto;
+    border: 1px solid rgb(46, 98, 69);
 }
 
 .my_images_txt {
@@ -196,23 +205,22 @@ h4 {
 }
 
 .photo img {
-    max-width: 200px;
     width: 100%;
     height: auto;
-    border-radius: 10%;
+    border-radius: 20px;
     max-width: 150px;
+    min-width: 50px;
 }
-
 
 
 /* ADMIN PROFILE VIEW */
 
 .admin {
     flex: 2;
+    order: 3;
     margin-left: 20px;
     /*border: 1px solid red;*/
     background-color: rgb(232, 241, 236);
-    border-color: rgb(141, 153, 140);
     border-radius: 10px;
     align-content: space-around;
 }
@@ -244,24 +252,22 @@ h4 {
 
 /* ADMIN PAGE */
 .header-text {
-    border: 1px solid red;
+    /*border: 1px solid red;*/
     text-transform: capitalize;
     font-size: 15px;
-    font-weight: 10px;
     height: 30px;
 }
 
 .data {
-    border: 1px solid blueviolet;
+    /*border: 1px solid blueviolet;*/
     margin-top: 10px;
     display: flex;
     justify-content: space-between;
     gap: 10px;
-    height: 90%;
 }
 
 .data-tables {
-    border: 1px solid red;
+    /*border: 1px solid red;*/
     flex-direction: column;
     flex: 3;
     display: flex;
@@ -269,7 +275,7 @@ h4 {
 }
 
 .data-statistics {
-    border: 1px solid red;
+    /*border: 1px solid red;*/
     flex-direction: column;
     flex: 2;
     display: flex;
@@ -283,16 +289,19 @@ h4 {
     padding: 15px;
 }
 
+.stat-tables h4 {
+    font-weight: bold;
+}
 
 /* SCROLLING TABLE: */
-table {
+table.scroll {
     margin-top: 10px;
     display: flex;
     flex-flow: column;
     max-height: 150px;
     width: 100%;
 }
-table thead {
+table.scroll thead {
     /* head takes the height it requires, 
     and it's not scaled when table is resized */
     flex: 0 0 auto;
@@ -300,17 +309,17 @@ table thead {
     height: 30px;
     text-align: left;
 }
-table tbody {
+table.scroll tbody {
     /* body takes all the remaining available space */
     flex: 1 1 auto;
     display: block;
     overflow-y: scroll;
 }
-table tbody tr {
+table.scroll tbody tr {
     width: 100%;
     height: 40px;
 }
-table thead, table tbody tr {
+table.scroll thead, table.scroll tbody tr {
     display: table;
     table-layout: fixed;
     border-bottom: 1px solid rgb(46, 98, 69);

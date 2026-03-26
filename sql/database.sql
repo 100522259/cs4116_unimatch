@@ -31,7 +31,7 @@ create table personal_info (
     -- bit for bool: 0 false, 1 true
 
     primary key(user_id),
-    foreign key(user_id) references credentials(user_id)
+    foreign key(user_id) references credentials(user_id) on delete cascade on delete cascade
 );
 
 create table academic_info (
@@ -40,7 +40,7 @@ create table academic_info (
     c_year number(1) not null,
 
     primary key(user_id),
-    foreign key(user_id) references credentials(user_id)
+    foreign key(user_id) references credentials(user_id) on delete cascade
 );
 
 create table interests (
@@ -62,7 +62,7 @@ create table interests (
     interest5 varchar(20),
 
     primary key(user_id),
-    foreign key(user_id) references credentials(user_id)
+    foreign key(user_id) references credentials(user_id) on delete cascade
 );
 
 create table reports (
@@ -74,8 +74,8 @@ create table reports (
     category varchar(250) not null,
 
     primary key(report_id),
-    foreign key(user_id1) references credentials(user_id),
-    foreign key(user_id2) references credentials(user_id)
+    foreign key(user_id1) references credentials(user_id) on delete cascade,
+    foreign key(user_id2) references credentials(user_id) on delete cascade
 );
 
 create table offense (
@@ -88,7 +88,7 @@ create table offense (
     ban_time number(9),
 
     primary key(user_id),
-    foreign key(user_id) references credentials(user_id)
+    foreign key(user_id) references credentials(user_id) on delete cascade
 );
 
 create table blocked (
@@ -96,8 +96,8 @@ create table blocked (
     student_blocked number(9),
 
     primary key(user_id, student_blocked),
-    foreign key(user_id) references credentials(user_id),
-    foreign key(student_blocked) references credentials(user_id)
+    foreign key(user_id) references credentials(user_id) on delete cascade,
+    foreign key(student_blocked) references credentials(user_id) on delete cascade
 );
 
 create table images (
@@ -111,7 +111,7 @@ create table images (
     pic_num number(1) not null,
 
     primary key(user_id),
-    foreign key(user_id) references credentials(user_id)
+    foreign key(user_id) references credentials(user_id) on delete cascade
 );
 
 CREATE TABLE messages (
@@ -119,7 +119,11 @@ CREATE TABLE messages (
     from_user_id INTEGER NOT NULL,
     to_user_id INTEGER NOT NULL,
     body TEXT NOT NULL,
-    sent_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    sent_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+
+    foreign key(from_user_id) references credentials(user_id) on delete cascade,
+    foreign key (to_user_id) references credentials(user_id) on delete cascade
+
 );
 
 
