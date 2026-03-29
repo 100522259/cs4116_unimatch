@@ -38,7 +38,7 @@
                 <div class="main_info">
                                     
                     <div class="pfp">
-                        <img src="https://dummyimage.com/400x400/636363/fff.png&text=profile+photo+(400x400)">
+                        <img src="images/pfp.png">
                     </div> 
                     <div class="info">
                         <div class="user_title">
@@ -81,22 +81,13 @@
                 <div class="my_images">
                 <!--temp code; using php we'd request the number of photos and create as many
                     divs as photos available-->
-
-                    <div class="photo">
-                        <img src="https://dummyimage.com/200x200/636363/fff.png&text=my+photos+(200x200)">
-                    </div>
-                    <div class="photo">
-                        <img src="https://dummyimage.com/200x200/636363/fff.png&text=my+photos+(200x200)">
-                    </div>
-                    <div class="photo">
-                        <img src="https://dummyimage.com/200x200/636363/fff.png&text=my+photos+(200x200)">
-                    </div>
-                    <div class="photo">
-                        <img src="https://dummyimage.com/200x200/636363/fff.png&text=my+photos+(200x200)">
-                    </div>
-                    <div class="photo">
-                        <img src="https://dummyimage.com/200x200/636363/fff.png&text=my+photos+(200x200)">
-                    </div>
+                    <?php
+                        for($i=0; $i < 5; $i++) {
+                            echo "<div class=\"photo\">";
+                            echo "<img src=\"images/p1.png\" alt=\"photo" . $i+1 . "\"></div>";
+                        }
+                    ?>
+                    
                 </div>
             </div>
         </div>

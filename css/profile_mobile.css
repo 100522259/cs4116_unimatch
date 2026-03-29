@@ -16,7 +16,7 @@
 
     /* ADMIN PROFILE VIEW */
     .admin {
-        display: auto;
+        display: none;
         flex: 1;
         order: 2;
         /* margin-bottom: 10px; */
