@@ -151,22 +151,25 @@ h4 {
 
 }
 
+.bio {height: 80px;}
+
 .bio, .about_uni {
     /*border: 1px solid green;*/
     background-color: rgb(214, 227, 220);
     border-radius: 10px;
     margin: 10px 0px;
     padding: 10px;
-    height: 80px;
 }
 
 .interests {
-    height: 25px;
+    height: fit-content;
     /*border: 1px solid green;*/
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-evenly;
     gap: 10px;
-    font-size: 14px;
+    margin: 5px 0;
+    font-size: 15px;
 }
 
 .int_box {
@@ -174,7 +177,7 @@ h4 {
     background-color: rgb(214, 227, 220);
     text-align: center;
     padding: 0px 10px;
-    width: fit-content;
+    width: 30%;
     height: auto;
     border: 1px solid rgb(46, 98, 69);
 }
