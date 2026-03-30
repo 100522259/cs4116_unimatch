@@ -1,0 +1,324 @@
+/* ================================================================
+   signup_step2.css  —  Sign-up Step 2 (profile) page specific styles
+   Loaded after style.css; adds step-2-only rules and Bootstrap overrides
+   ================================================================ */
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* REMOVED: body { display: flex; ... }
+   Bootstrap's container-fluid > row.min-vh-100 now handles layout. */
+
+/* Right panel: starts content from top (form is tall) */
+.auth-right {
+    justify-content: flex-start;
+}
+
+.auth-card {
+    max-width: 500px;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+/* ----------------------------------------------------------------
+   Step badge — "Step 2 of 2"
+   ---------------------------------------------------------------- */
+.step-badge {
+    display: inline-block;
+    background: rgba(255, 255, 255, 0.15);
+    color: rgba(255, 255, 255, 0.92);
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.6px;
+    padding: 5px 14px;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    margin-bottom: 16px;
+}
+
+/* ----------------------------------------------------------------
+   Card heading with inline "(Optional)" label
+   ---------------------------------------------------------------- */
+.card-heading {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    margin-bottom: 26px;
+}
+
+.card-heading h1 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: #1B5E3B;
+    line-height: 1.3;
+    margin-bottom: 0;
+}
+
+.optional-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    color: #9CA3AF;
+}
+
+/* ----------------------------------------------------------------
+   Section labels
+   ---------------------------------------------------------------- */
+.section-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: #1F2937;
+    display: block;
+    margin-bottom: 10px;
+}
+
+/* ----------------------------------------------------------------
+   Profile photo upload
+   ---------------------------------------------------------------- */
+.photo-upload-section {
+    margin-bottom: 24px;
+}
+
+.photo-upload-area {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+}
+
+.photo-preview-circle {
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    border: 2px dashed #D1D5DB;
+    background: #F9FAFB;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+    overflow: hidden;
+    cursor: pointer;
+    transition: border-color 0.2s ease;
+}
+
+.photo-preview-circle:hover {
+    border-color: #2E7D52;
+}
+
+.photo-preview-circle .placeholder-icon {
+    font-size: 28px;
+    color: #D1D5DB;
+    pointer-events: none;
+}
+
+.photo-preview-circle .placeholder-text {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    color: #9CA3AF;
+    margin-top: 5px;
+    pointer-events: none;
+}
+
+#photo-preview-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: none;
+    border-radius: 50%;
+}
+
+.upload-btn-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+/* Outlined "Upload Photo" button */
+.btn-upload {
+    display: inline-flex;
+    align-items: center;
+    padding: 10px 18px;
+    background: #ffffff;
+    border: 1.5px solid #1B5E3B;
+    color: #1B5E3B;
+    border-radius: 8px;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-upload:hover {
+    background: #1B5E3B;
+    color: #ffffff;
+}
+
+#profile_pic {
+    display: none;
+}
+
+.upload-hint {
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    color: #9CA3AF;
+    line-height: 1.5;
+}
+
+/* ----------------------------------------------------------------
+   Bio textarea
+   (form-control class added in HTML; overrides below for sizing)
+   ---------------------------------------------------------------- */
+.bio-section {
+    margin-bottom: 24px;
+}
+
+.bio-wrapper textarea.form-control {
+    /* Override the min-height: 48px set in the Bootstrap overrides block
+       in style.css — the bio textarea needs to be taller */
+    min-height: 90px !important;
+    max-height: 220px;
+    resize: vertical;
+    line-height: 1.6;
+    padding: 12px 16px;
+}
+
+.char-count {
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    color: #9CA3AF;
+    text-align: right;
+    margin-top: 5px;
+}
+
+/* ----------------------------------------------------------------
+   Interests section
+   The 2×2 grid uses Bootstrap row.g-2 > col-6 in the HTML.
+   REMOVED: .interests-grid { display: grid; ... } — Bootstrap row handles it.
+   ---------------------------------------------------------------- */
+.interests-section {
+    margin-bottom: 28px;
+}
+
+/* REMOVED: .interest-select-wrapper::after { background-image: url(...chevron) }
+   Bootstrap's form-select provides its own dropdown caret arrow.
+   Adding a second caret via ::after would double them up. */
+
+/* Keep the wrapper class for any future targeting */
+.interest-select-wrapper {
+    /* intentionally empty — Bootstrap col-6 handles sizing,
+       form-select handles styling */
+}
+
+/* "+ Add more" button */
+.add-more-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: #1B5E3B;
+    text-decoration: none;
+    margin-top: 12px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 0;
+    transition: color 0.2s ease;
+}
+
+.add-more-link:hover {
+    color: #245F3F;
+    text-decoration: underline;
+}
+
+.interest-extra {
+    display: none;
+    margin-top: 12px;
+}
+
+.interest-extra.visible {
+    display: block;
+}
+
+/* ----------------------------------------------------------------
+   Bottom button row (Skip + Next)
+   btn-skip uses Bootstrap btn-outline-secondary + our override
+   btn-next uses Bootstrap btn-primary + our override (from style.css)
+   ---------------------------------------------------------------- */
+.btn-row {
+    display: flex;
+    gap: 12px;
+    margin-top: 6px;
+}
+
+/* Override Bootstrap's grey btn-outline-secondary with UniMatch green outline */
+.btn-skip {
+    flex: 1;
+    height: 50px;
+    color: #1B5E3B !important;
+    border-color: #1B5E3B !important;
+    background: transparent !important;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    transition: background 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-skip:hover {
+    background: rgba(27, 94, 59, 0.05) !important;
+    border-color: #245F3F !important;
+    color: #245F3F !important;
+}
+
+.btn-next {
+    flex: 1;
+    height: 50px;
+    /* Background/border/colours come from .btn-primary override in style.css */
+}
+
+/* ================================================================
+   Responsive overrides
+   ================================================================ */
+@media (max-width: 992px) {
+    .auth-right {
+        padding: 30px 20px 40px;
+    }
+}
+
+@media (max-width: 768px) {
+    .btn-row {
+        flex-direction: column;
+    }
+
+    .btn-skip,
+    .btn-next {
+        flex: none;
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .photo-upload-area {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    /* Stack interest selects to single column on very small screens */
+    .interests-section .row > .col-6 {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+}
