@@ -42,17 +42,20 @@
             <!--Container for the rest of the page-->
             <div class="main">
 
-                <form name="credentials_settings" action="" method="on" autocomplete="off">
+                <form name="credentials_settings" action="post" method="on" autocomplete="off">
                     <fieldset><legend>Credentials</legend><br>
                         <?php
-                        //include "user_queries.php";
-
+                        include "user_queries.php";
                         echo '<label for="username">Username: </label>';
-                        echo '<input type="text" name="username" pattern="[A-Za-z0-9]{5,}" maxlength="20" size="20" title="Write your username, between 5 and 20 characters">';
+                        echo '<input type="text" name="username" pattern="[A-Za-z0-9]{5,}" maxlength="20" 
+                                size="20" title="Write your username, between 5 and 20 characters" 
+                                value="'.$creds["username"].'">';
                         echo '<br><br>';
 
                         echo '<label for="password">Password: </label>';
-                        echo '<input type="password" name="password" id="myPsw" pattern="[^;]+" minlength="8" maxlength="20" size="20" title="Write your password, between 8 and 20 characters">';
+                        echo '<input type="password" name="password" id="myPsw" pattern="[^;]+" minlength="8" maxlength="20" 
+                        		size="20" title="Write your password, between 8 and 20 characters"
+                                value="'.$creds["password"].'">';
                         echo '<br>';
 
                         echo '<label for="visibility">Show Password </label>';
@@ -60,7 +63,8 @@
                         echo '<br><br>';
 
                         echo '<label for="password2">Confirm new Password: </label>';
-                        echo '<input type="password" name="password2" id="myPsw2" pattern="[^;]+" minlength="8" maxlength="20" size="20" title="Write your password again, between 8 and 20 characters">';
+                        echo '<input type="password" name="password2" id="myPsw2" pattern="[^;]+" minlength="8" maxlength="20" size="20" 
+                        		title="Write your password again, between 8 and 20 characters">';
                         echo '<br>';
 
                         echo '<label for="visibility2">Show Password </label>';
@@ -74,20 +78,26 @@
                 </form><br><br>
 
                 <!--Form for the user to change their user details-->
-                <form name="basic_settigns" action="" method="on" autocomplete="off">
+                <form name="basic_settings" action="" method="post" autocomplete="off">
                     <fieldset><legend>Personal Info</legend><br>
                     <?php
+                        include "user_queries.php";
+
                         echo '<label for="fname">First Name: </label>';
-                        echo '<input type="text" name="fname" pattern="[A-Za-z]{2,30}" maxlength="30" size="30" title="Write your first name, between 2 and 30 characters">';
+                        echo '<input type="text" name="fname" pattern="[A-Za-z]{2,30}" maxlength="30" 
+                                size="30" title="Write your first name, between 2 and 30 characters"
+                                value="'.$pers_info["first_name"].'">';
                         echo '<br><br>';
 
-                        echo '<label for="lname">Last name:</label>';
-                        echo '<input type="text" name="lname" pattern="[A-Za-z]{2,30}" maxlength="30" size="30" title="Write your last name, between 2 and 30 characters">';
+                        echo '<label for="lname">Last name: </label>';
+                        echo '<input type="text" name="lname" pattern="[A-Za-z]{2,30}" maxlength="30" 
+                                size="30" title="Write your last name, between 2 and 30 characters"
+                                value="'.$pers_info["last_name"].'">';
                         echo '<br><br>';
 
-                        echo '<label for="age">Age:</label>';
+                        echo '<label for="age">Age: </label>';
                         echo '<select id="age" name="Age">';
-                        echo '<option value="" disabled selected>Select age</option>';
+                        echo '<option value="'.$pers_info["age"].'" >'.$pers_info["age"].'</option>';
                         
                         for ($i = 17; $i <= 30; $i++) {
                             echo '<option value="'.$i.'">'.$i.'</option>';
@@ -96,16 +106,20 @@
                         echo '<br><br>';
 
                         echo '<label for="county">County:</label>';
-                        echo '<input type="text" name="county" pattern="[A-Za-z]{2,30}" maxlength="30" size="30" title="Write your county, between 2 and 30 characters">';
+                        echo '<input type="text" name="county" pattern="[A-Za-z]{2,30}" maxlength="30" 
+                                size="30" title="Write your county, between 2 and 30 characters"
+                                value="'.$pers_info["county"].'">';
                         echo '<br><br>';
 
-                        echo '<label for="nationality">Nationality:</label>';
-                        echo '<input type="text" name="nationality" pattern="[A-Za-z]{2,30}" maxlength="30" size="30" title="Write your nationality, between 2 and 30 characters">';
+                        echo '<label for="nationality">Nationality: </label>';
+                        echo '<input type="text" name="nationality" pattern="[A-Za-z]{2,30}" maxlength="30" 
+                                size="30" title="Write your nationality, between 2 and 30 characters"
+                                value="'.$pers_info["nationality"].'">';
                         echo '<br><br>';
 
-                        echo '<label for="gender">Gender:</label>';
+                        echo '<label for="gender">Gender: </label>';
                         echo '<select id="gender" name="Gender">';
-                        echo '<option value="" disabled selected>Select gender</option>';
+                        echo '<option value="'.$pers_info["gender"].'" selected>'.$pers_info["gender"].'</option>';
                         echo '<option value="male">Male</option>';
                         echo '<option value="female">Female</option>';
                         echo '<option value="non-binary">Non-binary</option>';
@@ -113,35 +127,46 @@
                         echo '</select>';
                         echo '<br><br>';
 
-                        echo '<label for="bio">Bio:</label>';
-                        echo '<input class="resize-box" type="text" name="bio" pattern="[^;]*" maxlength="2500" size="100" title="Write a short bio">';
+                        echo '<label for="bio">Bio: </label><br>';
+                        echo '<textarea name="bio" rows="5" cols="50" pattern="[^;]*" maxlength="2500" size="100"
+                                title="Write a short bio">';
+                        echo $pers_info["bio"];
+                        echo "</textarea>";
                         echo '<br><br>';
                     ?>
                     </fieldset>
                     <input type="submit" name="submit_pers" value="Save Changes">
                 </form><br><br>
 
-                <form>
+                <form name="academic_info" action="" method="post" autocomplete="off">
                     <fieldset><legend>Academic Info</legend><br>
                     <?php
+                        include "user_queries.php";
+
                         echo '<label for="course">Course: </label>';
-                        echo '<input type="text" name="course" pattern="[A-Za-z ]{2,20}" maxlength="20" size="20" title="Write your course, between 2 and 20 characters">';
+                        echo '<input type="text" name="course" pattern="[A-Za-z ]{2,20}" maxlength="20" 
+                                size="20" title="Write your course, between 2 and 20 characters"
+                                value="'.$uni["course"].'">';
                         echo '<br><br>';
 
                         echo '<label for="year">Year: </label>';
-                        echo '<input type="text" name="year" pattern="[1-9]" maxlength="1" size="5" title="Write your course year, between 1 and 9">';
+                        echo '<input type="text" name="year" pattern="[1-9]" maxlength="1" size="5" 
+                                title="Write your course year, between 1 and 9"
+                                value="'.$uni["c_year"].'">';
                         echo '<br><br>';
                     ?>
                     </fieldset>
                     <input type="submit" name="submit_acad" value="Save Changes">
                 </form><br><br>
 
-                <form>
+                <form name="interests" action="" method="post" autocomplete="off">
                     <fieldset><legend>Interests</legend><br>
                     <?php
+                        include "user_queries.php";
+
                         echo '<label for="drink">Drinking habits: </label>';
                         echo '<select name="drink">';
-                        echo '<option value="" disabled selected>Select habit</option>';
+                        echo '<option value="'.$ints["drink"].'" selected>'.$ints["drink"].'</option>';
                         echo '<option value="no">No</option>';
                         echo '<option value="yes">Yes</option>';
                         echo '<option value="socially">Socially</option>';
@@ -151,7 +176,7 @@
 
                         echo '<label for="smoke">Smoking habits: </label>';
                         echo '<select name="smoke">';
-                        echo '<option value="" disabled selected>Select habit</option>';
+                        echo '<option value="'.$ints["smoke"].'" selected>'.$ints["drink"].'</option>';
                         echo '<option value="no">No</option>';
                         echo '<option value="yes">Yes</option>';
                         echo '<option value="socially">Socially</option>';
@@ -161,7 +186,7 @@
 
                         echo '<label for="food">Food Lifestyle: </label>';
                         echo '<select name="food">';
-                        echo '<option value="" disabled selected>Select lifestyle</option>';
+                        echo '<option value="'.$ints["food_lifestyle"].'" selected>'.$ints["food_lifestyle"].'</option>';
                         echo '<option value="normal">Normal</option>';
                         echo '<option value="vegetarian">Vegetarian</option>';
                         echo '<option value="vegan">Vegan</option>';
@@ -175,7 +200,7 @@
 
                         echo '<label for="personality">Personality: </label>';
                         echo '<select name="personality">';
-                        echo '<option value="" disabled selected>Select personality</option>';
+                        echo '<option value="'.$ints["personality"].'" selected>'.$ints["personality"].'</option>';
                         echo '<option value="extrovert">Extrovert</option>';
                         echo '<option value="introvert">Introvert</option>';
                         echo '<option value="ambivert">Ambivert</option>';
@@ -187,7 +212,7 @@
 
                         echo '<label for="sexuality">Sexuality: </label>';
                         echo '<select name="sexuality">';
-                        echo '<option value="" disabled selected>Select sexuality</option>';
+                        echo '<option value="'.$ints["sexuality"].'" selected>'.$ints["sexuality"].'</option>';
                         echo '<option value="straight">Straight</option>';
                         echo '<option value="gay">Gay</option>';
                         echo '<option value="lesbian">Lesbian</option>';
@@ -208,7 +233,7 @@
                         for ($i=1; $i<6; $i++) {
                             echo '<label for="interest'.$i.'">Interest '.$i.': </label>';
                             echo '<select name="interest'.$i.'">';
-                            echo '<option value="" disabled selected>Select nterest</option>';
+                            echo '<option value="'.$ints["interest{$i}"].'" selected>'.$ints["interest{$i}"].'</option>';
                             foreach ($interest_ops as $int) {
                                 echo '<option value="'.$int.'">'.$int.'</option>';
                             }
