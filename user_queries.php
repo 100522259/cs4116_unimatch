@@ -36,3 +36,8 @@ $sql = "select * from academic_info where user_id={$user_id};";
 $result = $conn->query($sql);
 $uni = $result->fetch_assoc();
 
+// 5. credentials:
+$sql = "select * from credentials where user_id={$user_id};";
+$result = $conn->query($sql);
+$creds = $result->fetch_assoc();
+

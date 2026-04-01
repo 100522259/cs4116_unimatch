@@ -44,33 +44,30 @@
 
                 <form name="credentials_settings" action="" method="on" autocomplete="off">
                     <fieldset><legend>Credentials</legend><br>
-                    
-                        <label for="username">Username: </label>
-                        <input type="text" name="username" 
-                            pattern="[A-Za-z0-9]{5,}" maxlength="20" size="20"
-                            title="Write your username, between 5 and 20 characters">
-                        <br><br>
-                        
-                        <label for="password">Password: </label>
-                        <input type="password" name="password" id="myPsw"
-                            pattern="^[^;]+$" minlength="8" maxlength="20" size="20"
-                            title="Write your username, between 8 and 20 characters">
-                        <br>
-                        <!-- An element to toggle between password visibility 
-                        Note: taken from w3schools-->
-                        <label for="visibility">Show Password </label>
-                        <input type="checkbox" name="visibility" onclick="toggleVisib()"><br><br>
+                        <?php
+                        //include "user_queries.php";
 
-                        <!-- TODO Passwords must be equal -->
-                        <label for="password2">Confirm new Password: </label>
-                        <input type="password" name="password2" id="myPsw2"
-                            pattern="^[^;]+$" minlength="8" maxlength="20" size="20"
-                            title="Write your username, between 8 and 20 characters">
-                        <br>
+                        echo '<label for="username">Username: </label>';
+                        echo '<input type="text" name="username" pattern="[A-Za-z0-9]{5,}" maxlength="20" size="20" title="Write your username, between 5 and 20 characters">';
+                        echo '<br><br>';
+
+                        echo '<label for="password">Password: </label>';
+                        echo '<input type="password" name="password" id="myPsw" pattern="[^;]+" minlength="8" maxlength="20" size="20" title="Write your password, between 8 and 20 characters">';
+                        echo '<br>';
+
+                        echo '<label for="visibility">Show Password </label>';
+                        echo '<input type="checkbox" name="visibility" onclick="toggleVisib()">';
+                        echo '<br><br>';
+
+                        echo '<label for="password2">Confirm new Password: </label>';
+                        echo '<input type="password" name="password2" id="myPsw2" pattern="[^;]+" minlength="8" maxlength="20" size="20" title="Write your password again, between 8 and 20 characters">';
+                        echo '<br>';
+
+                        echo '<label for="visibility2">Show Password </label>';
+                        echo '<input type="checkbox" name="visibility2" onclick="toggleVisib2()">';
+                        echo '<br><br>';
                         
-                        <label for="visibility">Show Password </label>
-                        <input type="checkbox" name="visibility" onclick="toggleVisib2()">
-                        <br><br>
+                        ?>
 
                     </fieldset>
                     <input type="submit" name="submit_cred" value="Save Changes">
@@ -79,162 +76,143 @@
                 <!--Form for the user to change their user details-->
                 <form name="basic_settigns" action="" method="on" autocomplete="off">
                     <fieldset><legend>Personal Info</legend><br>
-                    
-                        <label for="fname">First Name: </label>
-                        <input type="text" name="fname" 
-                            pattern="[A-Za-z]{2,}" maxlength="30" size="30"
-                            title="Write your first name, between 2 and 30 characters">
-                        <br><br>
+                    <?php
+                        echo '<label for="fname">First Name: </label>';
+                        echo '<input type="text" name="fname" pattern="[A-Za-z]{2,30}" maxlength="30" size="30" title="Write your first name, between 2 and 30 characters">';
+                        echo '<br><br>';
+
+                        echo '<label for="lname">Last name:</label>';
+                        echo '<input type="text" name="lname" pattern="[A-Za-z]{2,30}" maxlength="30" size="30" title="Write your last name, between 2 and 30 characters">';
+                        echo '<br><br>';
+
+                        echo '<label for="age">Age:</label>';
+                        echo '<select id="age" name="Age">';
+                        echo '<option value="" disabled selected>Select age</option>';
                         
-                        <label for="lname">Last name:</label>
-                        <input type="text" name="lname" 
-                        pattern="[A-Za-z]{2-30}" maxlength="30" size="30"
-                            title="Write your last name, between 2 and 30 characters">
-                        <br><br>
+                        for ($i = 17; $i <= 30; $i++) {
+                            echo '<option value="'.$i.'">'.$i.'</option>';
+                        }
+                        echo '</select>';
+                        echo '<br><br>';
 
-                        <label for="age">Age:</label>
-                        <select id="age" name="Age">
-                            <option value="" disabled selected>Select age</option>
-                            <?php
-                            for ($i=17; $i<=30; $i++) {
-                                echo "<option value=\"{$i}\">{$i}</option>";
-                            }
-                            ?>
-                        </select>
-                        <br><br>
+                        echo '<label for="county">County:</label>';
+                        echo '<input type="text" name="county" pattern="[A-Za-z]{2,30}" maxlength="30" size="30" title="Write your county, between 2 and 30 characters">';
+                        echo '<br><br>';
 
-                        <label for="county">County:</label>
-                        <input type="text" name="county" 
-                            pattern="[A-Za-z]{2-30}" maxlength="30" size="30"
-                            title="Write your county, between 2 and 30 characters">
-                        <br><br>
+                        echo '<label for="nationality">Nationality:</label>';
+                        echo '<input type="text" name="nationality" pattern="[A-Za-z]{2,30}" maxlength="30" size="30" title="Write your nationality, between 2 and 30 characters">';
+                        echo '<br><br>';
 
-                        <label for="nationality">Nationality:</label>
-                        <input type="text" name="nationality" 
-                            pattern="[A-Za-z]{2-30}" maxlength="30" size="30"
-                            title="Write your nationality, between 2 and 30 characters">
-                        <br><br>
+                        echo '<label for="gender">Gender:</label>';
+                        echo '<select id="gender" name="Gender">';
+                        echo '<option value="" disabled selected>Select gender</option>';
+                        echo '<option value="male">Male</option>';
+                        echo '<option value="female">Female</option>';
+                        echo '<option value="non-binary">Non-binary</option>';
+                        echo '<option value="prefer-not-to-say">Prefer not to say</option>';
+                        echo '</select>';
+                        echo '<br><br>';
 
-                        <label for="gender">Gender:</label>
-                        <select id="gender" name="Gender">
-                            <option value="" disabled selected>Select gender</option>
-                            <option value="male">Male</option>
-                            <option value="female">Female</option>
-                            <option value="non-binary">Non-binary</option>
-                            <option value="prefer-not-to-say">Prefer not to say</option>
-                        </select>
-                        <br><br>
-
-                        <label for="bio">Bio:</label>
-                        <!--Note: make sure that the user can't write anything with ";"
-                        To prevent sql injection.
-                        The regex was extracted from a ChatGPT prompt: it ensures that the string
-                        can empty (*) and reject the semi-colon. -->
-                        <input class="resize-box" type="text" name="bio" 
-                            pattern="^[^;]*$" maxlength="2500" size="100"
-                            title="Write your last name, between 2 and 30 characters">
-                        <br><br>
+                        echo '<label for="bio">Bio:</label>';
+                        echo '<input class="resize-box" type="text" name="bio" pattern="[^;]*" maxlength="2500" size="100" title="Write a short bio">';
+                        echo '<br><br>';
+                    ?>
                     </fieldset>
                     <input type="submit" name="submit_pers" value="Save Changes">
                 </form><br><br>
 
                 <form>
                     <fieldset><legend>Academic Info</legend><br>
-                    
-                        <label for="course">Course: </label>
-                        <input type="text" name="course" 
-                            pattern="[A-Za-z ]{2,}" maxlength="20" size="20"
-                            title="Write your course, between 2 and 20 characters">
-                        <br><br>
-                        
-                        <label for="year">Year: </label>
-                        <input type="text" name="year" 
-                            pattern="[1-9]{1}" maxlength="1" size="5"
-                            title="Write your course year, between 1 and 9">
-                        <br><br>
-                        
+                    <?php
+                        echo '<label for="course">Course: </label>';
+                        echo '<input type="text" name="course" pattern="[A-Za-z ]{2,20}" maxlength="20" size="20" title="Write your course, between 2 and 20 characters">';
+                        echo '<br><br>';
+
+                        echo '<label for="year">Year: </label>';
+                        echo '<input type="text" name="year" pattern="[1-9]" maxlength="1" size="5" title="Write your course year, between 1 and 9">';
+                        echo '<br><br>';
+                    ?>
                     </fieldset>
                     <input type="submit" name="submit_acad" value="Save Changes">
                 </form><br><br>
 
                 <form>
                     <fieldset><legend>Interests</legend><br>
-                    
-                        <label for="drink">Drinking habits: </label>
-                        <select name="drink">
-                            <option value="" disabled selected>Select habit</option>
-                            <option value="no">No</option>
-                            <option value="yes">Yes</option>
-                            <option value="socially">Socially</option>
-                            <option value="occasionally">Occasionally</option>
-                        </select>
-                        <br><br>
+                    <?php
+                        echo '<label for="drink">Drinking habits: </label>';
+                        echo '<select name="drink">';
+                        echo '<option value="" disabled selected>Select habit</option>';
+                        echo '<option value="no">No</option>';
+                        echo '<option value="yes">Yes</option>';
+                        echo '<option value="socially">Socially</option>';
+                        echo '<option value="occasionally">Occasionally</option>';
+                        echo '</select>';
+                        echo '<br><br>';
 
-                        <label for="smoke">Smoking habits: </label>
-                        <select name="smoke">
-                            <option value="" disabled selected>Select habit</option>
-                            <option value="no">No</option>
-                            <option value="yes">Yes</option>
-                            <option value="socially">Socially</option>
-                            <option value="occasionally">Occasionally</option>
-                        </select>
-                        <br><br>
+                        echo '<label for="smoke">Smoking habits: </label>';
+                        echo '<select name="smoke">';
+                        echo '<option value="" disabled selected>Select habit</option>';
+                        echo '<option value="no">No</option>';
+                        echo '<option value="yes">Yes</option>';
+                        echo '<option value="socially">Socially</option>';
+                        echo '<option value="occasionally">Occasionally</option>';
+                        echo '</select>';
+                        echo '<br><br>';
 
-                        <label for="food">Food Lifestyle: </label>
-                        <select name="food">
-                            <option value="" disabled selected>Select lifestyle</option>
-                            <option value="normal">Normal</option>
-                            <option value="vegetarian">Vegetarian</option>
-                            <option value="vegan">Vegan</option>
-                            <option value="pescatarian">Pescatarian</option>
-                            <option value="other">Other</option>
-                        </select>
-                        <br>
-                        <label for="disp_lifestyle">Display: </label>
-                        <input type="checkbox" name="disp_lifestyle">
-                        <br><br>
+                        echo '<label for="food">Food Lifestyle: </label>';
+                        echo '<select name="food">';
+                        echo '<option value="" disabled selected>Select lifestyle</option>';
+                        echo '<option value="normal">Normal</option>';
+                        echo '<option value="vegetarian">Vegetarian</option>';
+                        echo '<option value="vegan">Vegan</option>';
+                        echo '<option value="pescatarian">Pescatarian</option>';
+                        echo '<option value="other">Other</option>';
+                        echo '</select>';
+                        echo '<br>';
+                        echo '<label for="disp_lifestyle">Display: </label>';
+                        echo '<input type="checkbox" name="disp_lifestyle">';
+                        echo '<br><br>';
 
-                        <label for="personality">Personality: </label>
-                        <select name="personality">
-                            <option value="" disabled selected>Select personality</option>
-                            <option value="extrovert">Extrovert</option>
-                            <option value="introvert">Introvert</option>
-                            <option value="ambivert">Ambivert</option>
-                        </select>
-                        <br>
-                        <label for="disp_personality">Display: </label>
-                        <input type="checkbox" name="disp_personality">
-                        <br><br>
+                        echo '<label for="personality">Personality: </label>';
+                        echo '<select name="personality">';
+                        echo '<option value="" disabled selected>Select personality</option>';
+                        echo '<option value="extrovert">Extrovert</option>';
+                        echo '<option value="introvert">Introvert</option>';
+                        echo '<option value="ambivert">Ambivert</option>';
+                        echo '</select>';
+                        echo '<br>';
+                        echo '<label for="disp_personality">Display: </label>';
+                        echo '<input type="checkbox" name="disp_personality">';
+                        echo '<br><br>';
 
-                        <label for="sexuality">Sexuality: </label>
-                        <select name="sexuality">
-                            <option value="" disabled selected>Select sexuality</option>
-                            <option value="straight">Straight</option>
-                            <option value="gay">Gay</option>
-                            <option value="lesbian">Lesbian</option>
-                            <option value="bisexual">Bisexual</option>
-                            <option value="pansexual">Pansexual</option>
-                            <option value="asexual">Asexual</option>
-                            <option value="other">Other</option>
-                        </select>
-                        <br>
-                        <label for="disp_sexuality">Display: </label>
-                        <input type="checkbox" name="disp_sexuality">
-                        <br><br>
+                        echo '<label for="sexuality">Sexuality: </label>';
+                        echo '<select name="sexuality">';
+                        echo '<option value="" disabled selected>Select sexuality</option>';
+                        echo '<option value="straight">Straight</option>';
+                        echo '<option value="gay">Gay</option>';
+                        echo '<option value="lesbian">Lesbian</option>';
+                        echo '<option value="bisexual">Bisexual</option>';
+                        echo '<option value="pansexual">Pansexual</option>';
+                        echo '<option value="asexual">Asexual</option>';
+                        echo '<option value="other">Other</option>';
+                        echo '</select>';
+                        echo '<br>';
+                        echo '<label for="disp_sexuality">Display: </label>';
+                        echo '<input type="checkbox" name="disp_sexuality">';
+                        echo '<br><br>';
 
-                        <?php
                         // Section for interest, repeated five times
                         $interest_ops = array("Sports", "Music", "Gaming", "Reading",
                         "Travel", "Cooking", "Fitness", "Photography", "Art", "Technology",
                         "Movies", "Fashion", "Nature", "Dance", "Writing");
                         for ($i=1; $i<6; $i++) {
-                            echo "<label for=\"interest{$i}\">Interest {$i}: </label>";
-                            echo "<select name=\"interest{$i}\">";
-                            echo "<option value=\"none\" disabled selected>Select interest</option>";
+                            echo '<label for="interest'.$i.'">Interest '.$i.': </label>';
+                            echo '<select name="interest'.$i.'">';
+                            echo '<option value="" disabled selected>Select nterest</option>';
                             foreach ($interest_ops as $int) {
-                                echo "<option value=\"{$int}\">{$int}</option>";
+                                echo '<option value="'.$int.'">'.$int.'</option>';
                             }
-                            echo "</select><br><br>";
+                            echo '</select><br><br>';
                         }
                         ?>                      
                         
@@ -244,12 +222,13 @@
 
                 <form>
                     <fieldset><legend>Image Upload</legend><br>
-                    <label for="pfp">Upload Profile Photo: </label>
-                    <input type="file" name="pfp"><br><br>
                     <?php
+                        echo '<label for="pfp">Upload Profile Photo: </label>';
+                        echo '<input type="file" name="pfp"><br><br>';
+                    
                         for ($i=1; $i<6; $i++) {
-                            echo "<label for=\"image{$i}\">Upload Image {$i}: </label>";
-                            echo "<input type=\"file\" name=\"image{$i}\"><br><br>";
+                            echo '<label for="image'.$i.'">Upload Image '.$i.': </label>';
+                            echo '<input type="file" name="image'.$i.'"><br><br>';
                         }
                     ?>
                     </fieldset>
