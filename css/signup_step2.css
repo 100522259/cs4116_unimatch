@@ -1,8 +1,3 @@
-/* ================================================================
-   signup_step2.css  —  Sign-up Step 2 (profile) page specific styles
-   Loaded after style.css; adds step-2-only rules and Bootstrap overrides
-   ================================================================ */
-
 *,
 *::before,
 *::after {
@@ -25,9 +20,7 @@
     margin-bottom: auto;
 }
 
-/* ----------------------------------------------------------------
-   Step badge — "Step 2 of 2"
-   ---------------------------------------------------------------- */
+
 .step-badge {
     display: inline-block;
     background: rgba(255, 255, 255, 0.15);
@@ -42,9 +35,7 @@
     margin-bottom: 16px;
 }
 
-/* ----------------------------------------------------------------
-   Card heading with inline "(Optional)" label
-   ---------------------------------------------------------------- */
+
 .card-heading {
     display: flex;
     align-items: baseline;
@@ -68,9 +59,7 @@
     color: #9CA3AF;
 }
 
-/* ----------------------------------------------------------------
-   Section labels
-   ---------------------------------------------------------------- */
+
 .section-label {
     font-family: 'Inter', sans-serif;
     font-size: 14px;
@@ -80,9 +69,7 @@
     margin-bottom: 10px;
 }
 
-/* ----------------------------------------------------------------
-   Profile photo upload
-   ---------------------------------------------------------------- */
+
 .photo-upload-section {
     margin-bottom: 24px;
 }
@@ -173,10 +160,7 @@
     line-height: 1.5;
 }
 
-/* ----------------------------------------------------------------
-   Bio textarea
-   (form-control class added in HTML; overrides below for sizing)
-   ---------------------------------------------------------------- */
+
 .bio-section {
     margin-bottom: 24px;
 }
@@ -199,24 +183,17 @@
     margin-top: 5px;
 }
 
-/* ----------------------------------------------------------------
-   Interests section
-   The 2×2 grid uses Bootstrap row.g-2 > col-6 in the HTML.
-   REMOVED: .interests-grid { display: grid; ... } — Bootstrap row handles it.
-   ---------------------------------------------------------------- */
+
 .interests-section {
     margin-bottom: 28px;
 }
 
-/* REMOVED: .interest-select-wrapper::after { background-image: url(...chevron) }
-   Bootstrap's form-select provides its own dropdown caret arrow.
-   Adding a second caret via ::after would double them up. */
 
-/* Keep the wrapper class for any future targeting */
+/* Keep the wrapper class for any future targeting 
 .interest-select-wrapper {
-    /* intentionally empty — Bootstrap col-6 handles sizing,
-       form-select handles styling */
-}
+     intentionally empty — Bootstrap col-6 handles sizing,
+       form-select handles styling 
+} */
 
 /* "+ Add more" button */
 .add-more-link {
@@ -250,11 +227,7 @@
     display: block;
 }
 
-/* ----------------------------------------------------------------
-   Bottom button row (Skip + Next)
-   btn-skip uses Bootstrap btn-outline-secondary + our override
-   btn-next uses Bootstrap btn-primary + our override (from style.css)
-   ---------------------------------------------------------------- */
+
 .btn-row {
     display: flex;
     gap: 12px;
@@ -289,9 +262,7 @@
     /* Background/border/colours come from .btn-primary override in style.css */
 }
 
-/* ================================================================
-   Responsive overrides
-   ================================================================ */
+
 @media (max-width: 992px) {
     .auth-right {
         padding: 30px 20px 40px;
