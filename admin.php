@@ -4,6 +4,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>unimatch - admin page</title>
+
         <!--Bootstrap css--
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
             rel="stylesheet">
@@ -11,6 +12,7 @@
             href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/css/bootstrap-grid.min.css" 
             integrity="sha512-dOjUSaLkr6G2pwQ7ry9juX+iXw5602zg1kg8yH+guR3uSEidGyCnOEQnGlr7xwu/8WE+pVm1ZNqaIs5ETTIJQg==" 
             crossorigin="anonymous" referrerpolicy="no-referrer"/>-->
+
         <link href="css\profile.css" rel="stylesheet">
         <link href="css\profile_mobile.css" rel="stylesheet">
     </head>
@@ -47,12 +49,14 @@
                         <div class="stat-tables">
                             <h4>Reported Users</h4>
                             <?php
-                            // IN THIS SECTION WE'D QUERY FROM THE DB TO SELECT APPROPIATE TABLE CONTENT
+                            include "admin_queries.php";
+
                             echo "<table class=\"scroll\">";
                             echo "<thead><tr><th>User</th><th>Reported by</th><th>Category</th><th>Date</th></tr></thead>";
                             echo "<tbody>";
-                            for ($i = 0; $i < 5; $i++) {
-                                echo "<tr><td>Username</td><td>Username</td><td>Some text</td><td>Some date</td>";
+                            while ($row = $res_reports->fetch_assoc()) {
+                                echo "<tr><td>{$row["username1"]}</td><td>{$row["username"]}</td>";
+                                echo "<td>{$row["category"]}</td><td>{$row["timestamp"]}</td>";
                             }
                             echo "</tbody></table>";
                             ?>
@@ -60,14 +64,23 @@
                         <div class="stat-tables">
                             <h4>Banned Users</h4>
                             <?php
-                            // IN THIS SECTION WE'D QUERY FROM THE DB TO SELECT APPROPIATE TABLE CONTENT
+                            include "admin_queries.php";
+
                             echo "<table class=\"scroll\">";
                             echo "<thead><tr><th>User</th><th>#Offenses</th><th>Reported</th><th>Ban time</th></tr></thead>";
                             echo "<tbody>";
-                            for ($i = 0; $i < 5; $i++) {
-                                echo "<tr><td>Username</td><td>Number</td><td>Y/N</td><td>Some date</td>";
+                            while ($row = $res_offense->fetch_assoc()) {
+                                echo "<tr><td>{$row["username"]}</td><td>{$row["offence_num"]}</td>";
+                                echo "<td>";
+                                // If user has been reported, display Y, else display N
+                                if ($row["reported"] == 1) echo "Y";
+                                else echo "N</td>"; 
+                                echo "<td>";
+                                // If user has no ban time, display 0;
+                                if ($row["ban_time"] == null) echo "0";
+                                else echo "{$row["ban_time"]}";
+                                echo "</td></tr>";
                             }
-
                             echo "</tbody></table>";
                             ?>
                         </div>
