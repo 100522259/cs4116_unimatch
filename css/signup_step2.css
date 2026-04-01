@@ -6,8 +6,6 @@
     padding: 0;
 }
 
-/* REMOVED: body { display: flex; ... }
-   Bootstrap's container-fluid > row.min-vh-100 now handles layout. */
 
 /* Right panel: starts content from top (form is tall) */
 .auth-right {
