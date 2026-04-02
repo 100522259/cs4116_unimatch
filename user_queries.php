@@ -1,19 +1,6 @@
 <?php
-//echo "<h1>Trying to query</h1>";
-$servername = "sql108.infinityfree.com";
-$username = "if0_41207740";
-$password = "hpQ2aHXoodn";
 
-$dbname = "if0_41207740_unimatch_db";
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: ".$conn->connect_error);
-}
-
-//echo "Connected successfully<br>";
-$user_id = 200000004;
+include "connect_server.php";
 
 // 1. select image content
 $sql = "select * from images where user_id={$user_id};";
@@ -40,6 +27,9 @@ $uni = $result->fetch_assoc();
 $sql = "select * from credentials where user_id={$user_id};";
 $result = $conn->query($sql);
 $creds = $result->fetch_assoc();
+
+$conn->close();
+
 
 
 

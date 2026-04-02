@@ -42,10 +42,11 @@
             <!--Container for the rest of the page-->
             <div class="main">
 
-                <form name="credentials_settings" action="post" method="on" autocomplete="off">
+                <form name="credentials_settings" action="settings.php" method="post" autocomplete="off">
                     <fieldset><legend>Credentials</legend><br>
                         <?php
                         include "user_queries.php";
+                        
                         echo '<label for="username">Username: </label>';
                         echo '<input type="text" name="username" pattern="[A-Za-z0-9]{5,}" maxlength="20" 
                                 size="20" title="Write your username, between 5 and 20 characters" 
@@ -70,12 +71,13 @@
                         echo '<label for="visibility2">Show Password </label>';
                         echo '<input type="checkbox" name="visibility2" onclick="toggleVisib2()">';
                         echo '<br><br>';
-                        
+
                         ?>
 
                     </fieldset>
                     <input type="submit" name="submit_cred" value="Save Changes">
                 </form><br><br>
+
 
                 <!--Form for the user to change their user details-->
                 <form name="basic_settings" action="" method="post" autocomplete="off">
@@ -96,7 +98,7 @@
                         echo '<br><br>';
 
                         echo '<label for="age">Age: </label>';
-                        echo '<select id="age" name="Age">';
+                        echo '<select id="age" name="age">';
                         echo '<option value="'.$pers_info["age"].'" >'.$pers_info["age"].'</option>';
                         
                         for ($i = 17; $i <= 30; $i++) {
@@ -118,7 +120,7 @@
                         echo '<br><br>';
 
                         echo '<label for="gender">Gender: </label>';
-                        echo '<select id="gender" name="Gender">';
+                        echo '<select id="gender" name="gender">';
                         echo '<option value="'.$pers_info["gender"].'" selected>'.$pers_info["gender"].'</option>';
                         echo '<option value="male">Male</option>';
                         echo '<option value="female">Female</option>';
@@ -137,6 +139,7 @@
                     </fieldset>
                     <input type="submit" name="submit_pers" value="Save Changes">
                 </form><br><br>
+
 
                 <form name="academic_info" action="" method="post" autocomplete="off">
                     <fieldset><legend>Academic Info</legend><br>
@@ -159,11 +162,147 @@
                     <input type="submit" name="submit_acad" value="Save Changes">
                 </form><br><br>
 
+
+                <?php // here we process the forms:
+                    include "connect_server.php";
+                    include "user_queries.php";
+                    
+                    // 1. FORM CREDENTIALS
+                    if(isset($_POST["submit_cred"])) {
+
+                        // a. Check that username is changed
+                        if ($_POST["username"] != $creds["username"]) {
+                            $stmt = $conn->prepare("UPDATE credentials SET username = ? WHERE user_id = {$user_id};");
+                            $stmt->bind_param("s", $_POST["username"]);
+                            if ($stmt === false) echo "Something bad happened :( <br>";
+                            $stmt->execute();
+                        }
+                    
+
+                        // b. password:
+                        if ($_POST["password"] != $creds["password"] &&
+                                $_POST["password"] == $_POST["password2"]) {
+                            // if new and both are equal:
+                            $stmt = $conn->prepare("UPDATE credentials SET password = ? WHERE user_id = {$user_id};");
+                            $stmt->bind_param("s", $_POST["password"]);
+                            if ($stmt === false) echo "Something bad happened :( <br>";
+                            $stmt->execute();
+                        }
+
+                    // refresh for clean update of the form    
+                    header("Refresh:0");
+                    }
+
+                    // 2. FORM PERSONAL INFO
+                    if (isset($_POST["submit_pers"])) {
+                        // a. First name:
+                        if ($_POST["fname"] != $pers_info["first_name"]) {
+                            $stmt = $conn->prepare("UPDATE personal_info SET first_name = ? WHERE user_id = {$user_id};");
+                            $stmt->bind_param("s", $_POST["fname"]);
+                            if ($stmt === false) echo "Something bad happened :( <br>";
+                            $stmt->execute();
+                        }
+
+                        // b. Last name:
+                        if ($_POST["lname"] != $pers_info["last_name"]) {
+                            $stmt = $conn->prepare("UPDATE personal_info SET last_name = ? WHERE user_id = {$user_id};");
+                            $stmt->bind_param("s", $_POST["lname"]);
+                            if ($stmt === false) echo "Something bad happened :( <br>";
+                            $stmt->execute();
+                        }
+
+                        // c. Age
+                        if ($_POST["age"] != $pers_info["age"]) {
+                            $stmt = $conn->prepare("UPDATE personal_info SET age = ? WHERE user_id = {$user_id};");
+                            $stmt->bind_param("i", $_POST["age"]);
+                            if ($stmt === false) echo "Something bad happened :( <br>";
+                            $stmt->execute();
+                        }
+                        
+                        // d. County
+                        if ($_POST["county"] != $pers_info["county"]) {
+                            //if ($_POST["county"] == "") $_POST["county"] = null;
+                            $stmt = $conn->prepare("UPDATE personal_info SET county = ? WHERE user_id = {$user_id};");
+                            $stmt->bind_param("s", $_POST["county"]);
+                            if ($stmt === false) echo "Something bad happened :( <br>";
+                            $stmt->execute();
+                        }
+
+                        // e. nationality
+                        if ($_POST["nationality"] != $pers_info["nationality"]) {
+                            $stmt = $conn->prepare("UPDATE personal_info SET nationality = ? WHERE user_id = {$user_id};");
+                            $stmt->bind_param("s", $_POST["nationality"]);
+                            if ($stmt === false) echo "Something bad happened :( <br>";
+                            $stmt->execute();
+                        }
+
+                        // f. gender
+                        if ($_POST["gender"] != $pers_info["gender"]) {
+                            $stmt = $conn->prepare("UPDATE personal_info SET gender = ? WHERE user_id = {$user_id};");
+                            $stmt->bind_param("s", $_POST["gender"]);
+                            if ($stmt === false) echo "Something bad happened :( <br>";
+                            $stmt->execute();
+                        }
+
+                        // g. bio (would be too expensive to compare, just refresh)
+                        $stmt = $conn->prepare("UPDATE personal_info SET bio = ? WHERE user_id = {$user_id};");
+                        $stmt->bind_param("s", $_POST["bio"]);
+                        if ($stmt === false) echo "Something bad happened :( <br>";
+                        $stmt->execute();
+                        
+
+                    // Refresh page
+                    header("Refresh:0");
+                    }
+
+                    // 3. FORM ACADEMIC INFO
+                    if (isset($_POST["submit_acad"])) {
+                        // a. course:
+                        if ($_POST["course"] != $uni["course"]) {
+                            $stmt = $conn->prepare("UPDATE academic_info SET course = ? WHERE user_id = {$user_id};");
+                            $stmt->bind_param("s", $_POST["course"]);
+                            if ($stmt === false) echo "Something bad happened :( <br>";
+                            $stmt->execute();
+                        }
+                        
+                        // b. year
+                        if ($_POST["year"] != $uni["c_year"]) {
+                            $stmt = $conn->prepare("UPDATE academic_info SET c_year = ? WHERE user_id = {$user_id};");
+                            $stmt->bind_param("i", $_POST["year"]);
+                            if ($stmt === false) echo "Something bad happened :( <br>";
+                            $stmt->execute();
+                        }
+
+                        header("Refresh:0");
+                    }
+
+                    // 4. FORM INTERESTS
+                    if (isset($_POST["submit_int"])) {
+                        $interests = array("drink", "smoke", "food_lifestyle", "food_display", 
+                            "personality", "personality_display", "sexuality", "sexuality_display", 
+                            "interest1", "inserest2", "interest3", "interest4", "interest5");
+                        // TODO: DISPLAY BOX NOW WORKING
+                        foreach($interests as $val) {
+                            if ($_POST[$val] != $uni[$val]) {
+                                $stmt = $conn->prepare("UPDATE interests SET {$val} = ? WHERE user_id = {$user_id};");
+                                $stmt->bind_param("s", $_POST[$val]);
+                                if ($stmt === false) echo "Something bad happened :( <br>";
+                                $stmt->execute();
+                            }
+                        }
+
+                        header("Refresh:0");
+                    }
+                    
+                ?>
+
+
                 <form name="interests" action="" method="post" autocomplete="off">
                     <fieldset><legend>Interests</legend><br>
                     <?php
                         include "user_queries.php";
 
+                        
                         echo '<label for="drink">Drinking habits: </label>';
                         echo '<select name="drink">';
                         echo '<option value="'.$ints["drink"].'" selected>'.$ints["drink"].'</option>';
