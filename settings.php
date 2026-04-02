@@ -85,14 +85,14 @@
                     <?php
                         include "user_queries.php";
 
-                        echo '<label for="fname">First Name: </label>';
-                        echo '<input type="text" name="fname" pattern="[A-Za-z]{2,30}" maxlength="30" 
+                        echo '<label for="first_name">First Name: </label>';
+                        echo '<input type="text" name="first_name" pattern="[A-Za-z]{2,30}" maxlength="30" 
                                 size="30" title="Write your first name, between 2 and 30 characters"
                                 value="'.$pers_info["first_name"].'">';
                         echo '<br><br>';
 
-                        echo '<label for="lname">Last name: </label>';
-                        echo '<input type="text" name="lname" pattern="[A-Za-z]{2,30}" maxlength="30" 
+                        echo '<label for="last_name">Last name: </label>';
+                        echo '<input type="text" name="last_name" pattern="[A-Za-z]{2,30}" maxlength="30" 
                                 size="30" title="Write your last name, between 2 and 30 characters"
                                 value="'.$pers_info["last_name"].'">';
                         echo '<br><br>';
@@ -152,8 +152,8 @@
                                 value="'.$uni["course"].'">';
                         echo '<br><br>';
 
-                        echo '<label for="year">Year: </label>';
-                        echo '<input type="text" name="year" pattern="[1-9]" maxlength="1" size="5" 
+                        echo '<label for="c_year">Year: </label>';
+                        echo '<input type="text" name="c_year" pattern="[1-9]" maxlength="1" size="5" 
                                 title="Write your course year, between 1 and 9"
                                 value="'.$uni["c_year"].'">';
                         echo '<br><br>';
@@ -195,23 +195,18 @@
 
                     // 2. FORM PERSONAL INFO
                     if (isset($_POST["submit_pers"])) {
-                        // a. First name:
-                        if ($_POST["fname"] != $pers_info["first_name"]) {
-                            $stmt = $conn->prepare("UPDATE personal_info SET first_name = ? WHERE user_id = {$user_id};");
-                            $stmt->bind_param("s", $_POST["fname"]);
-                            if ($stmt === false) echo "Something bad happened :( <br>";
-                            $stmt->execute();
+                        $p_info = array("first_name", "last_name", "county", "nationality", "gender", "bio");
+                        
+                        foreach($p_info as $val) {
+                            if ($_POST[$val] != $pers_info[$val]) {
+                                $stmt = $conn->prepare("UPDATE personal_info SET {$val} = ? WHERE user_id = {$user_id};");
+                                $stmt->bind_param("s", $_POST[$val]);
+                                if ($stmt === false) echo "Something bad happened :( <br>";
+                                $stmt->execute();
+                            }
                         }
 
-                        // b. Last name:
-                        if ($_POST["lname"] != $pers_info["last_name"]) {
-                            $stmt = $conn->prepare("UPDATE personal_info SET last_name = ? WHERE user_id = {$user_id};");
-                            $stmt->bind_param("s", $_POST["lname"]);
-                            if ($stmt === false) echo "Something bad happened :( <br>";
-                            $stmt->execute();
-                        }
-
-                        // c. Age
+                        // Age (becase it's an int)
                         if ($_POST["age"] != $pers_info["age"]) {
                             $stmt = $conn->prepare("UPDATE personal_info SET age = ? WHERE user_id = {$user_id};");
                             $stmt->bind_param("i", $_POST["age"]);
@@ -219,38 +214,6 @@
                             $stmt->execute();
                         }
                         
-                        // d. County
-                        if ($_POST["county"] != $pers_info["county"]) {
-                            //if ($_POST["county"] == "") $_POST["county"] = null;
-                            $stmt = $conn->prepare("UPDATE personal_info SET county = ? WHERE user_id = {$user_id};");
-                            $stmt->bind_param("s", $_POST["county"]);
-                            if ($stmt === false) echo "Something bad happened :( <br>";
-                            $stmt->execute();
-                        }
-
-                        // e. nationality
-                        if ($_POST["nationality"] != $pers_info["nationality"]) {
-                            $stmt = $conn->prepare("UPDATE personal_info SET nationality = ? WHERE user_id = {$user_id};");
-                            $stmt->bind_param("s", $_POST["nationality"]);
-                            if ($stmt === false) echo "Something bad happened :( <br>";
-                            $stmt->execute();
-                        }
-
-                        // f. gender
-                        if ($_POST["gender"] != $pers_info["gender"]) {
-                            $stmt = $conn->prepare("UPDATE personal_info SET gender = ? WHERE user_id = {$user_id};");
-                            $stmt->bind_param("s", $_POST["gender"]);
-                            if ($stmt === false) echo "Something bad happened :( <br>";
-                            $stmt->execute();
-                        }
-
-                        // g. bio (would be too expensive to compare, just refresh)
-                        $stmt = $conn->prepare("UPDATE personal_info SET bio = ? WHERE user_id = {$user_id};");
-                        $stmt->bind_param("s", $_POST["bio"]);
-                        if ($stmt === false) echo "Something bad happened :( <br>";
-                        $stmt->execute();
-                        
-
                     // Refresh page
                     header("Refresh:0");
                     }
@@ -278,14 +241,30 @@
 
                     // 4. FORM INTERESTS
                     if (isset($_POST["submit_int"])) {
-                        $interests = array("drink", "smoke", "food_lifestyle", "food_display", 
-                            "personality", "personality_display", "sexuality", "sexuality_display", 
-                            "interest1", "inserest2", "interest3", "interest4", "interest5");
-                        // TODO: DISPLAY BOX NOW WORKING
+                        $interests = array("drink", "smoke", "food_lifestyle", "personality", 
+                            "sexuality", "interest1", "interest2", "interest3", 
+                            "interest4", "interest5");
+
                         foreach($interests as $val) {
-                            if ($_POST[$val] != $uni[$val]) {
+                            if ($_POST[$val] != $ints[$val]) {
                                 $stmt = $conn->prepare("UPDATE interests SET {$val} = ? WHERE user_id = {$user_id};");
                                 $stmt->bind_param("s", $_POST[$val]);
+                                if ($stmt === false) echo "Something bad happened :( <br>";
+                                $stmt->execute();
+                            }
+                        }
+
+                        $display = array("food_display", "personality_display", "sexuality_display");
+                        foreach($display as $val) {
+                            if (!isset($_POST[$val])) { // see if box is unchcked
+                                echo $val." unchecked<br>";
+                                // if unchecked: (it doesn't exist in post)
+                                $bit = 0; // bit set to 0
+                            } else $bit = 1; // bit set to 1
+                            // now update the set:
+                            if ($bit != $ints[$val]) { // update if different
+                                $stmt = $conn->prepare("UPDATE interests SET {$val} = ? WHERE user_id = {$user_id};");
+                                $stmt->bind_param("i", $bit);
                                 if ($stmt === false) echo "Something bad happened :( <br>";
                                 $stmt->execute();
                             }
@@ -323,8 +302,8 @@
                         echo '</select>';
                         echo '<br><br>';
 
-                        echo '<label for="food">Food Lifestyle: </label>';
-                        echo '<select name="food">';
+                        echo '<label for="food_lifestyle">Food Lifestyle: </label>';
+                        echo '<select name="food_lifestyle">';
                         echo '<option value="'.$ints["food_lifestyle"].'" selected>'.$ints["food_lifestyle"].'</option>';
                         echo '<option value="normal">Normal</option>';
                         echo '<option value="vegetarian">Vegetarian</option>';
@@ -333,8 +312,8 @@
                         echo '<option value="other">Other</option>';
                         echo '</select>';
                         echo '<br>';
-                        echo '<label for="disp_lifestyle">Display: </label>';
-                        echo '<input type="checkbox" name="disp_lifestyle">';
+                        echo '<label for="food_display">Display: </label>';
+                        echo '<input type="checkbox" checked name="food_display" value="true">';
                         echo '<br><br>';
 
                         echo '<label for="personality">Personality: </label>';
@@ -345,8 +324,8 @@
                         echo '<option value="ambivert">Ambivert</option>';
                         echo '</select>';
                         echo '<br>';
-                        echo '<label for="disp_personality">Display: </label>';
-                        echo '<input type="checkbox" name="disp_personality">';
+                        echo '<label for="personality_display">Display: </label>';
+                        echo '<input type="checkbox" checked name="personality_display" value="true">';
                         echo '<br><br>';
 
                         echo '<label for="sexuality">Sexuality: </label>';
@@ -361,8 +340,8 @@
                         echo '<option value="other">Other</option>';
                         echo '</select>';
                         echo '<br>';
-                        echo '<label for="disp_sexuality">Display: </label>';
-                        echo '<input type="checkbox" name="disp_sexuality">';
+                        echo '<label for="sexuality_display">Display: </label>';
+                        echo '<input type="checkbox" checked name="sexuality_display" value="true">';
                         echo '<br><br>';
 
                         // Section for interest, repeated five times
