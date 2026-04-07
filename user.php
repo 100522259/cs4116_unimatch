@@ -14,9 +14,26 @@
         <div class="container">
 
             <!--vertical container for page index-->
-            <?php
-                include "sidebar.php";
-            ?>
+            <div class="index">
+                <div class="logo">
+                    <img class="logo" src="images\logo5.png">
+                </div>
+                <div class="idx_icons">
+                    <?php
+                    $icons = array("home", "dates", "friends","chat",
+                                    "user","settings","admin");
+                    foreach ($icons as $icon) {
+                        echo "<a href=\"{$icon}.php\">";    
+                        echo "<div class=\"pages\">";
+                        echo "<div class=\"icons\"><img src=\"images\\{$icon}.png\"></div>";
+                        echo "<div class=\"icons\"><p>{$icon}</p></div>";
+                        echo "</div></a>";
+                    }
+                    ?>
+                
+                </div>
+            </div>
+            
             <!--Container for the rest of the page-->
             <div class="main">
                 <div class="main_info">               
