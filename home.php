@@ -44,15 +44,15 @@
                     <div class="search">
                         <!--The following form will allow search via username or name
                             ONLY USERNAME FOR NOW!! -->
-                        <form name="search" action="home.php" method="post" autocomplete="on">
-                            <input type="text" name="uname" pattern="[A-Za-z0-9]" maxlength="20"
+                        <form name="search" action="search.php" method="post" autocomplete="on">
+                            <input type="text" name="uname" pattern="[A-Za-z0-9]{1,20}" maxlength="20"
                                 size="50" title="Write target username" placeholder="Search users...">
                             <input type="submit" name="search" value="Search">
                         </form>
                     </div>
                     <div class="filters">
                         Advanced Filters
-                        <form name="filters" action="home.php" method="post" autocomplete="on">
+                        <form name="filters" action="search.php" method="post" autocomplete="on">
                             <?php
                             // 1. gender
                             echo '<select name="gender">';
@@ -64,16 +64,16 @@
                             echo '</select>';
                             
                             // 2. min age
-                            echo '<select name="min age">';
-                            echo '<option value="min age" selected disabled>Min Age</option>';
+                            echo '<select name="min_age">';
+                            echo '<option value="min_age" selected disabled>Min Age</option>';
                             for ($i=18; $i<=30; $i++) {
                                 echo '<option value="'.$i.'">'.$i.'</option>';
                             }
                             echo '</select>';
 
                             // 3. max age
-                            echo '<select name="max age">';
-                            echo '<option value="max age" selected disabled>Max Age</option>';
+                            echo '<select name="max_age">';
+                            echo '<option value="max_age" selected disabled>Max Age</option>';
                             for ($i=18; $i<=30; $i++) {
                                 echo '<option value="'.$i.'">'.$i.'</option>';
                             }
@@ -154,7 +154,7 @@
                                     echo $f_user["interest2"];
                                 }
                                 echo '</p>';
-                                echo '</div>';
+                                echo '</div><br><br>';
                             }
 
                             ?>
