@@ -33,7 +33,7 @@ $user = $result->fetchArray(SQLITE3_ASSOC);
 // verify password hash used at registration
 if (!$user || !password_verify($password, $user['password'])) {
     header('Location: html/login.html?error=' . urlencode('Invalide email or password.'));
-    exit
+    exit;
 }
 
 // fetch admin flag from personal_info

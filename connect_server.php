@@ -15,5 +15,5 @@ if ($conn->connect_error) {
 
 //echo "Connected successfully<br>";
 
-// FOllowing user_id is for testing, a session would be used with the stored id
+// Following user_id is for testing, a session would be used with the stored id
 $user_id = 200000004;

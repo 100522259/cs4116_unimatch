@@ -330,6 +330,10 @@ table.scroll thead, table.scroll tbody tr {
 
 
 
+/* HOME PAGE */
+.possible-match {
+    display: flex;
+}
 
 
 

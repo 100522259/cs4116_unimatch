@@ -26,7 +26,6 @@ INSERT INTO personal_info VALUES (200000008,'Mia','Fitz',22,'Waterford','Irish',
 INSERT INTO personal_info VALUES (200000009,'Leo','Quinn',25,'Meath','Irish','Male','Reading & writing',0);
 INSERT INTO personal_info VALUES (200000010,'Admin','User',30,'Limerick','Irish','Other','System administrator',1);
 
-
 --3. academic info
 INSERT INTO academic_info VALUES (200000001,'Computer Science',3);
 INSERT INTO academic_info VALUES (200000002,'Business',2);
@@ -63,7 +62,6 @@ INSERT INTO images VALUES (200000008,'p8.jpg','1.jpg',NULL,NULL,NULL,NULL,1);
 INSERT INTO images VALUES (200000009,'p9.jpg','1.jpg','2.jpg',NULL,NULL,NULL,2);
 INSERT INTO images VALUES (200000010,'admin.jpg',NULL,NULL,NULL,NULL,NULL,0);
 
-
 --6. Blocked
 INSERT INTO blocked VALUES (200000001,200000002);
 INSERT INTO blocked VALUES (200000003,2 00000004);
@@ -96,3 +94,9 @@ INSERT INTO messages (from_user_id,to_user_id,body) VALUES (200000003,200000004,
 INSERT INTO messages (from_user_id,to_user_id,body) VALUES (200000004,200000003,'Hey there!');
 
 
+
+INSERT INTO credentials VALUES (200000011, '200000011@studentmail.ul.ie', 'ell77', 'pass1234');
+INSERT INTO personal_info VALUES (200000011, 'Elliot', 'Sanchez',21,'','Spanish','Non-Binary','Love writing and good art',0);
+INSERT INTO academic_info VALUES (200000011, 'Computer Science',3);
+INSERT INTO interests VALUES (200000011,'No',0,'No',0,'Normal',1,'Introvert',1,'lesbian',1,'Gaming','Music','Art','Technology','Travel');
+INSERT INTO images VALUES (200000011,'p1.jpg','1.jpg','2.jpg','3.jpg',null,null,3);

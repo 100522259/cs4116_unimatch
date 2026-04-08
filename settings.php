@@ -120,12 +120,12 @@
                         echo '<br><br>';
 
                         echo '<label for="gender">Gender: </label>';
-                        echo '<select id="gender" name="gender">';
+                        echo '<select name="gender" name="gender">';
                         echo '<option value="'.$pers_info["gender"].'" selected>'.$pers_info["gender"].'</option>';
                         echo '<option value="male">Male</option>';
                         echo '<option value="female">Female</option>';
                         echo '<option value="non-binary">Non-binary</option>';
-                        echo '<option value="prefer-not-to-say">Prefer not to say</option>';
+                        echo '<option value="Other">Other</option>';
                         echo '</select>';
                         echo '<br><br>';
 
