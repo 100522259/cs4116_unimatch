@@ -1,7 +1,7 @@
 <?php
 
 session_start();
-require_once __DIR__ . '/db_connection.php';
+include "connect_server.php"; // provides $conn (mysqli)
 
 // only process POST requests
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -10,47 +10,53 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 }
 
 // collect input
-$email = trim($_POST['email'] ??'');
-$password = $_POST['password'] ??'';
+$email    = trim($_POST['email']    ?? '');
+$password =      $_POST['password'] ?? '';
 
 // presence check
 if (empty($email) || empty($password)) {
-    header('Location: html/login.html?error' . urlencode('please fill in all fields.'));
+    header('Location: html/login.html?error=' . urlencode('Please fill in all fields.'));
     exit;
 }
 
-// look up userin credentials table
-$stmt = $db->prepare(
+// look up user in credentials table
+$stmt = $conn->prepare(
     'SELECT user_id, username, password
-        FROM credentials
-        WHERE email = :email
-        LIMIT 1'
+       FROM credentials
+      WHERE email = ?
+      LIMIT 1'
 );
-$stmt->bindValue(':email', $email, SQLITE3_TEXT);
-$result = $stmt->execute();
-$user = $result->fetchArray(SQLITE3_ASSOC);
+$stmt->bind_param('s', $email);
+$stmt->execute();
+$result = $stmt->get_result();
+$user   = $result->fetch_assoc();
+$stmt->close();
 
-// verify password hash used at registration
+// verify password hash (password_hash used at registration)
 if (!$user || !password_verify($password, $user['password'])) {
-    header('Location: html/login.html?error=' . urlencode('Invalide email or password.'));
+    header('Location: html/login.html?error=' . urlencode('Invalid email or password.'));
     exit;
 }
 
 // fetch admin flag from personal_info
-$stmt2 = $db->prepare(
+$stmt2 = $conn->prepare(
     'SELECT admin
-        FROM personal_info
-        WHERE user_id = :uid
-        LIMIT 1'
+       FROM personal_info
+      WHERE user_id = ?
+      LIMIT 1'
 );
-$stmt2->bindValue(':uid', (int)$user['user_id'], SQLITE3_INTEGER);
-$result2 = $stmt2->execute();
-$info = $result2->fetchArray(SQLITE3_ASSOC);
+$stmt2->bind_param('i', $user['user_id']);
+$stmt2->execute();
+$result2 = $stmt2->get_result();
+$info    = $result2->fetch_assoc();
+$stmt2->close();
 
-// store session variable
-$_SESSION['user_id'] = (int)$user['user_id'];
+$conn->close();
+
+// store session variables
+$_SESSION['user_id']  = (int)$user['user_id'];
 $_SESSION['username'] = $user['username'];
-$_SESSION['email'] = $email;
+$_SESSION['email']    = $email;
 $_SESSION['is_admin'] = (bool)($info['admin'] ?? false);
 
 // redirect to home
