@@ -12,7 +12,7 @@ $images = $result->fetch_assoc();
 $sql = "select * from personal_info where user_id={$user_id};";
 $result = $conn->query($sql);
 $pers_info = $result->fetch_assoc();
-$admin = $creds["administrator"];
+$admin = $pers_info["administrator"];
 
 // 3. Interests:
 $sql = "select * from interests where user_id={$user_id};";
@@ -29,7 +29,6 @@ $sql = "select * from credentials where user_id={$user_id};";
 $result = $conn->query($sql);
 $creds = $result->fetch_assoc();
 
-$conn->close();
 
 
 

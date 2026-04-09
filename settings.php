@@ -37,6 +37,7 @@
                         echo "<div class=\"icons\"><p>{$icon}</p></div>";
                         echo "</div></a>";
                     }
+                    
                     if ($admin) {
                         echo "<a href=\"admin.php\">";    
                         echo "<div class=\"pages\">";
@@ -281,8 +282,8 @@
                     
                     // a. Check that username is changed
                     if ($_POST["username"] != $creds["username"]) {
-                        $stmt = $conn->prepare("UPDATE credentials SET username = ? WHERE user_id = {$user_id};");
-                        $stmt->bind_param("s", $_POST["username"]);
+                        $stmt = $conn->prepare("UPDATE credentials SET username = ? WHERE user_id = ?;");
+                        $stmt->bind_param("si", $_POST["username"], $user_id);
                         if ($stmt === false) echo "Something bad happened :( <br>";
                         $stmt->execute();
                     }
