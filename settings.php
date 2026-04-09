@@ -274,7 +274,6 @@
                 </form><br><br>
 
                 <?php // here we process the forms:
-                include "connect_server.php";
                 include "user_queries.php";
                 
                 // 1. FORM CREDENTIALS
