@@ -28,7 +28,7 @@
                     <?php
                     include "user_queries.php";
 
-                    $icons = array("home", "dates","chat",
+                    $icons = array("home", "matches","chat",
                                     "user","settings");
                     foreach ($icons as $icon) {
                         echo "<a href=\"{$icon}.php\">";    
@@ -171,120 +171,6 @@
                     <input type="submit" name="submit_acad" value="Save Changes">
                 </form><br><br>
 
-
-                <?php // here we process the forms:
-                    include "connect_server.php";
-                    include "user_queries.php";
-                    
-                    // 1. FORM CREDENTIALS
-                    if(isset($_POST["submit_cred"])) {
-
-                        // a. Check that username is changed
-                        if ($_POST["username"] != $creds["username"]) {
-                            $stmt = $conn->prepare("UPDATE credentials SET username = ? WHERE user_id = {$user_id};");
-                            $stmt->bind_param("s", $_POST["username"]);
-                            if ($stmt === false) echo "Something bad happened :( <br>";
-                            $stmt->execute();
-                        }
-                    
-
-                        // b. password:
-                        if ($_POST["password"] != $creds["password"] &&
-                                $_POST["password"] == $_POST["password2"]) {
-                            // if new and both are equal:
-                            $stmt = $conn->prepare("UPDATE credentials SET password = ? WHERE user_id = {$user_id};");
-                            $stmt->bind_param("s", $_POST["password"]);
-                            if ($stmt === false) echo "Something bad happened :( <br>";
-                            $stmt->execute();
-                        }
-
-                    // refresh for clean update of the form    
-                    header("Refresh:0");
-                    }
-
-                    // 2. FORM PERSONAL INFO
-                    if (isset($_POST["submit_pers"])) {
-                        $p_info = array("first_name", "last_name", "county", "nationality", "gender", "bio");
-                        
-                        foreach($p_info as $val) {
-                            if ($_POST[$val] != $pers_info[$val]) {
-                                $stmt = $conn->prepare("UPDATE personal_info SET {$val} = ? WHERE user_id = {$user_id};");
-                                $stmt->bind_param("s", $_POST[$val]);
-                                if ($stmt === false) echo "Something bad happened :( <br>";
-                                $stmt->execute();
-                            }
-                        }
-
-                        // Age (becase it's an int)
-                        if ($_POST["age"] != $pers_info["age"]) {
-                            $stmt = $conn->prepare("UPDATE personal_info SET age = ? WHERE user_id = {$user_id};");
-                            $stmt->bind_param("i", $_POST["age"]);
-                            if ($stmt === false) echo "Something bad happened :( <br>";
-                            $stmt->execute();
-                        }
-                        
-                    // Refresh page
-                    header("Refresh:0");
-                    }
-
-                    // 3. FORM ACADEMIC INFO
-                    if (isset($_POST["submit_acad"])) {
-                        // a. course:
-                        if ($_POST["course"] != $uni["course"]) {
-                            $stmt = $conn->prepare("UPDATE academic_info SET course = ? WHERE user_id = {$user_id};");
-                            $stmt->bind_param("s", $_POST["course"]);
-                            if ($stmt === false) echo "Something bad happened :( <br>";
-                            $stmt->execute();
-                        }
-                        
-                        // b. year
-                        if ($_POST["year"] != $uni["c_year"]) {
-                            $stmt = $conn->prepare("UPDATE academic_info SET c_year = ? WHERE user_id = {$user_id};");
-                            $stmt->bind_param("i", $_POST["year"]);
-                            if ($stmt === false) echo "Something bad happened :( <br>";
-                            $stmt->execute();
-                        }
-
-                        header("Refresh:0");
-                    }
-
-                    // 4. FORM INTERESTS
-                    if (isset($_POST["submit_int"])) {
-                        $interests = array("drink", "smoke", "food_lifestyle", "personality", 
-                            "sexuality", "interest1", "interest2", "interest3", 
-                            "interest4", "interest5");
-
-                        foreach($interests as $val) {
-                            if ($_POST[$val] != $ints[$val]) {
-                                $stmt = $conn->prepare("UPDATE interests SET {$val} = ? WHERE user_id = {$user_id};");
-                                $stmt->bind_param("s", $_POST[$val]);
-                                if ($stmt === false) echo "Something bad happened :( <br>";
-                                $stmt->execute();
-                            }
-                        }
-
-                        $display = array("food_display", "personality_display", "sexuality_display");
-                        foreach($display as $val) {
-                            if (!isset($_POST[$val])) { // see if box is unchcked
-                                echo $val." unchecked<br>";
-                                // if unchecked: (it doesn't exist in post)
-                                $bit = 0; // bit set to 0
-                            } else $bit = 1; // bit set to 1
-                            // now update the set:
-                            if ($bit != $ints[$val]) { // update if different
-                                $stmt = $conn->prepare("UPDATE interests SET {$val} = ? WHERE user_id = {$user_id};");
-                                $stmt->bind_param("i", $bit);
-                                if ($stmt === false) echo "Something bad happened :( <br>";
-                                $stmt->execute();
-                            }
-                        }
-
-                        header("Refresh:0");
-                    }
-                    
-                ?>
-
-
                 <form name="interests" action="" method="post" autocomplete="off">
                     <fieldset><legend>Interests</legend><br>
                     <?php
@@ -380,15 +266,129 @@
                     
                         for ($i=1; $i<6; $i++) {
                             echo '<label for="image'.$i.'">Upload Image '.$i.': </label>';
-                            echo '<input type="file" name="image'.$i.'"><br><br>';
+                            echo '<input type="file" name="image'.$i.'">';
+                            echo '<input type="submit" name="rmv'.$i.'" value="Remove image"><br><br>';
                         }
                     ?>
                     </fieldset>
                 </form><br><br>
+
+                <?php // here we process the forms:
+                include "connect_server.php";
+                include "user_queries.php";
+                
+                // 1. FORM CREDENTIALS
+                if(isset($_POST["submit_cred"])) {
+                    
+                    // a. Check that username is changed
+                    if ($_POST["username"] != $creds["username"]) {
+                        $stmt = $conn->prepare("UPDATE credentials SET username = ? WHERE user_id = {$user_id};");
+                        $stmt->bind_param("s", $_POST["username"]);
+                        if ($stmt === false) echo "Something bad happened :( <br>";
+                        $stmt->execute();
+                    }
+                
+
+                    // b. password:
+                    if ($_POST["password"] != $creds["password"] &&
+                            $_POST["password"] == $_POST["password2"]) {
+                        // if new and both are equal:
+                        $stmt = $conn->prepare("UPDATE credentials SET password = ? WHERE user_id = {$user_id};");
+                        $stmt->bind_param("s", $_POST["password"]);
+                        if ($stmt === false) echo "Something bad happened :( <br>";
+                        $stmt->execute();
+                    }
+
+                // refresh for clean update of the form    
+                header("Refresh:0");
+                }
+
+                // 2. FORM PERSONAL INFO
+                if (isset($_POST["submit_pers"])) {
+                    $p_info = array("first_name", "last_name", "county", "nationality", "gender", "bio");
+                    
+                    foreach($p_info as $val) {
+                        if ($_POST[$val] != $pers_info[$val]) {
+                            $stmt = $conn->prepare("UPDATE personal_info SET {$val} = ? WHERE user_id = {$user_id};");
+                            $stmt->bind_param("s", $_POST[$val]);
+                            if ($stmt === false) echo "Something bad happened :( <br>";
+                            $stmt->execute();
+                        }
+                    }
+
+                    // Age (becase it's an int)
+                    if ($_POST["age"] != $pers_info["age"]) {
+                        $stmt = $conn->prepare("UPDATE personal_info SET age = ? WHERE user_id = {$user_id};");
+                        $stmt->bind_param("i", $_POST["age"]);
+                        if ($stmt === false) echo "Something bad happened :( <br>";
+                        $stmt->execute();
+                    }
+                    
+                // Refresh page
+                header("Refresh:0");
+                }
+
+                // 3. FORM ACADEMIC INFO
+                if (isset($_POST["submit_acad"])) {
+                    // a. course:
+                    if ($_POST["course"] != $uni["course"]) {
+                        $stmt = $conn->prepare("UPDATE academic_info SET course = ? WHERE user_id = {$user_id};");
+                        $stmt->bind_param("s", $_POST["course"]);
+                        if ($stmt === false) echo "Something bad happened :( <br>";
+                        $stmt->execute();
+                    }
+                    
+                    // b. year
+                    if ($_POST["year"] != $uni["c_year"]) {
+                        $stmt = $conn->prepare("UPDATE academic_info SET c_year = ? WHERE user_id = {$user_id};");
+                        $stmt->bind_param("i", $_POST["year"]);
+                        if ($stmt === false) echo "Something bad happened :( <br>";
+                        $stmt->execute();
+                    }
+
+                    header("Refresh:0");
+                }
+
+                // 4. FORM INTERESTS
+                if (isset($_POST["submit_int"])) {
+                    $interests = array("drink", "smoke", "food_lifestyle", "personality", 
+                        "sexuality", "interest1", "interest2", "interest3", 
+                        "interest4", "interest5");
+
+                    foreach($interests as $val) {
+                        if ($_POST[$val] != $ints[$val]) {
+                            $stmt = $conn->prepare("UPDATE interests SET {$val} = ? WHERE user_id = {$user_id};");
+                            $stmt->bind_param("s", $_POST[$val]);
+                            if ($stmt === false) echo "Something bad happened :( <br>";
+                            $stmt->execute();
+                        }
+                    }
+
+                    $display = array("food_display", "personality_display", "sexuality_display");
+                    foreach($display as $val) {
+                        if (!isset($_POST[$val])) { // see if box is unchcked
+                            echo $val." unchecked<br>";
+                            // if unchecked: (it doesn't exist in post)
+                            $bit = 0; // bit set to 0
+                        } else $bit = 1; // bit set to 1
+                        // now update the set:
+                        if ($bit != $ints[$val]) { // update if different
+                            $stmt = $conn->prepare("UPDATE interests SET {$val} = ? WHERE user_id = {$user_id};");
+                            $stmt->bind_param("i", $bit);
+                            if ($stmt === false) echo "Something bad happened :( <br>";
+                            $stmt->execute();
+                        }
+                    }
+
+                    header("Refresh:0");
+                } 
+                ?>
             </div>
         </div>
+
         
-        
+            
+
         <script>
             // Makes password visible on toggle -- taken from w3schools tutorial
             function toggleVisib() {
