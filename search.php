@@ -20,8 +20,6 @@
                 </div>
                 <div class="idx_icons">
                     <?php
-
-                    use function Dom\import_simplexml;
                     $icons = array("home", "dates", "friends","chat",
                                     "user","settings","admin");
                     foreach ($icons as $icon) {
@@ -48,7 +46,7 @@
                             ONLY USERNAME FOR NOW!! -->
                         <form name="search" action="search.php" method="post" autocomplete="on">
                             <input type="text" name="uname" pattern="[A-Za-z0-9]{1,20}" maxlength="20"
-                                size="50" title="Write target username" placeholder="Search users...">
+                                size="50" title="Write target username" required placeholder="Search users...">
                             <input type="submit" name="search" value="Search">
                         </form>
                     </div>
@@ -66,6 +64,7 @@
                             echo '</select>';
                             
                             // 2. min age
+                            echo '<label>Age range</label>';
                             echo '<select name="min_age">';
                             echo '<option value="min_age" selected disabled>Min Age</option>';
                             for ($i=18; $i<=30; $i++) {
@@ -91,6 +90,7 @@
                             $interest_ops = array("Sports", "Music", "Gaming", "Reading",
                             "Travel", "Cooking", "Fitness", "Photography", "Art", "Technology",
                             "Movies", "Fashion", "Nature", "Dance", "Writing");
+                            echo '<label>Interests</label>';
                             for ($i=1; $i<3; $i++) {
                                 echo '<select name="interest'.$i.'">';
                                 echo '<option value="interest '.$i.'" selected disabled>Interest '.$i.'</option>';
@@ -117,54 +117,52 @@
                         if (isset($_POST["search"])) {
                             echo "via username...<br><br>";
                             // check that the submitted value is not empty
-                            if ($_POST["uname"] == "") {
-                                echo '<p>Uh-oh... Seems like you didn\'t type anything...<p>';
+                            
+                            // Use normal sql string, a select doesn't have injection risk
+                            $sql = "SELECT user_id FROM credentials where
+                                LOWER(username) LIKE LOWER('%{$_POST["uname"]}%');";
+
+                            $result = $conn->query($sql);
+                            $ids = [];
+
+                            while ($row = $result->fetch_assoc()) {
+                                $ids[] = $row["user_id"];
+                            }
+                            
+                            if (empty($ids)) { // list empty
+                                echo '<p>Uh-oh... Couldn\'t fine any matches...<p>';
                             } else {
-                                // Use normal sql string, a select doesn't have injection risk
-                                $sql = "SELECT user_id FROM credentials where
-                                    LOWER(username) LIKE LOWER('%{$_POST["uname"]}%');";
-
-                                $result = $conn->query($sql);
-                                $ids = [];
-
-                                while ($row = $result->fetch_assoc()) {
-                                    $ids[] = $row["user_id"];
-                                }
+                                $ids_str = implode(",", $ids);
+                                //echo $ids_str;
                                 
-                                if (empty($ids)) { // list empty
-                                    echo '<p>Uh-oh... Couldn\'t fine any matches...<p>';
-                                } else {
-                                    $ids_str = implode(",", $ids);
-                                    //echo $ids_str;
-                                    
-                                    // We query user details to print out
-                                    $sql = "SELECT U.user_id, U.first_name, U.age, I.interest1, 
-                                        I.interest2, P.profile_pic FROM 
-                                        personal_info AS U
-                                        INNER JOIN interests AS I
-                                            ON U.user_id = I.user_id
-                                        INNER JOIN images as P
-                                        ON U.user_id = P.user_id
-                                        WHERE U.user_id IN ({$ids_str});";
-                                    
-                                    $us_result = $conn->query($sql);
+                                // We query user details to print out
+                                $sql = "SELECT U.user_id, U.first_name, U.age, I.interest1, 
+                                    I.interest2, P.profile_pic FROM 
+                                    personal_info AS U
+                                    INNER JOIN interests AS I
+                                        ON U.user_id = I.user_id
+                                    INNER JOIN images as P
+                                    ON U.user_id = P.user_id
+                                    WHERE U.user_id IN ({$ids_str});";
+                                
+                                $us_result = $conn->query($sql);
 
-                                    while ($usr = $us_result->fetch_assoc()) {
-                                        echo '<div class="user">';
-                                        echo '<img src="./images/small_pfp.png" alt="pfp"><br>'; // not real pfp stored, will work on that
-                                        echo '<p>'.$usr["first_name"].', '.$usr["age"].'</p>';
-                                        echo '<p>';
-                                        if ($usr["interest1"] != null) {
-                                            echo $usr["interest1"].' ';
-                                        }
-                                        if ($usr["interest2"] != null) {
-                                            echo ' - '.$usr["interest2"];
-                                        }
-                                        echo '</p>';
-                                        echo '</div><br><br>';
+                                while ($usr = $us_result->fetch_assoc()) {
+                                    echo '<div class="user">';
+                                    echo '<img src="./images/small_pfp.png" alt="pfp"><br>'; // not real pfp stored, will work on that
+                                    echo '<p>'.$usr["first_name"].', '.$usr["age"].'</p>';
+                                    echo '<p>';
+                                    if ($usr["interest1"] != null) {
+                                        echo $usr["interest1"].' ';
                                     }
+                                    if ($usr["interest2"] != null) {
+                                        echo ' - '.$usr["interest2"];
+                                    }
+                                    echo '</p>';
+                                    echo '</div><br><br>';
                                 }
-                            }   
+                            }
+                               
                         }
 
                         // B. Filter

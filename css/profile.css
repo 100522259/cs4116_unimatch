@@ -331,9 +331,48 @@ table.scroll thead, table.scroll tbody tr {
 
 
 /* HOME PAGE */
+.search {
+    width: 100%;
+    margin: 10px 0;
+}
+
+.filters {
+    width: 100%;
+}
+
+.f-container {
+    margin: 10px 0;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    gap: 5px;
+}
+
+.f-section {
+    flex: 1;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    gap: 5px;
+    width: 100%;
+}
+
+.filters form select, 
+.filters form input {
+    margin: 5px;
+    max-width: 200px;
+    width: stretch;
+}
+
+.filters form .submit {
+    width: 100px;
+}
+
 .possible-match {
     display: flex;
 }
+
 
 
 
