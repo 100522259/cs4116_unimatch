@@ -21,7 +21,7 @@
                 <div class="idx_icons">
                     <?php
 
-                    use function Dom\import_simplexml;
+                    
                     $icons = array("home", "dates", "friends","chat",
                                     "user","settings","admin");
                     foreach ($icons as $icon) {
