@@ -94,6 +94,19 @@ INSERT INTO messages (from_user_id,to_user_id,body) VALUES (200000003,200000004,
 INSERT INTO messages (from_user_id,to_user_id,body) VALUES (200000004,200000003,'Hey there!');
 
 
+--10. relationships
+INSERT INTO relationship(user_id1, user_id2, romantic, friendship, r_status, f_status, created_at) VALUES
+(200000001, 200000002, 1, 0, 1, 0, CURRENT_TIMESTAMP),
+(200000003, 200000004, 1, 1, 0, 1, CURRENT_TIMESTAMP),
+(200000005, 200000006, 0, 1, 0, 1, CURRENT_TIMESTAMP),
+(200000007, 200000008, 1, 0, 1, 0, CURRENT_TIMESTAMP),
+(200000009, 200000001, 0, 1, 0, 0, CURRENT_TIMESTAMP),
+(200000002, 200000006, 1, 1, 1, 0, CURRENT_TIMESTAMP),
+(200000003, 200000007, 0, 1, 0, 1, CURRENT_TIMESTAMP),
+(200000004, 200000008, 1, 1, 0, 0, CURRENT_TIMESTAMP),
+(200000005, 200000009, 0, 1, 0, 1, CURRENT_TIMESTAMP),
+(200000001, 200000010, 0, 1, 0, 1, CURRENT_TIMESTAMP);
+
 
 INSERT INTO credentials VALUES (200000011, '200000011@studentmail.ul.ie', 'ell77', 'pass1234');
 INSERT INTO personal_info VALUES (200000011, 'Elliot', 'Sanchez',21,'','Spanish','Non-Binary','Love writing and good art',0);

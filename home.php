@@ -130,8 +130,11 @@
                         <div class="match-display">
                             <!-- Approx two users displayed in a scrollable section-->
                             <?php
+                            session_start();
+
                             include "home_friends.php";
 
+                            $count = 0;
                             while ($f_user = $f_result->fetch_assoc()) {
                                 echo '<div class="user">';
                                 echo '<img src="./images/small_pfp.png" alt="pfp"><br>'; // not real pfp stored, will work on that
@@ -144,9 +147,16 @@
                                     echo $f_user["interest2"];
                                 }
                                 echo '</p>';
-                                echo '</div>';
-                            }
+                                // form for user to match
+                                echo '<form name="f_match'.$count.'" action="logic_fmatch.php" method="post">';
+                                echo '<input type="submit" name="f'.$count.'" value="Match">';
+                                echo '<input type="hidden" name="target_id" value="'.$f_user["user_id"].'">';
+                                echo '</form>';
+                                echo '</div><br>';
 
+                                $count++; // count number of friend matches
+                            }
+                            $_SESSION["location"] = "home.php"; // to go back to home or search page
                             ?>
                         </div>
                     </div>

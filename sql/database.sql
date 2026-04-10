@@ -1,11 +1,13 @@
 drop table interests;
+drop table messages;
 drop table academic_info;
 drop table personal_info;
-drop table credentials;
 drop table images;
 drop table blocked;
 drop table offense;
 drop table reports;
+drop table credentials;
+
 
 create table credentials (
     user_id number(9),
@@ -115,7 +117,7 @@ create table images (
 );
 
 CREATE TABLE messages (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    id INTEGER PRIMARY KEY AUTO_INCREMENT,
     from_user_id INTEGER NOT NULL,
     to_user_id INTEGER NOT NULL,
     body TEXT NOT NULL,
@@ -127,3 +129,18 @@ CREATE TABLE messages (
 );
 
 
+-- 7. relationship (matches)
+
+CREATE TABLE relationship (
+    relationship_id INTEGER AUTO_INCREMENT PRIMARY KEY,
+    user_id1 INTEGER NOT NULL,
+    user_id2 INTEGER NOT NULL,
+    romantic BOOLEAN NOT NULL,
+    friendship BOOLEAN NOT NULL,
+    r_status BOOLEAN NOT NULL,
+    f_status BOOLEAN NOT NULL,
+    created_at DATETIME NOT NULL,
+
+    FOREIGN KEY (user_id1) REFERENCES credentials(user_id),
+    FOREIGN KEY (user_id2) REFERENCES credentials(user_id)
+);

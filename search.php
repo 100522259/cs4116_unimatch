@@ -156,6 +156,7 @@
                                 
                                 $us_result = $conn->query($sql);
 
+                                $count=0;
                                 while ($usr = $us_result->fetch_assoc()) {
                                     echo '<div class="user">';
                                     echo '<img src="./images/small_pfp.png" alt="pfp"><br>'; // not real pfp stored, will work on that
@@ -168,8 +169,16 @@
                                         echo ' - '.$usr["interest2"];
                                     }
                                     echo '</p>';
-                                    echo '</div><br><br>';
+                                    // form for user to match
+                                    echo '<form name="f_match'.$count.'" action="logic_fmatch.php" method="post">';
+                                    echo '<input type="submit" name="f'.$count.'" value="Friend">';
+                                    echo '<input type="hidden" name="target_id" value="'.$usr["user_id"].'">';
+                                    echo '</form>';
+                                    echo '</div><br>';
+
+                                    $count++; // count number of friend matches
                                 }
+                                $_SESSION["location"] = "search.php"; // to go back to home or search page
                             }
                                
                         }
@@ -252,6 +261,7 @@
                                     
                                     $us_result = $conn->query($sql);
 
+                                    $count = 0;
                                     while ($usr = $us_result->fetch_assoc()) {
                                         echo '<div class="user">';
                                         echo '<img src="./images/small_pfp.png" alt="pfp"><br>'; // not real pfp stored, will work on that
@@ -264,11 +274,18 @@
                                             echo ' - '.$usr["interest2"];
                                         }
                                         echo '</p>';
-                                        echo '</div><br><br>';
+                                        // form for user to match
+                                        echo '<form name="f_match'.$count.'" action="logic_fmatch.php" method="post">';
+                                        echo '<input type="submit" name="f'.$count.'" value="Friend">';
+                                        echo '<input type="hidden" name="target_id" value="'.$usr["user_id"].'">';
+                                        echo '</form>';
+                                        echo '</div><br>';
+
+                                        $count++; // count number of friend matches
                                     }
+                                    $_SESSION["location"] = "search.php"; // to go back to home or search page
                                 }
                             }
-                        
                         }
 
                         ?>

@@ -73,3 +73,5 @@ if (!empty($match)) {
             WHERE U.user_id IN ({$match_str});";
     $f_result = $conn->query($sql);
 }
+
+$conn->close();
