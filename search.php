@@ -121,6 +121,8 @@
                     <div class="match-display">
                         <?php
                         include "connect_server.php";
+                        session_start();
+                        $user_id = $_SESSION["user_id"];
 
                         // A. search by username...
                         if (isset($_POST["search"])) {
@@ -129,7 +131,8 @@
                             
                             // Use normal sql string, a select doesn't have injection risk
                             $sql = "SELECT user_id FROM credentials where
-                                LOWER(username) LIKE LOWER('%{$_POST["uname"]}%');";
+                                LOWER(username) LIKE LOWER('%{$_POST["uname"]}%')
+                                AND user_id != {$user_id};";
 
                             $result = $conn->query($sql);
                             $ids = [];
@@ -158,6 +161,7 @@
 
                                 $count=0;
                                 while ($usr = $us_result->fetch_assoc()) {
+
                                     echo '<div class="user">';
                                     echo '<img src="./images/small_pfp.png" alt="pfp"><br>'; // not real pfp stored, will work on that
                                     echo '<p>'.$usr["first_name"].', '.$usr["age"].'</p>';
@@ -169,11 +173,18 @@
                                         echo ' - '.$usr["interest2"];
                                     }
                                     echo '</p>';
-                                    // form for user to match
+                                    // form for user to friend-match
                                     echo '<form name="f_match'.$count.'" action="logic_fmatch.php" method="post">';
                                     echo '<input type="submit" name="f'.$count.'" value="Friend">';
                                     echo '<input type="hidden" name="target_id" value="'.$usr["user_id"].'">';
                                     echo '</form>';
+                                    
+                                    // form for user to date-match
+                                    echo '<form name="r_match'.$count.'" action="logic_rmatch.php" method="post">';
+                                    echo '<input type="submit" name="r'.$count.'" value="Match">';
+                                    echo '<input type="hidden" name="target_id" value="'.$usr["user_id"].'">';
+                                    echo '</form>';
+                                    
                                     echo '</div><br>';
 
                                     $count++; // count number of friend matches
@@ -195,6 +206,7 @@
                                     ON p.user_id = i.user_id 
                                 INNER JOIN academic_info AS a
                                     ON p.user_id = a.user_id"; 
+                            
                             $conditions = []; // variable to store the string sql conditions
                             if (isset($_POST["gender"])) {
                                 // add according "where statement
@@ -233,7 +245,7 @@
                             if (empty($conditions)) {
                                 echo '<p>Uh-oh... No filters set...<p>';
                             } else {
-                                $sql .= " WHERE " . implode(" AND ", $conditions) .";";
+                                $sql .= " WHERE " . implode(" AND ", $conditions) ." AND p.user_id != {$user_id};";
                                 $result = $conn->query($sql);
 
                                 //echo "done";
@@ -263,6 +275,7 @@
 
                                     $count = 0;
                                     while ($usr = $us_result->fetch_assoc()) {
+
                                         echo '<div class="user">';
                                         echo '<img src="./images/small_pfp.png" alt="pfp"><br>'; // not real pfp stored, will work on that
                                         echo '<p>'.$usr["first_name"].', '.$usr["age"].'</p>';
@@ -274,11 +287,18 @@
                                             echo ' - '.$usr["interest2"];
                                         }
                                         echo '</p>';
-                                        // form for user to match
+                                        // form for user to friend-match
                                         echo '<form name="f_match'.$count.'" action="logic_fmatch.php" method="post">';
                                         echo '<input type="submit" name="f'.$count.'" value="Friend">';
                                         echo '<input type="hidden" name="target_id" value="'.$usr["user_id"].'">';
                                         echo '</form>';
+
+                                        // form for user to date-match
+                                        echo '<form name="r_match'.$count.'" action="logic_rmatch.php" method="post">';
+                                        echo '<input type="submit" name="r'.$count.'" value="Match">';
+                                        echo '<input type="hidden" name="target_id" value="'.$usr["user_id"].'">';
+                                        echo '</form>';
+
                                         echo '</div><br>';
 
                                         $count++; // count number of friend matches

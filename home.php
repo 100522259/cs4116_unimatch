@@ -170,6 +170,7 @@
                             <?php
                             include "home_dates.php";
 
+                            $count = 0;
                             while ($f_user = $f_result->fetch_assoc()) {
                                 echo '<div class="user">';
                                 echo '<img src="./images/small_pfp.png" alt="pfp"><br>'; // not real pfp stored, will work on that
@@ -182,8 +183,16 @@
                                     echo $f_user["interest2"];
                                 }
                                 echo '</p>';
-                                echo '</div><br><br>';
+                                // form for user to match
+                                echo '<form name="r_match'.$count.'" action="logic_rmatch.php" method="post">';
+                                echo '<input type="submit" name="r'.$count.'" value="Match">';
+                                echo '<input type="hidden" name="target_id" value="'.$f_user["user_id"].'">';
+                                echo '</form>';
+                                echo '</div><br>';
+
+                                $count++; // count number of friend matches
                             }
+                            $_SESSION["location"] = "home.php"; // to go back to home or search page
 
                             ?>
                         </div>
