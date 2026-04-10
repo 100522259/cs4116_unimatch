@@ -22,7 +22,7 @@
                     <?php
                     include "user_queries.php";
 
-                    $icons = array("home", "matches","chat",
+                    $icons = array("home", "matches","messaging",
                                     "user","settings");
                     foreach ($icons as $icon) {
                         echo "<a href=\"{$icon}.php\">";    
