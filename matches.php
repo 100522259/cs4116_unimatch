@@ -28,7 +28,7 @@ WHERE c.from_user_id = $user_id AND p.seeking!='any'
 <header>
     <h1>UniMatch</h1>
     <nav>
-        <a href="index.php">Home</a>
+        <a href="home.php">Home</a>
         <a href="matches.php">Matches</a>
         <a href="chat.php">Chat</a>
     </nav>

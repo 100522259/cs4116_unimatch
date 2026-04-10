@@ -77,7 +77,7 @@ ORDER BY (SELECT sent_at FROM messages m3
 <header>
     <h1>UniMatch</h1>
     <nav>
-        <a href="index.php">Home</a>
+        <a href="home.php">Home</a>
         <a href="matches.php">Matches</a>
         <a href="chat.php">Chat</a>
     </nav>
