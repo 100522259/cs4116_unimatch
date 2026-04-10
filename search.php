@@ -185,6 +185,11 @@
                                     echo '<input type="hidden" name="target_id" value="'.$usr["user_id"].'">';
                                     echo '</form>';
                                     
+                                    // form for user to view profile
+                                    echo '<form name="r_match'.$count.'" action="user_view.php" method="post">';
+                                    echo '<input type="submit" name="v'.$count.'" value="View">';
+                                    echo '<input type="hidden" name="target_id" value="'.$usr["user_id"].'">';
+                                    echo '</form>';
                                     echo '</div><br>';
 
                                     $count++; // count number of friend matches
@@ -296,6 +301,12 @@
                                         // form for user to date-match
                                         echo '<form name="r_match'.$count.'" action="logic_rmatch.php" method="post">';
                                         echo '<input type="submit" name="r'.$count.'" value="Match">';
+                                        echo '<input type="hidden" name="target_id" value="'.$usr["user_id"].'">';
+                                        echo '</form>';
+
+                                        // form for user to view profile
+                                        echo '<form name="r_match'.$count.'" action="user_view.php" method="post">';
+                                        echo '<input type="submit" name="v'.$count.'" value="View">';
                                         echo '<input type="hidden" name="target_id" value="'.$usr["user_id"].'">';
                                         echo '</form>';
 

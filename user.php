@@ -93,7 +93,7 @@
 
                         // Div about uni
                         echo "<div class=\"about_uni\"";
-                        echo "<>Degree: {$uni["course"]} --- ";
+                        echo "<p>Degree: {$uni["course"]} --- ";
                         echo "Year: {$uni["c_year"]}</p>";
                         echo "</div>"; 
                         // close about uni
@@ -111,22 +111,6 @@
                         echo "</div>";
                         // Close info
                     
-                        // If user is an admin, this div will be visible:
-                        if ($pers_info["administrator"]) {
-                            // Div admin
-                            echo "<div class=\"admin\">";
-
-                            $admin_activities = array("report","block","edit bio","edit name","rmv photo",
-                                "rmv interest","disable acc");
-                                foreach ($admin_activities as $act) {
-                                    echo "<div class=\"admin_activity\">";
-                                    echo "<div class=\"admin_act\"><img src=\"images\\$act.png\"></div>";
-                                    echo "<div class=\"admin_act\"><p>{$act}</p></div>";
-                                    echo "</div>";
-                                }
-                            echo "</div>";
-                            // Close admin
-                        }
                     ?>
 
                 </div> <!--Close main info -->
