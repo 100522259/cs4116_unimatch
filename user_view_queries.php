@@ -5,30 +5,36 @@ include "connect_server.php";
 session_start();
 
 $target_id = $_SESSION["target_id"];
+$sess_id = $_SESSION["user_id"];
 
 
 // 1. select image content
 $sql = "select * from images where user_id={$target_id};";
 $result = $conn->query($sql);
-$target_images = $result->fetch_assoc();
-//echo "{$user_id}: <img src=\"/unimatch/images/{$row["profile_pic"]}\">";
+$images = $result->fetch_assoc();
+
+$sql = "select pic_num from images where user_id={$sess_id};";
+$result = $conn->query($sql);
+$sess_images = $result->fetch_assoc();
+$sess_num_images = $sess_images["pic_num"];
+
 
 // 2. select profile content:
 $sql = "select * from personal_info where user_id={$target_id};";
 $result = $conn->query($sql);
-$target_pers_info = $result->fetch_assoc();
+$pers_info = $result->fetch_assoc();
 
 // 3. Interests:
 $sql = "select * from interests where user_id={$target_id};";
 $result = $conn->query($sql);
-$target_ints = $result->fetch_assoc();
+$ints = $result->fetch_assoc();
 
 // 4. about uni:
 $sql = "select * from academic_info where user_id={$target_id};";
 $result = $conn->query($sql);
-$target_uni = $result->fetch_assoc();
+$uni = $result->fetch_assoc();
 
 // 5. credentials:
 $sql = "select * from credentials where user_id={$target_id};";
 $result = $conn->query($sql);
-$target_creds = $result->fetch_assoc();
+$creds = $result->fetch_assoc();

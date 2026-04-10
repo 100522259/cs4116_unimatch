@@ -1,5 +1,17 @@
 <?php // here we process the forms:
-include "user_queries.php";
+session_start();
+
+// DEPENDING ON WHETHER WE COME FROM USER OR ADMIN_EDIT, WE USE USER_QUERIES OR USER_VIEW_QUERIES
+// WE CHECK IF TARGET_ID HAS BEEN SET ON POST
+if (isset($_POST["target_id"])) { // include user_view_queries
+    include "user_view_queries.php";
+    $user_id = $_POST["target_id"];
+    $loc = "settings_admin.php";
+} else {
+    include "user_queries.php";
+    $user_id = $_SESSION["user_id"];
+    $loc = "settings.php";
+}
 
 
 // 1. FORM CREDENTIALS
@@ -103,5 +115,5 @@ if (isset($_POST["submit_int"])) {
 }
 
 // redirect back to settings
-header('Location: settings.php');
+header("Location: {$loc}");
 exit;

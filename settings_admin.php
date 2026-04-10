@@ -52,48 +52,31 @@
             
             <!--Container for the rest of the page-->
             <div class="main">
-                <form name="credentials_settings" action="settings_handler.php" method="post" autocomplete="off">
-                    <fieldset><legend>Credentials</legend><br>
-                        <?php
-                        include "user_queries.php";
-                        
-                        echo '<label for="username">Username: </label>';
-                        echo '<input type="text" name="username" pattern="[A-Za-z0-9]{5,}" maxlength="20" 
-                                size="20" title="Write your username, between 5 and 20 characters" 
-                                value="'.$creds["username"].'">';
-                        echo '<br><br>';
-
-                        echo '<label for="password">Password: </label>';
-                        echo '<input type="password" name="password" id="myPsw" pattern="[^;]+" minlength="8" maxlength="20" 
-                        		size="20" title="Write your password, between 8 and 20 characters"
-                                value="'.$creds["password"].'">';
-                        echo '<br>';
-
-                        echo '<label for="visibility">Show Password </label>';
-                        echo '<input type="checkbox" name="visibility" onclick="toggleVisib()">';
-                        echo '<br><br>';
-
-                        echo '<label for="password2">Confirm new Password: </label>';
-                        echo '<input type="password" name="password2" id="myPsw2" pattern="[^;]+" minlength="8" maxlength="20" size="20" 
-                        		title="Write your password again, between 8 and 20 characters">';
-                        echo '<br>';
-
-                        echo '<label for="visibility2">Show Password </label>';
-                        echo '<input type="checkbox" name="visibility2" onclick="toggleVisib2()">';
-                        echo '<br><br>';
-
-                        ?>
-
-                    </fieldset>
-                    <input type="submit" name="submit_cred" value="Save Changes">
-                </form><br><br>
-
+                <?php
+                    // coming from user_view file: button to return to it...
+                    if (isset($_POST["target_id"])) {
+                        $_SESSION["target_id"] = $_POST["target_id"];
+                        $target_id = $_POST["target_id"];
+                    }
+                    echo '<form action="user_view.php" method="post"">';
+                    // so target is not lost...
+                    echo '<input type="hidden" name="target_id" value="'.$target_id.'">';
+                    echo '<input type="submit" name="return" value="Return to User View">';
+                    echo '</form><br>';
+                    
+                ?>
+                <!--Credentials cannot be modified by admin-->
 
                 <!--Form for the user to change their user details-->
                 <form name="basic_settings" action="settings_handler.php" method="post" autocomplete="off">
                     <fieldset><legend>Personal Info</legend><br>
                     <?php
-                        include "user_queries.php";
+                        // ADMIN CAN EDIT USER PROFILE, DETERMINED BY SUBMIT "EDIT"
+                        // see user_view.php - line 174 !!
+                        include "user_view_queries.php";
+                        // hiden input with target id to also let handler know we're not working on sess user
+                        echo '<input type="hidden" name="target_id" value="'.$_POST["target_id"].'">';
+                            
 
                         echo '<label for="first_name">First Name: </label>';
                         echo '<input type="text" name="first_name" pattern="[A-Za-z]{2,30}" maxlength="30" 
@@ -155,7 +138,11 @@
                 <form name="academic_info" action="settings_handler.php" method="post" autocomplete="off">
                     <fieldset><legend>Academic Info</legend><br>
                     <?php
-                        include "user_queries.php";
+                        // ADMIN CAN EDIT USER PROFILE, DETERMINED BY SUBMIT "EDIT"
+                        // see user_view.php - line 174 !!
+                        include "user_view_queries.php";
+                        // hiden input with target id to also let handler know we're not working on sess user
+                        echo '<input type="hidden" name="target_id" value="'.$_POST["target_id"].'">';
 
                         echo '<label for="course">Course: </label>';
                         echo '<input type="text" name="course" pattern="[A-Za-z ]{2,20}" maxlength="20" 
@@ -176,7 +163,11 @@
                 <form name="interests" action="settings_handler.php" method="post" autocomplete="off">
                     <fieldset><legend>Interests</legend><br>
                     <?php
-                        include "user_queries.php";
+                        // ADMIN CAN EDIT USER PROFILE, DETERMINED BY SUBMIT "EDIT"
+                        // see user_view.php - line 174 !!
+                        include "user_view_queries.php";
+                        // hiden input with target id to also let handler know we're not working on sess user
+                        echo '<input type="hidden" name="target_id" value="'.$_POST["target_id"].'">';
                         
                         echo '<label for="drink">Drinking habits: </label>';
                         echo '<select name="drink">';
