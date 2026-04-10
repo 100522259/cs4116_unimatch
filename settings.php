@@ -129,12 +129,13 @@
                                 value="'.$pers_info["nationality"].'">';
                         echo '<br><br>';
 
+                        // TODO: TURN INTO ITERATIVE PROCESSES
                         echo '<label for="gender">Gender: </label>';
-                        echo '<select name="gender" name="gender">';
+                        echo '<select name="gender">';
                         echo '<option value="'.$pers_info["gender"].'" selected>'.$pers_info["gender"].'</option>';
-                        echo '<option value="male">Male</option>';
-                        echo '<option value="female">Female</option>';
-                        echo '<option value="non-binary">Non-binary</option>';
+                        echo '<option value="Male">Male</option>';
+                        echo '<option value="Female">Female</option>';
+                        echo '<option value="Non-Binary">Non-binary</option>';
                         echo '<option value="Other">Other</option>';
                         echo '</select>';
                         echo '<br><br>';
