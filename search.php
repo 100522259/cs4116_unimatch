@@ -103,11 +103,17 @@
                             // check that the submitted value is not empty
                             
                             // Use normal sql string, a select doesn't have injection risk
-                            $sql = "SELECT user_id FROM credentials where
-                                LOWER(username) LIKE LOWER('%{$_POST["uname"]}%')
-                                AND user_id != {$user_id};";
-
+                            $sname = $_POST["uname"];
+                            $sql = "SELECT P.user_id FROM credentials AS C 
+                                    INNER JOIN personal_info as P
+                                        ON C.user_id = P.user_id
+                                WHERE (LOWER(C.username) LIKE LOWER('%$sname%')
+                                OR LOWER(P.first_name) LIKE LOWER('%$sname%')
+                                OR LOWER(P.last_name) LIKE LOWER('%$sname%'))
+                                AND C.user_id != {$user_id};";
+                            
                             $result = $conn->query($sql);
+
                             $ids = [];
 
                             while ($row = $result->fetch_assoc()) {
