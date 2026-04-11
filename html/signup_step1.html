@@ -274,11 +274,37 @@
                       <option value="male">Male</option>
                       <option value="female">Female</option>
                       <option value="non-binary">Non-binary</option>
-                      <option value="prefer_not_to_say">
-                        Prefer not to say
-                      </option>
+                      <option value="other">other</option>
                     </select>
                   </div>
+                </div>
+              </div>
+
+              <!-- Sexuality -->
+              <div class="mb-3">
+                <label for="sexuality" class="form-label fw-semibold"
+                  >Sexuality</label
+                >
+                <div class="input-group">
+                  <span class="input-group-text">
+                    <i class="fa-solid fa-heart"></i>
+                  </span>
+                  <select
+                    id="sexuality"
+                    name="sexuality"
+                    class="form-select"
+                    required
+                  >
+                    <option value="" disabled selected>
+                      Select your sexuality
+                    </option>
+                    <option value="Straight">Straight</option>
+                    <option value="Gay">Gay</option>
+                    <option value="Lesbian">Lesbian</option>
+                    <option value="Bisexual">Bisexual</option>
+                    <option value="Other">Other</option>
+                    <option value="Prefer not to say">Prefer not to say</option>
+                  </select>
                 </div>
               </div>
 
@@ -286,11 +312,6 @@
                 Sign Up
               </button>
 
-              <p class="terms-text small text-muted text-center mt-3">
-                By signing up, you agree to our
-                <a href="../terms.php">Terms of Service</a> and
-                <a href="../privacy.php">Privacy Policy</a>.
-              </p>
             </form>
 
             <p class="auth-alt-text text-center mt-3">

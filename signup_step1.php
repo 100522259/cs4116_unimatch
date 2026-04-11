@@ -24,13 +24,15 @@ $signup_password  =      $_POST['password']         ?? '';
 $confirm_password =      $_POST['confirm_password'] ?? '';
 $age              = trim($_POST['age']              ?? '');
 $gender           = trim($_POST['gender']           ?? '');
+$sexuality        = trim($_POST['sexuality']        ?? '');
 
 // required fields check
 if (
     empty($first_name)      || empty($last_name)        ||
     empty($signup_email)    || empty($signup_username)  ||
     empty($signup_password) || empty($confirm_password) ||
-    empty($age)             || empty($gender)
+    empty($age)             || empty($gender)           ||
+    empty($sexuality)
 ) {
     fail('All fields are required.');
 }
@@ -78,16 +80,8 @@ $stored_password = $signup_password;
 // cast age to integer for the DB insert
 $age_int = (int)$age;
 
-// generate a unique 9-digit user_id (schema uses number(9), no AUTO_INCREMENT)
-do {
-    $user_id = rand(100000000, 999999999);
-    $stmt_check = $conn->prepare('SELECT user_id FROM credentials WHERE user_id = ? LIMIT 1');
-    $stmt_check->bind_param('i', $user_id);
-    $stmt_check->execute();
-    $stmt_check->bind_result($taken_id);
-    $id_taken = $stmt_check->fetch();
-    $stmt_check->close();
-} while ($id_taken);
+// takes the student id from the student email
+$user_id = (int) strstr($signup_email, '@', true);
 
 // insert all rows in a transaction
 $conn->begin_transaction();
@@ -123,7 +117,7 @@ try {
     $stmt->close();
 
     // 4. interests
-    $default = 'Prefer not to say';
+    $default = 'Other';
     $flag    = 0;
     $stmt = $conn->prepare(
         'INSERT INTO interests
@@ -142,7 +136,7 @@ try {
         $default, $flag,
         $default, $flag,
         $default, $flag,
-        $default, $flag
+        $sexuality, $flag
     );
     $stmt->execute();
     $stmt->close();
