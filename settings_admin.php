@@ -256,11 +256,11 @@
                         echo 'Apologies, we are still working on this section...<br><br>';
                         
                         echo '<label for="pfp">Upload Profile Photo: </label>';
-                        echo '<input type="file" name="pfp"><br><br>';
+                        echo '<input type="submit" name="rmv'.$i.'" value="Remove image"><br><br>';
+                        // not actual removal, but sets an empty photo??
                     
                         for ($i=1; $i<6; $i++) {
                             echo '<label for="image'.$i.'">Upload Image '.$i.': </label>';
-                            echo '<input type="file" name="image'.$i.'">';
                             echo '<input type="submit" name="rmv'.$i.'" value="Remove image"><br><br>';
                         }
                     ?>
