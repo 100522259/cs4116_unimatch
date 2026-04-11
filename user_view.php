@@ -29,7 +29,8 @@
                     include "./user_view_queries.php";
                     include "./logic_blocked_user.php";
                     $blocked = blocked_user($sess_id, $target_id); // sess id comde from view queries
-                    
+                    $banned = banned_user($target_id);
+
                     
                     // Div pfp
                     echo "<div class=\"pfp\">";
@@ -160,16 +161,23 @@
                     echo '</div>';
                     
                     // if user is admin, more options will appear:
-                    foreach ($act_admin as $key=>$act) {
-                        echo '<div class="admin_activity">';
-                        
-                        echo '<div class="admin_act"><img src="images\\'.$act_icons[$key].'.png"></div>';
-                        // form:
-                        echo '<form name="'.$sct.'" action="'.$act_php[$key].'" method="post">';
-                        echo '<input type="submit" name="'.$act.'" value="'.$act.'">';
-                        echo '<input type="hidden" name="target_id" value="'.$target.'">';
-                        echo '</form>';
-                        echo '</div>';
+                    if ($admin) {
+                        foreach ($act_admin as $key=>$act) {
+                            echo '<div class="admin_activity">';
+                            
+                            echo '<div class="admin_act"><img src="images\\'.$act_icons[$key].'.png"></div>';
+                            // form:
+                            echo '<form name="'.$act.'" action="'.$act_php[$key].'" method="post">';
+                            echo '<input type="submit" name="'.$act.'" value="';
+                            if ($act == "Ban" && $banned) {
+                                // if we are displaying the blocked button and user is blocked, write Unblock
+                                echo "Unban";
+                            } else echo $act;
+                            echo '">';
+                            echo '<input type="hidden" name="target_id" value="'.$target.'">';
+                            echo '</form>';
+                            echo '</div>';
+                        }
                     }
 
                     echo "</div>";
