@@ -8,9 +8,10 @@
         include "user_queries.php";
 
         $icons = array("home", "matches","messaging",
-                        "user","settings");
+                        "user","settings", "admin", "logout");
         
         foreach ($icons as $icon) {
+            if ($icon == "admin" && $admin == 0) continue; // do not show admin section if not admin
             echo "<a href=\"{$icon}.php\">";    
             echo "<div class=\"pages\">";
             echo "<div class=\"icons\"><img src=\"images\\{$icon}.png\"></div>";
@@ -18,13 +19,6 @@
             echo "</div></a>";
         }
         
-        if ($admin == 1) {
-            echo "<a href=\"admin.php\">";    
-            echo "<div class=\"pages\">";
-            echo "<div class=\"icons\"><img src=\"images\\admin.png\"></div>";
-            echo "<div class=\"icons\"><p>admin</p></div>";
-            echo "</div></a>";
-        }
         ?>
     </div>
 </div>

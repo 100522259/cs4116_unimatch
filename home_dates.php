@@ -55,6 +55,7 @@ while($row = $result2->fetch_assoc()) {
             strtolower($user["sexuality"]) == "straight" &&
             (strtolower($row["gender"]) == "female" || 
             strtolower($row["sexuality"] == "lesbian"))) {
+        echo "straight woman - fem/lesbian - skip<br>";
         continue; // skip
     }
     // b. straight man: target -> non gay &| non-masc
@@ -62,6 +63,7 @@ while($row = $result2->fetch_assoc()) {
             strtolower($user["sexuality"]) == "straight" &&
             (strtolower($row["gender"]) == "male" || 
             strtolower($row["sexuality"]) == "gay")) {
+        echo "straight man - male/gay - skip<br>";
         continue; // skip
     }
     
@@ -69,15 +71,19 @@ while($row = $result2->fetch_assoc()) {
     if (strtolower($user["gender"]) !=  "male" && 
             strtolower($user["sexuality"]) == "lesbian" &&
             (strtolower($row["gender"]) == "male" || 
-            strtolower($row["sexuality"]) == "straight")) {
-                continue; // skip
+            strtolower($row["sexuality"]) == "straight") ||
+            strtolower($row["sexuality"]) == "gay") {
+        echo "lesbian - male/straight - skip<br>";
+        continue; // skip
     }
     
     // d. gay (non-female): target -> non straight, non fem
     if (strtolower($user["gender"]) !=  "female" && 
             strtolower($user["sexuality"]) == "gay" &&
             (strtolower($row["gender"]) == "female" || 
-            strtolower($row["sexuality"]) == "straight")) {
+            strtolower($row["sexuality"]) == "straight" ||
+            strtolower($row["sexuality"]) == "lesbian")) {
+        echo "gay - fem/straight - skip<br>";
         continue; // skip
     } 
 
