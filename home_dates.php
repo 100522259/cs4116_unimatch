@@ -1,9 +1,10 @@
 <?php
 
 include "./connect_server.php";
+include_once "./logic_blocked_user.php";
 
 /**
- * CRITERIA FOR FRIENDSHIP MATCH:
+ * CRITERIA FOR DATES MATCH:
  * at least 2 common interests 
  * (including food lifestyle, course)
  * Sexuality must match with user gender.
@@ -24,8 +25,8 @@ $sql1 = "SELECT i.user_id, i.food_lifestyle, i.sexuality,
         INNER JOIN academic_info AS a
              ON i.user_id = a.user_id
         INNER JOIN personal_info as p
-            ON p.user_id = a.user_id
-        WHERE i.user_id = {$user_id}";
+            ON p.user_id = i.user_id
+        WHERE i.user_id = {$user_id};";
 
 $result1 = $conn->query($sql1);
 
@@ -34,11 +35,13 @@ $user = $result1->fetch_assoc();
 // general user info
 $sql2 = "SELECT i.user_id, i.food_lifestyle, i.sexuality,
                 i.interest1, i.interest2, i.interest3, i.interest4, i.interest5,
-                a.course
+                a.course, p.gender
         FROM interests AS i
         INNER JOIN academic_info AS a
              ON i.user_id = a.user_id
-        WHERE i.user_id != {$user_id}";
+        INNER JOIN personal_info as p
+            ON p.user_id = i.user_id
+        WHERE i.user_id != {$user_id};";
 
 $result2 = $conn->query($sql2);
 $base = array("food_lifestyle", "course");
@@ -50,28 +53,38 @@ $user_ints = array($user["interest1"], $user["interest2"],
 $user_gender = strtolower($user["gender"]);
 $user_sexuality = strtolower($user["sexuality"]);
 
-// Logic for USER attraction to TARGET USER
-$user_likes = (($user_sexuality == "straight" && $user_gender != $target_gender) ||
-    ($user_sexuality == "gay" && $user_gender != "female" && $target_gender != "female") ||
-    ($user_sexuality == "lesbian" && $user_gender != "male" && $target_gender != "male") ||
-    $user_sexuality == "asexual" || $user_sexuality == "bisexual" || 
-    $user_sexuality == "pansexual" || $user_sexuality == "other");
 
 // to store the matches
 $match = [];
 while($row = $result2->fetch_assoc()) {
     //echo $row["user_id"].' - ';
+    $target_id = $row["user_id"];
+    
+    // 1. check if student is or has been blocked: prevent display:
+    $blocked = blocked_user($user_id, $target_id);
+    if ($blocked) {
+        //echo "$target_id blocked...<br>";
+        continue; // skip!
+    }
 
     $target_gender = strtolower($row["gender"]);
     $target_sexuality = strtolower($row["sexuality"]);
-    
-    // 1. Logic for TARGET USER attraction to USER
+  
+    // Logic for USER attraction to TARGET USER
+    $user_likes = (($user_sexuality == "straight" && $user_gender != $target_gender) ||
+        ($user_sexuality == "gay" && $user_gender != "female" && $target_gender != "female") ||
+        ($user_sexuality == "lesbian" && $user_gender != "male" && $target_gender != "male") ||
+        $user_sexuality == "asexual" || $user_sexuality == "bisexual" || 
+        $user_sexuality == "pansexual" || $user_sexuality == "other");
+    //echo "user likes $user_likes - $target_id<br>";
+
+    // 2. Logic for TARGET USER attraction to USER
     $target_likes = (($target_sexuality == "straight" && $target_gender != $user_gender) ||
             ($target_sexuality == "gay" && $target_gender != "female" && $user_gender != "female") ||
             ($target_sexuality == "lesbian" && $target_gender != "male" && $user_gender != "male") ||
             $target_sexuality == "asexual" || $target_sexuality == "bisexual" || 
             $target_sexuality == "pansexual" || $target_sexuality == "other");
-
+	//echo "target likes $target_likes<br>";
 
     // if both are 1, then there's a gender-sexuality match; if not, skip to next iteration
     if ($user_likes == 0 || $target_likes == 0) {
@@ -79,6 +92,7 @@ while($row = $result2->fetch_assoc()) {
         continue;
     }
 
+    // 3. Compare interests
     $score = 0;
     foreach($base as $field) {
         if ($user[$field] == $row[$field]) {
@@ -86,7 +100,7 @@ while($row = $result2->fetch_assoc()) {
         }
     }
 
-    // compare interests regardless of order
+    // 4. compare interests regardless of order
     $candidate_interests = array($row["interest1"], $row["interest2"], 
         $row["interest3"], $row["interest4"], $row["interest5"]);
     
@@ -114,4 +128,4 @@ if (!empty($match)) {
             ON U.user_id = P.user_id
             WHERE U.user_id IN ({$match_str});";
     $f_result = $conn->query($sql);
-}
+} else echo "Oh... No matches...";

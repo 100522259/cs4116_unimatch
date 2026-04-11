@@ -26,7 +26,10 @@
                     $_SESSION["target_id"] = $target;
                     $_SESSION["location"] = "user_view.php";
 
-                    require ("user_view_queries.php");
+                    include "./user_view_queries.php";
+                    include "./logic_blocked_user.php";
+                    $blocked = blocked_user($sess_id, $target_id); // sess id comde from view queries
+                    
                     
                     // Div pfp
                     echo "<div class=\"pfp\">";
@@ -43,14 +46,19 @@
                     echo "<div class=\"age\"><h4>{$pers_info["age"]}</h4></div></div>"; 
                     // close user title
                     
-                    echo "<div class=\"bio\"><p>{$pers_info["bio"]}</p></div>";
+                    if ($blocked) echo "<div class=\"bio\">...</div>";
+                    else echo "<div class=\"bio\"><p>{$pers_info["bio"]}</p></div>";
                 
                     // Div interests (1)
                     echo "<div class=\"interests\">";
-                    // Special interests boxes: display or not?
-                    if ($ints["food_display"]) echo "<div class=\"int_box\">Food: {$ints["food_lifestyle"]}</div>";
-                    if ($ints["personality_display"]) echo "<div class=\"int_box\">{$ints["personality"]}</div>";
-                    if ($ints["sexuality_display"]) echo "<div class=\"int_box\">{$ints["sexuality"]}</div>";
+                    if ($blocked) {
+                        echo "<div class=\"int_box\">???</div>";
+                    } else {
+                        // Special interests boxes: display or not?
+                        if ($ints["food_display"]) echo "<div class=\"int_box\">Food: {$ints["food_lifestyle"]}</div>";
+                        if ($ints["personality_display"]) echo "<div class=\"int_box\">{$ints["personality"]}</div>";
+                        if ($ints["sexuality_display"]) echo "<div class=\"int_box\">{$ints["sexuality"]}</div>";
+                    }
                     echo "</div>";
                     // close interests (1)
 
@@ -60,7 +68,11 @@
                     // A query would be done here to obtain the interests
                     for ($i = 0; $i < 5; $i++) {
                         $num = $i + 1;
-                        if ($ints["interest{$num}"] != null) {
+                        if ($blocked) {
+                            echo "<div class=\"int_box\">???</div>"; 
+                            break;
+                        }
+                        elseif ($ints["interest{$num}"] != null) {
                             echo "<div class=\"int_box\">{$ints["interest{$num}"]}</div>";
                         } 
                     }
@@ -69,24 +81,33 @@
 
                     // Div about uni
                     echo "<div class=\"about_uni\"";
-                    echo "<p>Degree: {$uni["course"]} --- ";
-                    echo "Year: {$uni["c_year"]}</p>";
+                    
+                    if ($blocked) {
+                        echo "<p>...</p>";
+                    }
+                    else {
+                        echo "<p>Degree: {$uni["course"]} --- ";
+                        echo "Year: {$uni["c_year"]}</p>";
+                    }
                     echo "</div>"; 
                     // close about uni
 
                     // Div interests (3)
                     echo "<div class=\"interests\">";
-                    echo "<div class=\"int_box\">Gender: {$pers_info["gender"]}</div>";
-                    echo "<div class=\"int_box\">Nationality: {$pers_info["nationality"]}</div>";
-                    if ($pers_info["county"] != null) {
-                        echo "<div class=\"int_box\">County: {$pers_info["county"]}</div>";
+                    if ($blocked) echo "<div class=\"int_box\">???</div>";
+                    else {
+                        echo "<div class=\"int_box\">Gender: {$pers_info["gender"]}</div>";
+                        echo "<div class=\"int_box\">Nationality: {$pers_info["nationality"]}</div>";
+                        if ($pers_info["county"] != null) {
+                            echo "<div class=\"int_box\">County: {$pers_info["county"]}</div>";
+                        }
                     }
                     echo "</div>"; 
                     // Close interests (3)
 
                     echo "</div>";
                     // Close info
-                
+                    
 
                     // Div admin
                     echo "<div class=\"admin\">";
@@ -104,7 +125,12 @@
                         echo '<div class="admin_act"><img src="images\\'.$act_icons[$key].'.png"></div>';
                         // form:
                         echo '<form name="'.$sct.'" action="'.$act_php[$key].'" method="post">';
-                        echo '<input type="submit" name="'.$act.'" value="'.$act.'">';
+                        echo '<input type="submit" name="'.$act.'" value="';
+                        if ($act == "Block" && $blocked) {
+                            // if we are displaying the blocked button and user is blocked, write Unblock
+                            echo "Unblock";
+                        } else echo $act; // otherwise, display activity as appears in array
+                        echo '">';
                         echo '<input type="hidden" name="target_id" value="'.$target.'">';
                         echo '</form>';
                         echo '</div>';
@@ -166,8 +192,8 @@
                         if (!$admin) {
                             // display min between target user and session user number of photos
                             $num_photos = min($images["pic_num"], $sess_num_images);
+                            if ($blocked) $num_photos = 0;
                         } else $num_photos = $images["pic_num"];
-                        
                         
                         if ($num_photos == 0) echo "Oh, seems like {$pers_info["first_name"]} doesn't have any photos yet!";
                         for($i=0; $i < $num_photos; $i++) {

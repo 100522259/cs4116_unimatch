@@ -124,7 +124,7 @@
                                 
                                 // form for user to match
                                 echo '<form name="f_match'.$count.'" action="logic_fmatch.php" method="post">';
-                                echo '<input type="submit" name="f'.$count.'" value="Match">';
+                                echo '<input type="submit" name="f'.$count.'" value="Friend">';
                                 echo '<input type="hidden" name="target_id" value="'.$f_user["user_id"].'">';
                                 echo '</form>';
 

@@ -1,6 +1,7 @@
 <?php
 
 include "./connect_server.php";
+include_once "./logic_blocked_user.php";
 
 /**
  * CRITERIA FOR FRIENDSHIP MATCH:
@@ -14,7 +15,7 @@ $sql1 = "SELECT i.user_id, i.food_lifestyle, i.sexuality,
         FROM interests AS i
         INNER JOIN academic_info AS a
              ON i.user_id = a.user_id
-        WHERE i.user_id = {$user_id}";
+        WHERE i.user_id = {$user_id};";
 
 $result1 = $conn->query($sql1);
 
@@ -27,7 +28,7 @@ $sql2 = "SELECT i.user_id, i.food_lifestyle, i.sexuality,
         FROM interests AS i
         INNER JOIN academic_info AS a
              ON i.user_id = a.user_id
-        WHERE i.user_id != {$user_id}";
+        WHERE i.user_id != {$user_id};";
 
 $result2 = $conn->query($sql2);
 $base = array("food_lifestyle", "sexuality", "course");
@@ -38,6 +39,15 @@ $user_ints = array($user["interest1"], $user["interest2"],
 // to store the matches
 $match = [];
 while($row = $result2->fetch_assoc()) {
+
+    // 1. check if student is or has been blocked: prevent display:
+    $blocked = blocked_user($user_id, $target_id);
+    if ($blocked) {
+        //echo "blocked...<br>";
+        continue; // skip!
+    }
+
+    // 2. Interests
     $score = 0;
     foreach($base as $field) {
         if ($user[$field] == $row[$field]) {
@@ -72,6 +82,6 @@ if (!empty($match)) {
             ON U.user_id = P.user_id
             WHERE U.user_id IN ({$match_str});";
     $f_result = $conn->query($sql);
-}
+} else echo "Oh... no matches<br>";
 
 $conn->close();
