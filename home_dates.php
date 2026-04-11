@@ -4,7 +4,7 @@ include "./connect_server.php";
 
 /**
  * CRITERIA FOR FRIENDSHIP MATCH:
- * at least 3 common interests 
+ * at least 2 common interests 
  * (including food lifestyle, course)
  * Sexuality must match with user gender.
  * * Straight male -> returns only gender=female or other, non-lesbian
@@ -46,48 +46,38 @@ $base = array("food_lifestyle", "course");
 $user_ints = array($user["interest1"], $user["interest2"], 
     $user["interest3"], $user["interest4"], $user["interest5"]);
 
+
+$user_gender = strtolower($user["gender"]);
+$user_sexuality = strtolower($user["sexuality"]);
+
+// Logic for USER attraction to TARGET USER
+$user_likes = (($user_sexuality == "straight" && $user_gender != $target_gender) ||
+    ($user_sexuality == "gay" && $user_gender != "female" && $target_gender != "female") ||
+    ($user_sexuality == "lesbian" && $user_gender != "male" && $target_gender != "male") ||
+    $user_sexuality == "asexual" || $user_sexuality == "bisexual" || 
+    $user_sexuality == "pansexual" || $user_sexuality == "other");
+
 // to store the matches
 $match = [];
 while($row = $result2->fetch_assoc()) {
-    // CHECK FIRST AND FOREMOST: SEXUALITY VS MATCH
-    // a. straight woman: target -> non lesbian &| non fem
-    if (strtolower($user["gender"]) ==  "female" && 
-            strtolower($user["sexuality"]) == "straight" &&
-            (strtolower($row["gender"]) == "female" || 
-            strtolower($row["sexuality"] == "lesbian"))) {
-        echo "straight woman - fem/lesbian - skip<br>";
-        continue; // skip
-    }
-    // b. straight man: target -> non gay &| non-masc
-    if (strtolower($user["gender"]) ==  "male" && 
-            strtolower($user["sexuality"]) == "straight" &&
-            (strtolower($row["gender"]) == "male" || 
-            strtolower($row["sexuality"]) == "gay")) {
-        echo "straight man - male/gay - skip<br>";
-        continue; // skip
-    }
-    
-    // c. lesbian (non-male): target -> non straight, non male
-    if (strtolower($user["gender"]) !=  "male" && 
-            strtolower($user["sexuality"]) == "lesbian" &&
-            (strtolower($row["gender"]) == "male" || 
-            strtolower($row["sexuality"]) == "straight") ||
-            strtolower($row["sexuality"]) == "gay") {
-        echo "lesbian - male/straight - skip<br>";
-        continue; // skip
-    }
-    
-    // d. gay (non-female): target -> non straight, non fem
-    if (strtolower($user["gender"]) !=  "female" && 
-            strtolower($user["sexuality"]) == "gay" &&
-            (strtolower($row["gender"]) == "female" || 
-            strtolower($row["sexuality"]) == "straight" ||
-            strtolower($row["sexuality"]) == "lesbian")) {
-        echo "gay - fem/straight - skip<br>";
-        continue; // skip
-    } 
+    //echo $row["user_id"].' - ';
 
-    // e. rest: gender/sexuality is irrelevant
+    $target_gender = strtolower($row["gender"]);
+    $target_sexuality = strtolower($row["sexuality"]);
+    
+    // 1. Logic for TARGET USER attraction to USER
+    $target_likes = (($target_sexuality == "straight" && $target_gender != $user_gender) ||
+            ($target_sexuality == "gay" && $target_gender != "female" && $user_gender != "female") ||
+            ($target_sexuality == "lesbian" && $target_gender != "male" && $user_gender != "male") ||
+            $target_sexuality == "asexual" || $target_sexuality == "bisexual" || 
+            $target_sexuality == "pansexual" || $target_sexuality == "other");
+
+
+    // if both are 1, then there's a gender-sexuality match; if not, skip to next iteration
+    if ($user_likes == 0 || $target_likes == 0) {
+        //echo "skip<br>";
+        continue;
+    }
 
     $score = 0;
     foreach($base as $field) {
@@ -104,9 +94,10 @@ while($row = $result2->fetch_assoc()) {
     $shared = array_intersect($user_ints, $candidate_interests);
     $score += count($shared); // count returns the number of values in the array
 
-    if ($score >= 3) {
+    if ($score >= 2) {
+        //echo "match :)<br>";
         $match[] = $row["user_id"];
-    }
+    } //else echo "no match :(<br>";
 }
 
 // from ids stored in match, query the relevant info: name, age, pfp, interest 1 and 2
