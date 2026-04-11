@@ -14,12 +14,12 @@ $loc = $_SESSION["location"];
 
 // we have series of prepared statements for each case:
 // 1. create new row
-$stmt_ins = $conn->prepare("INSERT INTO blocked (user_id1, user_id2) 
+$stmt_ins = $conn->prepare("INSERT INTO blocked (user_id, student_blocked) 
     VALUES (?, ?)");
     // id1 = sess id; id2 = target id
 
 // 2. select existing
-$stmt_sel = $conn->prepare("SELECT FROM blocked 
+$stmt_sel = $conn->prepare("SELECT * FROM blocked 
     WHERE user_id = ? AND student_blocked = ?");
 
 // 3. delete existing row:

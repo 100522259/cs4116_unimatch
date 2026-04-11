@@ -149,7 +149,7 @@
                     echo '<fieldset>';
                     // section for user to select category---required---; and message
                     echo '<select name="category" required>';
-                    echo '<option value="category" selected disabled>Category</option>';
+                    echo '<option value="" selected disabled>Category</option>';
                     foreach ($report_categories as $cat) {
                         echo '<option value="'.$cat.'">'.$cat.'</option>';
                     }

@@ -18,7 +18,7 @@ $stmt_rep = $conn->prepare("INSERT INTO reports (user_id1, user_id2, timestamp, 
     // id1 = sess id; id2 = target id
 
 // 2. create new row in offense
-$stmt_off = $conn->prepare("INSERT INTO offense (user_id, phone_warning, offense_num, blocked, reported, last_modified)
+$stmt_off = $conn->prepare("INSERT INTO offense (user_id, phone_warning, offence_num, blocked, reported, last_modified)
     VALUES (?, 0, 0, 0, 1, CURRENT_TIMESTAMP)");
 
 // 3. select query to see if user has offense row
