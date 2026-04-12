@@ -22,168 +22,168 @@
                 <?php
                 session_start();
                 if (isset($_POST["target_id"])) {
-                    $target = $_POST["target_id"];
-                    $_SESSION["target_id"] = $target;
+                    $_SESSION["target_id"] = $_POST["target_id"];;
                     $_SESSION["location"] = "user_view.php";
+                }
+                $target_id = $_SESSION["target_id"];
+                include "./user_view_queries.php";
+                include "./logic_blocked_user.php";
+                $blocked = blocked_user($sess_id, $target_id); // sess id comde from view queries
+                $banned = banned_user($target_id);
 
-                    include "./user_view_queries.php";
-                    include "./logic_blocked_user.php";
-                    $blocked = blocked_user($sess_id, $target_id); // sess id comde from view queries
-                    $banned = banned_user($target_id);
-
-                    
-                    // Div pfp
-                    echo "<div class=\"pfp\">";
-                    echo "<img src=\"/unimatch/images/{$images["profile_pic"]}\" alt=\"profile pic\">";
-                    echo "</div>";
-                    // close pfp
-
-                    // Div info
-                    echo "<div class=\"info\">";
-
-                    // Div title
-                    echo "<div class=\"user_title\">"; 
-                    echo "<div class=\"name\"><h1>{$pers_info["first_name"]}</h1></div>";
-                    echo "<div class=\"age\"><h4>{$pers_info["age"]}</h4></div></div>"; 
-                    // close user title
-                    
-                    if ($blocked) echo "<div class=\"bio\">...</div>";
-                    else echo "<div class=\"bio\"><p>{$pers_info["bio"]}</p></div>";
                 
-                    // Div interests (1)
-                    echo "<div class=\"interests\">";
+                // Div pfp
+                echo "<div class=\"pfp\">";
+                echo "<img src=\"/unimatch/images/{$images["profile_pic"]}\" alt=\"profile pic\">";
+                echo "</div>";
+                // close pfp
+
+                // Div info
+                echo "<div class=\"info\">";
+
+                // Div title
+                echo "<div class=\"user_title\">"; 
+                echo "<div class=\"name\"><h1>{$pers_info["first_name"]}</h1></div>";
+                echo "<div class=\"age\"><h4>{$pers_info["age"]}</h4></div></div>"; 
+                // close user title
+                
+                if ($blocked) echo "<div class=\"bio\">...</div>";
+                else echo "<div class=\"bio\"><p>{$pers_info["bio"]}</p></div>";
+            
+                // Div interests (1)
+                echo "<div class=\"interests\">";
+                if ($blocked) {
+                    echo "<div class=\"int_box\">???</div>";
+                } else {
+                    // Special interests boxes: display or not?
+                    if ($ints["food_display"]) echo "<div class=\"int_box\">Food: {$ints["food_lifestyle"]}</div>";
+                    if ($ints["personality_display"]) echo "<div class=\"int_box\">{$ints["personality"]}</div>";
+                    if ($ints["sexuality_display"]) echo "<div class=\"int_box\">{$ints["sexuality"]}</div>";
+                }
+                echo "</div>";
+                // close interests (1)
+
+                // Div interests (2)
+                echo "<div class=\"interests\">";
+                // Display normal interests
+                // A query would be done here to obtain the interests
+                for ($i = 0; $i < 5; $i++) {
+                    $num = $i + 1;
                     if ($blocked) {
-                        echo "<div class=\"int_box\">???</div>";
-                    } else {
-                        // Special interests boxes: display or not?
-                        if ($ints["food_display"]) echo "<div class=\"int_box\">Food: {$ints["food_lifestyle"]}</div>";
-                        if ($ints["personality_display"]) echo "<div class=\"int_box\">{$ints["personality"]}</div>";
-                        if ($ints["sexuality_display"]) echo "<div class=\"int_box\">{$ints["sexuality"]}</div>";
+                        echo "<div class=\"int_box\">???</div>"; 
+                        break;
                     }
-                    echo "</div>";
-                    // close interests (1)
+                    elseif ($ints["interest{$num}"] != null) {
+                        echo "<div class=\"int_box\">{$ints["interest{$num}"]}</div>";
+                    } 
+                }
+                echo "</div>"; 
+                // close interests (2)
 
-                    // Div interests (2)
-                    echo "<div class=\"interests\">";
-                    // Display normal interests
-                    // A query would be done here to obtain the interests
-                    for ($i = 0; $i < 5; $i++) {
-                        $num = $i + 1;
-                        if ($blocked) {
-                            echo "<div class=\"int_box\">???</div>"; 
-                            break;
-                        }
-                        elseif ($ints["interest{$num}"] != null) {
-                            echo "<div class=\"int_box\">{$ints["interest{$num}"]}</div>";
-                        } 
+                // Div about uni
+                echo "<div class=\"about_uni\"";
+                
+                if ($blocked) {
+                    echo "<p>...</p>";
+                }
+                else {
+                    echo "<p>Degree: {$uni["course"]} --- ";
+                    echo "Year: {$uni["c_year"]}</p>";
+                }
+                echo "</div>"; 
+                // close about uni
+
+                // Div interests (3)
+                echo "<div class=\"interests\">";
+                if ($blocked) echo "<div class=\"int_box\">???</div>";
+                else {
+                    echo "<div class=\"int_box\">Gender: {$pers_info["gender"]}</div>";
+                    echo "<div class=\"int_box\">Nationality: {$pers_info["nationality"]}</div>";
+                    if ($pers_info["county"] != null) {
+                        echo "<div class=\"int_box\">County: {$pers_info["county"]}</div>";
                     }
-                    echo "</div>"; 
-                    // close interests (2)
+                }
+                echo "</div>"; 
+                // Close interests (3)
 
-                    // Div about uni
-                    echo "<div class=\"about_uni\"";
+                echo "</div>";
+                // Close info
+                
+
+                // Div admin
+                echo "<div class=\"admin\">";
+
+                $act_user = array("Friend", "Match", "Block");
+                $act_admin = array(3=>"Ban", "Edit");
+
+                $act_php = array("logic_fmatch.php", "logic_rmatch.php", 
+                    "logic_block.php", "logic_ban.php", "settings_admin.php");
+                $act_icons = array("friends", "matches", "block", "disable acc", "edit");
+                
+                foreach ($act_user as $key=>$act) {
+                    echo '<div class="admin_activity">';
                     
-                    if ($blocked) {
-                        echo "<p>...</p>";
-                    }
-                    else {
-                        echo "<p>Degree: {$uni["course"]} --- ";
-                        echo "Year: {$uni["c_year"]}</p>";
-                    }
-                    echo "</div>"; 
-                    // close about uni
+                    echo '<div class="admin_act"><img src="images\\'.$act_icons[$key].'.png"></div>';
+                    // form:
+                    echo '<form name="'.$sct.'" action="'.$act_php[$key].'" method="post">';
+                    echo '<input type="submit" name="'.$act.'" value="';
+                    if ($act == "Block" && $blocked) {
+                        // if we are displaying the blocked button and user is blocked, write Unblock
+                        echo "Unblock";
+                    } else echo $act; // otherwise, display activity as appears in array
+                    echo '">';
+                    echo '<input type="hidden" name="target_id" value="'.$target.'">';
+                    echo '</form>';
+                    echo '</div>';
+                }
 
-                    // Div interests (3)
-                    echo "<div class=\"interests\">";
-                    if ($blocked) echo "<div class=\"int_box\">???</div>";
-                    else {
-                        echo "<div class=\"int_box\">Gender: {$pers_info["gender"]}</div>";
-                        echo "<div class=\"int_box\">Nationality: {$pers_info["nationality"]}</div>";
-                        if ($pers_info["county"] != null) {
-                            echo "<div class=\"int_box\">County: {$pers_info["county"]}</div>";
-                        }
-                    }
-                    echo "</div>"; 
-                    // Close interests (3)
+                // report is special (has more fields)
+                $report_categories = array("Harassment", "Fake Profile", "Spam", "Inappropriate Messages",
+                    "Inappropriate Photos", "Hate Speech", "Bullying", "Underage User", "Impersonation",
+                    "Threats / Violence", "Suspicious Behavior", "Other");
 
-                    echo "</div>";
-                    // Close info
-                    
-
-                    // Div admin
-                    echo "<div class=\"admin\">";
-
-                    $act_user = array("Friend", "Match", "Block");
-                    $act_admin = array(3=>"Ban", "Edit");
-
-                    $act_php = array("logic_fmatch.php", "logic_rmatch.php", 
-                        "logic_block.php", "logic_ban.php", "settings_admin.php");
-                    $act_icons = array("friends", "matches", "block", "disable acc", "edit");
-                    
-                    foreach ($act_user as $key=>$act) {
+                echo '<div class="admin_activity">';
+                echo '<div class="admin_act"><img src="images\report.png"></div>';
+                // form:
+                echo '<form name="report" action="logic_report.php" method="post">';
+                echo '<fieldset>';
+                // section for user to select category---required---; and message
+                echo '<select name="category" required>';
+                echo '<option value="" selected disabled>Category</option>';
+                foreach ($report_categories as $cat) {
+                    echo '<option value="'.$cat.'">'.$cat.'</option>';
+                }
+                echo '</select><br>';
+                echo '<input type=text name="msg" required pattern="[^;]*" minlength="10" maxlength="200" size=20><br>';
+                echo '<input type="submit" name="report" value="Report">';
+                echo '<input type="hidden" name="target_id" value="'.$target.'">';
+                echo '</fieldset></form>';
+                echo '</div>';
+                
+                // if user is admin, more options will appear:
+                if ($admin) {
+                    foreach ($act_admin as $key=>$act) {
                         echo '<div class="admin_activity">';
                         
                         echo '<div class="admin_act"><img src="images\\'.$act_icons[$key].'.png"></div>';
                         // form:
-                        echo '<form name="'.$sct.'" action="'.$act_php[$key].'" method="post">';
+                        echo '<form name="'.$act.'" action="'.$act_php[$key].'" method="post">';
                         echo '<input type="submit" name="'.$act.'" value="';
-                        if ($act == "Block" && $blocked) {
+                        if ($act == "Ban" && $banned) {
                             // if we are displaying the blocked button and user is blocked, write Unblock
-                            echo "Unblock";
-                        } else echo $act; // otherwise, display activity as appears in array
+                            echo "Unban";
+                        } else echo $act;
                         echo '">';
                         echo '<input type="hidden" name="target_id" value="'.$target.'">';
                         echo '</form>';
                         echo '</div>';
                     }
-
-                    // report is special (has more fields)
-                    $report_categories = array("Harassment", "Fake Profile", "Spam", "Inappropriate Messages",
-                        "Inappropriate Photos", "Hate Speech", "Bullying", "Underage User", "Impersonation",
-                        "Threats / Violence", "Suspicious Behavior", "Other");
-
-                    echo '<div class="admin_activity">';
-                    echo '<div class="admin_act"><img src="images\report.png"></div>';
-                    // form:
-                    echo '<form name="report" action="logic_report.php" method="post">';
-                    echo '<fieldset>';
-                    // section for user to select category---required---; and message
-                    echo '<select name="category" required>';
-                    echo '<option value="" selected disabled>Category</option>';
-                    foreach ($report_categories as $cat) {
-                        echo '<option value="'.$cat.'">'.$cat.'</option>';
-                    }
-                    echo '</select><br>';
-                    echo '<input type=text name="msg" required pattern="[^;]*" minlength="10" maxlength="200" size=20><br>';
-                    echo '<input type="submit" name="report" value="Report">';
-                    echo '<input type="hidden" name="target_id" value="'.$target.'">';
-                    echo '</fieldset></form>';
-                    echo '</div>';
-                    
-                    // if user is admin, more options will appear:
-                    if ($admin) {
-                        foreach ($act_admin as $key=>$act) {
-                            echo '<div class="admin_activity">';
-                            
-                            echo '<div class="admin_act"><img src="images\\'.$act_icons[$key].'.png"></div>';
-                            // form:
-                            echo '<form name="'.$act.'" action="'.$act_php[$key].'" method="post">';
-                            echo '<input type="submit" name="'.$act.'" value="';
-                            if ($act == "Ban" && $banned) {
-                                // if we are displaying the blocked button and user is blocked, write Unblock
-                                echo "Unban";
-                            } else echo $act;
-                            echo '">';
-                            echo '<input type="hidden" name="target_id" value="'.$target.'">';
-                            echo '</form>';
-                            echo '</div>';
-                        }
-                    }
-
-                    echo "</div>";
-                    // Close admin
-                
                 }
+
+                echo "</div>";
+                // Close admin
+                
+                
                 ?>
 
                 </div> <!--Close main info -->
