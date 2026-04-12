@@ -175,11 +175,11 @@
                         echo '<label for="food_lifestyle">Food Lifestyle: </label>';
                         echo '<select name="food_lifestyle">';
                         echo '<option value="'.$ints["food_lifestyle"].'" selected>'.$ints["food_lifestyle"].'</option>';
-                        echo '<option value="normal">Normal</option>';
-                        echo '<option value="vegetarian">Vegetarian</option>';
-                        echo '<option value="vegan">Vegan</option>';
-                        echo '<option value="pescatarian">Pescatarian</option>';
-                        echo '<option value="other">Other</option>';
+                        echo '<option value="Normal">Normal</option>';
+                        echo '<option value="Vegetarian">Vegetarian</option>';
+                        echo '<option value="Vegan">Vegan</option>';
+                        echo '<option value="Pescatarian">Pescatarian</option>';
+                        echo '<option value="Other">Other</option>';
                         echo '</select>';
                         echo '<br>';
                         echo '<label for="food_display">Display: </label>';
@@ -189,9 +189,9 @@
                         echo '<label for="personality">Personality: </label>';
                         echo '<select name="personality">';
                         echo '<option value="'.$ints["personality"].'" selected>'.$ints["personality"].'</option>';
-                        echo '<option value="extrovert">Extrovert</option>';
-                        echo '<option value="introvert">Introvert</option>';
-                        echo '<option value="ambivert">Ambivert</option>';
+                        echo '<option value="Extrovert">Extrovert</option>';
+                        echo '<option value="Introvert">Introvert</option>';
+                        echo '<option value="Ambivert">Ambivert</option>';
                         echo '</select>';
                         echo '<br>';
                         echo '<label for="personality_display">Display: </label>';
@@ -201,13 +201,13 @@
                         echo '<label for="sexuality">Sexuality: </label>';
                         echo '<select name="sexuality">';
                         echo '<option value="'.$ints["sexuality"].'" selected>'.$ints["sexuality"].'</option>';
-                        echo '<option value="straight">Straight</option>';
-                        echo '<option value="gay">Gay</option>';
-                        echo '<option value="lesbian">Lesbian</option>';
-                        echo '<option value="bisexual">Bisexual</option>';
-                        echo '<option value="pansexual">Pansexual</option>';
-                        echo '<option value="asexual">Asexual</option>';
-                        echo '<option value="other">Other</option>';
+                        echo '<option value="Straight">Straight</option>';
+                        echo '<option value="Gay">Gay</option>';
+                        echo '<option value="Lesbian">Lesbian</option>';
+                        echo '<option value="Bisexual">Bisexual</option>';
+                        echo '<option value="Pansexual">Pansexual</option>';
+                        echo '<option value="Asexual">Asexual</option>';
+                        echo '<option value="Other">Other</option>';
                         echo '</select>';
                         echo '<br>';
                         echo '<label for="sexuality_display">Display: </label>';
@@ -217,7 +217,7 @@
                         // Section for interest, repeated five times
                         $interest_ops = array("Sports", "Music", "Gaming", "Reading",
                         "Travel", "Cooking", "Fitness", "Photography", "Art", "Technology",
-                        "Movies", "Fashion", "Nature", "Dance", "Writing");
+                        "Movies", "Fashion", "Nature", "Dance", "Writing", null);
                         for ($i=1; $i<6; $i++) {
                             echo '<label for="interest'.$i.'">Interest '.$i.': </label>';
                             echo '<select name="interest'.$i.'">';
