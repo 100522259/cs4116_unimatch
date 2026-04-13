@@ -227,7 +227,6 @@
                 <form name="images" action="settings_handler.php" method="post" autocomplete="off">
                     <fieldset><legend>Image Upload</legend><br>
                     <?php
-                        echo 'Apologies, we are still working on this section...<br><br>';
                         
                         echo '<label for="pfp">Upload Profile Photo: </label>';
                         echo '<input type="submit" name="rmv'.$i.'" value="Remove image"><br><br>';

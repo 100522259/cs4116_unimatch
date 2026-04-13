@@ -238,8 +238,6 @@
                         <!--file cannot be sent in a single part-->
                     <fieldset><legend>Image Upload</legend><br>
                     <?php
-                        echo 'Apologies, we are still working on this section...<br><br>';
-                        
                         echo '<label for="pfp">Upload Profile Photo: </label>';
                         echo '<input type="file" name="profile_pic" accept=".jpg, .jpeg, .png"><br><br>';
                     

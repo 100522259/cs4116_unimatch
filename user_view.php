@@ -30,11 +30,11 @@
                 include "./logic_blocked_user.php";
                 $blocked = blocked_user($sess_id, $target_id); // sess id comde from view queries
                 $banned = banned_user($target_id);
-
+                $path_images = "/unimatch/user/" . $creds["username"] . "/";
                 
                 // Div pfp
                 echo "<div class=\"pfp\">";
-                echo "<img src=\"/unimatch/images/{$images["profile_pic"]}\" alt=\"profile pic\">";
+                echo '<img src="' . $path_images . $images["profile_pic"] . '" alt="profile pic">';
                 echo "</div>";
                 // close pfp
 
@@ -206,9 +206,9 @@
                         if ($num_photos == 0) echo "Oh, seems like {$pers_info["first_name"]} doesn't have any photos yet!";
                         for($i=0; $i < $num_photos; $i++) {
                             $num = $i+1;
-                            echo "<div class=\"photo\">";
-                            echo "<img src=\"/unimatch/images/{$images["pic_$num"]}\" alt=\"photo" . $num . "\">";
-                            echo "</div>";
+                            echo '<div class="photo">';
+                            echo '<img src="' . $path_images . $images["pic_{$num}"] . '" alt="photo' . $num . '">';
+                            echo '</div>';
                         }
                     ?>
                 </div>

@@ -102,10 +102,9 @@ if (isset($_POST["submit_acad"])) {
     }
     
     // b. year
-    if ($_POST["C_year"] != $uni["c_year"]) {
+    if ($_POST["c_year"] != $uni["c_year"]) {
         $stmt = $conn->prepare("UPDATE academic_info SET c_year = ? WHERE user_id = {$user_id};");
-        $stmt->bind_param("i", $_POST["year"]);
-        if ($stmt === false) echo "Something bad happened :( <br>";
+        $stmt->bind_param("i", $_POST["c_year"]);
         $stmt->execute();
     }
 }
