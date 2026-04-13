@@ -22,7 +22,8 @@ function fail2(string $msg) {
     exit;
 }
 
-$user_id = (int) $_SESSION['user_id'];
+$user_id  = (int)    $_SESSION['user_id'];
+$username = (string) $_SESSION['username'];
 
 // Bio
 $bio = trim($_POST['bio'] ?? '');
@@ -61,13 +62,13 @@ if (!empty($_FILES['profile_pic']['name'])) {
         fail2('Only JPG, PNG, GIF or WEBP images are allowed.');
     }
 
-    // Build safe filename: <user_id>_<timestamp>.<ext>
+    // Build safe filename: pfp.<ext>
     $ext      = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
     $ext      = preg_replace('/[^a-z0-9]/', '', $ext);
-    $filename = $user_id . '_' . time() . '.' . $ext;
+    $filename = 'pfp.' . $ext;
 
-    // Ensure uploads
-    $upload_dir = __DIR__ . '/uploads/';
+    // Save into user/{username}/ folder (created at step 1)
+    $upload_dir = __DIR__ . '/user/' . $username . '/';
     if (!is_dir($upload_dir)) {
         mkdir($upload_dir, 0755, true);
     }
@@ -78,8 +79,8 @@ if (!empty($_FILES['profile_pic']['name'])) {
         fail2('Could not save the photo. Please try again.');
     }
 
-    // Store relative path in the DB
-    $new_pic_path = 'uploads/' . $filename;
+    // Store just the filename in the DB (matches settings_handler.php convention)
+    $new_pic_path = $filename;
 }
 
 // Database updates

@@ -172,8 +172,15 @@ try {
 
 $conn->close();
 
-// store user_id in session for step 2
+// create per-user folder: user/{username}/
+$user_folder = __DIR__ . '/user/' . $signup_username . '/';
+if (!is_dir($user_folder)) {
+    mkdir($user_folder, 0755, true);
+}
+
+// store user_id and username in session for step 2
 $_SESSION['user_id']            = $user_id;
+$_SESSION['username']           = $signup_username;
 $_SESSION['signup_in_progress'] = true;
 
 header('Location: html/signup_step2.html');
