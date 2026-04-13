@@ -47,8 +47,8 @@ if ($signup_password !== $confirm_password) {
     fail('Passwords do not match.');
 }
 
-if (strlen($signup_password) < 4) {
-    fail('Password must be at least 4 characters long.');
+if (strlen($signup_password) < 7) {
+    fail('Password must be at least 7 characters long.');
 }
 
 // duplicate email check 
