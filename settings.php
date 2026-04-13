@@ -233,21 +233,24 @@
                     <input type="submit" name="submit_int" value="Save Changes">
                 </form><br><br>
 
-                <form name="images" action="settings_handler.php" method="post" autocomplete="off">
+                <form name="images" action="settings_handler.php" method="post" autocomplete="off"
+                        enctype="multipart/form-data">
+                        <!--file cannot be sent in a single part-->
                     <fieldset><legend>Image Upload</legend><br>
                     <?php
                         echo 'Apologies, we are still working on this section...<br><br>';
                         
                         echo '<label for="pfp">Upload Profile Photo: </label>';
-                        echo '<input type="file" name="pfp"><br><br>';
+                        echo '<input type="file" name="profile_pic" accept=".jpg, .jpeg, .png"><br><br>';
                     
                         for ($i=1; $i<6; $i++) {
                             echo '<label for="image'.$i.'">Upload Image '.$i.': </label>';
-                            echo '<input type="file" name="image'.$i.'">';
+                            echo '<input type="file" name="pic_'.$i.'" accept=".gif, .jpg, .jpeg, , .png">';
                             echo '<input type="submit" name="rmv'.$i.'" value="Remove image"><br><br>';
                         }
                     ?>
                     </fieldset>
+                    <input type="submit" name="submit_img" value="Save Changes">
                 </form><br><br>
             </div>
         </div>
