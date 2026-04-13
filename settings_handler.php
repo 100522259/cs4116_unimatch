@@ -13,17 +13,43 @@ if (isset($_POST["target_id"])) { // include user_view_queries
     $loc = "settings.php";
 }
 
+function fail(string $msg, $loc) {
+    header('Location: ' . $loc . '?error=' . urlencode($msg));
+    exit;
+}
+
+// We must define the target directory: 
+$target_dir = "./user/".$creds["username"]."/";
+$store_dir = "/".$creds["username"]."/";
+
 
 // 1. FORM CREDENTIALS
 if(isset($_POST["submit_cred"])) {
-    
     // a. Check that username is changed
     // TODO: CHECK AGAINST EXISTING USERNAMES
     if ($_POST["username"] != $creds["username"]) {
-        $stmt = $conn->prepare("UPDATE credentials SET username = ? WHERE user_id = ?;");
-        $stmt->bind_param("si", $_POST["username"], $user_id);
-        if ($stmt === false) echo "Something bad happened :( <br>";
-        $stmt->execute();
+        // check username uniqueness
+        $username = $_POST["username"];
+        
+        $stmt_sel = $conn->prepare("SELECT user_id FROM credentials WHERE username = ? AND user_id != ?");
+        $stmt_sel->bind_param("si", $username, $user_id);
+        $stmt_sel->execute();
+        $result = $stmt_sel->get_result();
+        $exist = $result->fetch_assoc();
+        if ($exist) { // username taken, cannot change
+            fail("Username already taken!", $loc);
+
+        } else {
+            $stmt = $conn->prepare("UPDATE credentials SET username = ? WHERE user_id = ?;");
+            $stmt->bind_param("si", $username, $user_id);
+            $stmt->execute();
+
+            // in addition, we have to rename their resources folder
+            $new_dir = "./user/" . $username . "/";
+            if (!rename($target_dir, $new_dir)) {
+                die("Folder rename failed");
+            }
+        }
     }
 
 
@@ -35,6 +61,9 @@ if(isset($_POST["submit_cred"])) {
         $stmt->bind_param("s", $_POST["password"]);
         if ($stmt === false) echo "Something bad happened :( <br>";
         $stmt->execute();
+    } elseif ($_POST["password"] != $creds["password"] &&
+            $_POST["password"] != $_POST["password2"]) {
+        fail("Different passwords", $loc);
     }
 }
 
@@ -117,17 +146,30 @@ if (isset($_POST["submit_int"])) {
 
 
 // HERE WE HANDLE ALL IMAGE RELATED!
-// We must define the target directory: 
-$target_dir = "./user/".$_SESSION["username"]."/";
-$store_dir = "/".$_SESSION["username"]."/";
 // We must also define the sql logic to store the image properly:
 // SELECT we have from user_queries or user_view_queries
 // UPDATE must be prepared inside the loop, because column name changes each time
 
-// 5. Delete images
+// 5. Delete images: unlink
 for ($i=1; $i<=5; $i++) {
     if (isset($_POST["rmv{$i}"])){
-        echo "hello";
+        $pic = "pic_" . $i;
+        // check if there was a value in that position:
+        if ($images[$pic] == null) { // if null, do nothing
+            continue;
+        } else {
+            $num = $images["pic_num"] - 1; 
+            // get image path; images stored as: /<username>/<filename>.<extension>
+            $file_name = $target_dir . $images[$pic];
+            unlink($file_name);
+            // update database:
+            $null = null;
+            $stmt_img = $conn->prepare("UPDATE images SET {$pic} = ?, pic_num = ? WHERE user_id = ?");
+            $stmt_img->bind_param("sii", $null, $num, $user_id);
+            if (!$stmt_img->execute()) {
+                die("SELECT failed: " . $stmt_img->error);
+            }
+        }
     }
 }
 
@@ -138,10 +180,63 @@ for ($i=1; $i<=5; $i++) {
 // https://www.educative.io/answers/what-is-php-files-constant
 // https://www.w3schools.com/php/php_file_upload.asp
 //
-// a. TODO: PROFILE PIC
 
-// b. other pics
+function readyForUpload($pic, $target_file) {
+    $uploadOk = 1;
+    $file_type = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+    // ..["tmp_name"] is the temporary file that holds the content
+    $check = getimagesize($_FILES[$pic]["tmp_name"]);
+    if($check !== false) {
+        $uploadOk = 1; // file is an image
+    } else {
+        $uploadOk = 0;
+        //echo "File is not an image!<br>"; // TODO TEMPORAL CODE 
+    }
+
+    // check if file already exists in folder:
+    if (file_exists($target_file)) {
+        //echo "File already exists<br>";
+        $uploadOk = 0;
+    }
+
+    // Check file size: max of 500KB
+    if ($_FILES[$pic]["size"] > 500000){
+        //echo "File is too large<br>";
+        $uploadOk = 0;
+    }
+
+    // Limit file type (already done in form, but it can be bypassed)
+    // Second check for increased safety
+    if($file_type != "jpg" && $file_type != "png" && 
+            $file_type != "jpeg" && $file_type != "gif") {
+        //echo "Wrong file extension<br>";
+        $uploadOk = 0;
+    }
+    return $uploadOk;
+}
+
 if (isset($_POST["submit_img"])) {
+    // a. TODO: PROFILE PIC
+    $pic = "profile_pic";
+    if ((isset($_FILES[$pic]) && $_FILES[$pic]["error"] != 4)) {
+        $target_file = $target_dir . basename($_FILES[$pic]["name"]);
+        $store_name = basename($_FILES[$pic]["name"]);
+        
+        $uploadOk = readyForUpload($pic, $target_file);
+        if ($uploadOk == 1) {
+            if (move_uploaded_file($_FILES[$pic]["tmp_name"], $target_file)) {
+                // Success! Now we have to update the database:
+                $stmt_img = $conn->prepare("UPDATE images SET profile_pic = ? WHERE user_id = ?");
+                $stmt_img->bind_param("si", $store_name, $user_id);
+                if (!$stmt_img->execute()) {
+                    die("SELECT failed: " . $stmt_img->error);
+                }
+                //echo "File uploaded!<br>";
+            }
+        }
+    }
+    
+    // b. other pics
     for ($i=1; $i<=5; $i++){
         $pic = "pic_".$i;
 
@@ -150,37 +245,9 @@ if (isset($_POST["submit_img"])) {
             continue; // file not set: skip
         }
         $target_file = $target_dir . basename($_FILES[$pic]["name"]);
-        $store_name = $store_dir . basename($_FILES[$pic]["name"]);
-        $uploadOk = 1;
-        $file_type = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
-        // ..["tmp_name"] is the temporary file that holds the content
-        $check = getimagesize($_FILES[$pic]["tmp_name"]);
-        if($check !== false) {
-            $uploadOk = 1; // file is an image
-        } else {
-            $uploadOk = 0;
-            //echo "File is not an image!<br>"; // TODO TEMPORAL CODE 
-        }
-
-        // check if file already exists in folder:
-        if (file_exists($target_file)) {
-            //echo "File already exists<br>";
-            $uploadOk = 0;
-        }
-
-        // Check file size: max of 500KB
-        if ($_FILES[$pic]["size"] > 500000){
-            //echo "File is too large<br>";
-            $uploadOk = 0;
-        }
-
-        // Limit file type (already done in form, but it can be bypassed)
-        // Second check for increased safety
-        if($file_type != "jpg" && $file_type != "png" && 
-                $file_type != "jpeg" && $file_type != "gif") {
-            //echo "Wrong file extension<br>";
-            $uploadOk = 0;
-        }
+        $store_name = basename($_FILES[$pic]["name"]);
+        
+        $uploadOk = readyForUpload($pic, $target_file);
 
         // Check uploadOk: if 0, there was an error
         if ($uploadOk == 0) {
