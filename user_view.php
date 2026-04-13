@@ -132,7 +132,7 @@
                         echo "Unblock";
                     } else echo $act; // otherwise, display activity as appears in array
                     echo '">';
-                    echo '<input type="hidden" name="target_id" value="'.$target.'">';
+                    echo '<input type="hidden" name="target_id" value="'.$target_id.'">';
                     echo '</form>';
                     echo '</div>';
                 }
@@ -156,7 +156,7 @@
                 echo '</select><br>';
                 echo '<input type=text name="msg" required pattern="[^;]*" minlength="10" maxlength="200" size=20><br>';
                 echo '<input type="submit" name="report" value="Report">';
-                echo '<input type="hidden" name="target_id" value="'.$target.'">';
+                echo '<input type="hidden" name="target_id" value="'.$target_id.'">';
                 echo '</fieldset></form>';
                 echo '</div>';
                 
@@ -174,7 +174,7 @@
                             echo "Unban";
                         } else echo $act;
                         echo '">';
-                        echo '<input type="hidden" name="target_id" value="'.$target.'">';
+                        echo '<input type="hidden" name="target_id" value="'.$target_id.'">';
                         echo '</form>';
                         echo '</div>';
                     }
