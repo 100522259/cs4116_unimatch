@@ -91,7 +91,7 @@
                             <h4>Banned Users</h4>
                             <?php
                             session_start();
-                            $_SESSION["location"] = "/admin.php";
+                            $_SESSION["location"] = "unimatch/admin.php";
 
                             echo "<table class=\"scroll\">";
                             echo "<thead><tr><th>User</th><th>View</th><th>Unban</th></tr></thead>";

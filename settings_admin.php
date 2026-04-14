@@ -42,7 +42,7 @@
                 <!--Credentials cannot be modified by admin-->
 
                 <!--Form for the user to change their user details-->
-                <form name="basic_settings" action="settings_handler.php" method="post" autocomplete="off">
+                <form class="settings" name="basic_settings" action="settings_handler.php" method="post" autocomplete="off">
                     <fieldset><legend>Personal Info</legend><br>
                     <?php
                         // ADMIN CAN EDIT USER PROFILE, DETERMINED BY SUBMIT "EDIT"
@@ -109,7 +109,7 @@
                 </form><br><br>
 
 
-                <form name="academic_info" action="settings_handler.php" method="post" autocomplete="off">
+                <form class="settings" name="academic_info" action="settings_handler.php" method="post" autocomplete="off">
                     <fieldset><legend>Academic Info</legend><br>
                     <?php
                         // ADMIN CAN EDIT USER PROFILE, DETERMINED BY SUBMIT "EDIT"
@@ -134,7 +134,7 @@
                     <input type="submit" name="submit_acad" value="Save Changes">
                 </form><br><br>
 
-                <form name="interests" action="settings_handler.php" method="post" autocomplete="off">
+                <form class="settings" name="interests" action="settings_handler.php" method="post" autocomplete="off">
                     <fieldset><legend>Interests</legend><br>
                     <?php
                         // ADMIN CAN EDIT USER PROFILE, DETERMINED BY SUBMIT "EDIT"
@@ -224,7 +224,7 @@
                     <input type="submit" name="submit_int" value="Save Changes">
                 </form><br><br>
 
-                <form name="images" action="settings_handler.php" method="post" autocomplete="off">
+                <form class="settings" name="images" action="settings_handler.php" method="post" autocomplete="off">
                     <fieldset><legend>Image Upload</legend><br>
                     <?php
                         

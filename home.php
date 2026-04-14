@@ -32,7 +32,6 @@
                         </form>
                     </div>
                     <div class="filters">
-                        Advanced Filters
                         <form name="filters" action="search.php" method="post" autocomplete="on">
                         <fieldset><legend>Advanced Filters</legend>
                         <div class="f-container">
@@ -97,7 +96,7 @@
 
                 <div class="possible-match">
                     <div class="sub-match">
-                        <div class="match-title">See your possible friend matches!</div>
+                        <div class="match-title">Friend matches!</div>
                         <div class="match-display">
                             <!-- Approx two users displayed in a scrollable section-->
                             <?php
@@ -146,7 +145,7 @@
                     <br><br>
                     
                     <div class="sub-match">
-                        <div class="match-title">See your possible date matches!</div>
+                        <div class="match-title">Date matches!</div>
                         <div class="match-display">
                             <!-- Approx two users displayed in a scrollable section-->
                             <?php

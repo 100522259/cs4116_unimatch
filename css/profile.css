@@ -41,7 +41,6 @@ body {
     flex: 1;
     background-color: rgb(46, 98, 69);
     /*border: 1px solid blue;*/
-    padding: 10px;
 }
 
 .index a {
@@ -55,6 +54,9 @@ body {
     border: 1px solid green;
     max-width: 100%;
     align-items: center;
+    display: flex;
+    justify-content: center;
+    margin: 10px;
 }
 
 .logo img {
@@ -65,6 +67,7 @@ body {
 .idx_icons{
     border: 1px solid pink;
     margin-top: 30px;
+    margin: 0 5px;
 }
 
 .pages {
@@ -102,13 +105,16 @@ body {
 
 .main_info {
     display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
 }
 
 .pfp {
     flex: 3;
     /*border: 1px solid red;*/
     max-width: 300px;
-    min-width: 150px;
+    min-width: 200px;
 }
 .pfp img {
     width: 100%;
@@ -117,14 +123,14 @@ body {
     border: 2px double white;
 }
 
-.info{
+.info {
     flex: 5;
     /*border: 1px solid red;*/
     background-color: rgb(232, 241, 236);
     border-radius: 15px;
-    margin-left: 20px;
     padding: 0 10px;
     align-content: space-around;
+    min-width: 300px;
 }
 
 .user_title{
@@ -176,9 +182,7 @@ h4 {
     border-radius: 10px;
     background-color: rgb(214, 227, 220);
     text-align: center;
-    padding: 0px 10px;
-    width: 30%;
-    height: auto;
+    padding: 2px 15px;
     border: 1px solid rgb(46, 98, 69);
 }
 
@@ -221,11 +225,10 @@ h4 {
 .admin {
     flex: 2;
     order: 3;
-    margin-left: 20px;
     /*border: 1px solid red;*/
     background-color: rgb(232, 241, 236);
     border-radius: 10px;
-    align-content: space-around;
+    align-content: center;
 }
 
 .admin_activity {
@@ -236,7 +239,7 @@ h4 {
     border-radius: 5px;
     justify-content:flex-start;
     align-items: center;
-    height: 30px;
+    height: auto;
 }
 
 .admin_act p {
@@ -251,6 +254,11 @@ h4 {
     max-width: 20px;
 }
 
+.admin_activity fieldset {
+    margin: 5px 0;
+    border-radius: 10px;
+    padding: 5px;
+}
 
 
 /* ADMIN PAGE */
@@ -266,7 +274,8 @@ h4 {
     margin-top: 10px;
     display: flex;
     justify-content: space-between;
-    gap: 10px;
+    gap: 15px;
+    flex-wrap: wrap;
 }
 
 .data-tables {
@@ -275,6 +284,7 @@ h4 {
     flex: 3;
     display: flex;
     gap: 10px;
+    min-width: 400px;
 }
 
 .data-statistics {
@@ -303,6 +313,7 @@ table.scroll {
     flex-flow: column;
     max-height: 150px;
     width: 100%;
+    font-size: small;
 }
 table.scroll thead {
     /* head takes the height it requires, 
@@ -398,6 +409,7 @@ table.scroll thead, table.scroll tbody tr {
 .match-title {
     margin: 5px 0;
     text-transform: uppercase;
+    text-align: center;
 }
 
 .match-display {
@@ -405,6 +417,7 @@ table.scroll thead, table.scroll tbody tr {
     flex-wrap: wrap;
     flex-direction: row;
     gap: 20px 10px;
+    justify-content: center;
 }
 
 .user {
@@ -449,5 +462,15 @@ table.scroll thead, table.scroll tbody tr {
 }
 
 
+/* SETTINGS */
+form.settings fieldset {
+    width: 90%;
+    border-radius: 10px;
+    padding: 0 5px;
+    border-color: rgb(46, 98, 69);
+}
 
+form.settings legend {
+    margin-left: 10px;
+}
 
