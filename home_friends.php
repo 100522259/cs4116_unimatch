@@ -40,10 +40,14 @@ $user_ints = array($user["interest1"], $user["interest2"],
 $match = [];
 while($row = $result2->fetch_assoc()) {
 
+    //echo $row["user_id"].' - ';
+    $target_id = $row["user_id"];
+    
     // 1. check if student is or has been blocked: prevent display:
-    $blocked = blocked_user($user_id, $target_id);
-    if ($blocked) {
-        //echo "blocked...<br>";
+    $has_blocked = blocked_user($user_id, $target_id);
+    $is_blocked = blocked_user($target_id, $user_id);
+    if ($has_blocked || $is_blocked) {
+        //echo "$target_id blocked...<br>";
         continue; // skip!
     }
 

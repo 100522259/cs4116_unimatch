@@ -29,6 +29,14 @@
                 include "./user_view_queries.php";
                 include "./logic_blocked_user.php";
                 $blocked = blocked_user($sess_id, $target_id); // sess id comde from view queries
+                
+                // blocked  admin   no display
+                //    0     0 -> 1        0
+                //    0     1 -> 0        0
+                //    1     0 -> 1        1
+                //    1     1 -> 0        0
+                $no_display = $blocked && !$admin;
+
                 $banned = banned_user($target_id);
                 $path_images = "/unimatch/user/" . $creds["username"] . "/";
                 
@@ -47,12 +55,12 @@
                 echo "<div class=\"age\"><h4>{$pers_info["age"]}</h4></div></div>"; 
                 // close user title
                 
-                if ($blocked) echo "<div class=\"bio\">...</div>";
+                if ($blocked && !$admin) echo "<div class=\"bio\">...</div>";
                 else echo "<div class=\"bio\"><p>{$pers_info["bio"]}</p></div>";
             
                 // Div interests (1)
                 echo "<div class=\"interests\">";
-                if ($blocked) {
+                if ($blocked && !$admin) {
                     echo "<div class=\"int_box\">???</div>";
                 } else {
                     // Special interests boxes: display or not?
@@ -69,7 +77,7 @@
                 // A query would be done here to obtain the interests
                 for ($i = 0; $i < 5; $i++) {
                     $num = $i + 1;
-                    if ($blocked) {
+                    if ($blocked && !$admin) {
                         echo "<div class=\"int_box\">???</div>"; 
                         break;
                     }
@@ -83,7 +91,7 @@
                 // Div about uni
                 echo "<div class=\"about_uni\"";
                 
-                if ($blocked) {
+                if ($blocked && !$admin) {
                     echo "<p>...</p>";
                 }
                 else {
@@ -95,7 +103,7 @@
 
                 // Div interests (3)
                 echo "<div class=\"interests\">";
-                if ($blocked) echo "<div class=\"int_box\">???</div>";
+                if ($blocked && !$admin) echo "<div class=\"int_box\">???</div>";
                 else {
                     echo "<div class=\"int_box\">Gender: {$pers_info["gender"]}</div>";
                     echo "<div class=\"int_box\">Nationality: {$pers_info["nationality"]}</div>";
