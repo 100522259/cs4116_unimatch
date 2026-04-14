@@ -105,7 +105,6 @@
     table.scroll tbody tr {
         height: 30px;
     }
-}
 
 
     /* HOME AND SEARCH */
@@ -122,3 +121,7 @@
     form.settings textarea {
         max-width: 250px;
     }
+}
+
+
+    
