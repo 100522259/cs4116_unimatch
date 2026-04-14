@@ -20,12 +20,14 @@ include_once "./logic_blocked_user.php";
 // Following query for session user info
 $sql1 = "SELECT i.user_id, i.food_lifestyle, i.sexuality,
                 i.interest1, i.interest2, i.interest3, i.interest4, i.interest5,
-                a.course, p.gender
+                a.course, p.gender, img.profile_pic
         FROM interests AS i
         INNER JOIN academic_info AS a
              ON i.user_id = a.user_id
         INNER JOIN personal_info as p
             ON p.user_id = i.user_id
+        INNER JOIN images as img
+            ON img.user_id = i.user_id
         WHERE i.user_id = {$user_id};";
 
 $result1 = $conn->query($sql1);
@@ -121,12 +123,14 @@ while($row = $result2->fetch_assoc()) {
 if (!empty($match)) {
     $match_str = implode(",", $match);
     $sql = "SELECT U.user_id, U.first_name, U.age, I.interest1, 
-            I.interest2, P.profile_pic FROM 
+            I.interest2, P.profile_pic, C.username FROM 
             personal_info AS U
             INNER JOIN interests AS I
                 ON U.user_id = I.user_id
             INNER JOIN images as P
             ON U.user_id = P.user_id
+            INNER JOIN credentials as C
+                ON U.user_id = C.user_id
             WHERE U.user_id IN ({$match_str});";
     $f_result = $conn->query($sql);
 } else echo "Oh... No matches...";

@@ -20,34 +20,33 @@
             <div class="main">
                 <div class="main-search">
                     <!--A form to search will appear here-->
-                    <div class="header">
+                    <div class="header-text">
                         <h1>Search</h1>
                     </div>
                     <div class="search">
-                        <!--The following form will allow search via username or name
-                            ONLY USERNAME FOR NOW!! -->
                         <form name="search" action="search.php" method="post" autocomplete="on">
-                            <input type="text" name="uname" pattern="[A-Za-z0-9]{1,20}" maxlength="20"
-                                size="50" title="Write target username" required placeholder="Search users...">
-                            <input type="submit" name="search" value="Search">
+                            <input id="sbar" type="text" name="uname" minlength="1" maxlength="20"
+                                title="Write target username" placeholder="Search users..." required>
+                            <input class="submit" type="submit" name="search" value="Search">
                         </form>
                     </div>
                     <div class="filters">
-                        Advanced Filters
                         <form name="filters" action="search.php" method="post" autocomplete="on">
+                        <fieldset><legend>Advanced Filters</legend>
+                        <div class="f-container">
                             <?php
                             // 1. gender
+                            echo '<div class="f-section">';
                             echo '<select name="gender">';
                             echo '<option value="gender" selected disabled>Gender</option>';
-                            $gender = array("male", "female", "non-binary", "other");
+                            $gender = array("Male", "Female", "Non-binary", "Other");
                             foreach ($gender as $val) {
                                 echo '<option value="'.$val.'">'.$val.'</option>';
                             }
                             echo '</select>';
                             
                             // 2. min age
-                            echo '<label>Age range</label>';
-                            echo '<select name="min_age">';
+                            echo '<select id="min_age" name="min_age">';
                             echo '<option value="min_age" selected disabled>Min Age</option>';
                             for ($i=18; $i<=30; $i++) {
                                 echo '<option value="'.$i.'">'.$i.'</option>';
@@ -61,7 +60,9 @@
                                 echo '<option value="'.$i.'">'.$i.'</option>';
                             }
                             echo '</select>';
+                            echo '</div>';
 
+                            echo '<div class="f-section">';
                             // 4. course
                             echo '<input type="text" name="course" pattern="[A-Za-z"]{2,20}
                                     maxlength="20" size="20" title="Write course you are looking for"
@@ -72,7 +73,6 @@
                             $interest_ops = array("Sports", "Music", "Gaming", "Reading",
                             "Travel", "Cooking", "Fitness", "Photography", "Art", "Technology",
                             "Movies", "Fashion", "Nature", "Dance", "Writing");
-                            echo '<label>Interests</label>';
                             for ($i=1; $i<3; $i++) {
                                 echo '<select name="interest'.$i.'">';
                                 echo '<option value="interest '.$i.'" selected disabled>Interest '.$i.'</option>';
@@ -82,11 +82,14 @@
                                 }
                                 echo '</select>';
                             }
+                            echo '</div>';
                             ?>
-
-                            <input type="submit" name="filter" value="Apply Filters">
-                            <br><br>
-                        </form>
+                            
+                            <div class="f-section">
+                            <input class="submit" type="submit" name="filter" value="Apply Filters">
+                            </div>
+                        </div>
+                        </fieldset></form>
                     </div>
                 </div>
                 
@@ -99,20 +102,22 @@
 
                         // A. search by username...
                         if (isset($_POST["search"])) {
-                            echo "via username...<br><br>";
                             // check that the submitted value is not empty
                             
                             // Use normal sql string, a select doesn't have injection risk
                             $sname = $_POST["uname"];
-                            $sql = "SELECT P.user_id FROM credentials AS C 
+                            $search = '%' . $sname . '%';
+
+                            $stmt = $conn->prepare("SELECT P.user_id FROM credentials AS C 
                                     INNER JOIN personal_info as P
                                         ON C.user_id = P.user_id
-                                WHERE (LOWER(C.username) LIKE LOWER('%$sname%')
-                                OR LOWER(P.first_name) LIKE LOWER('%$sname%')
-                                OR LOWER(P.last_name) LIKE LOWER('%$sname%'))
-                                AND C.user_id != {$user_id};";
-                            
-                            $result = $conn->query($sql);
+                                    WHERE (LOWER(C.username) LIKE LOWER(?)
+                                    OR LOWER(P.first_name) LIKE LOWER(?)
+                                    OR LOWER(P.last_name) LIKE LOWER(?))
+                                    AND C.user_id != ?");
+                            $stmt->bind_param("sssi", $search, $search, $search, $user_id);
+                            $stmt->execute();
+                            $result = $stmt->get_result();
 
                             $ids = [];
 
@@ -128,12 +133,14 @@
                                 
                                 // We query user details to print out
                                 $sql = "SELECT U.user_id, U.first_name, U.age, I.interest1, 
-                                    I.interest2, P.profile_pic FROM 
+                                    I.interest2, P.profile_pic, C.username FROM 
                                     personal_info AS U
                                     INNER JOIN interests AS I
                                         ON U.user_id = I.user_id
                                     INNER JOIN images as P
-                                    ON U.user_id = P.user_id
+                                        ON U.user_id = P.user_id
+                                    INNER JOIN credentials as C
+                                        ON U.user_id = C.user_id
                                     WHERE U.user_id IN ({$ids_str});";
                                 
                                 $us_result = $conn->query($sql);
@@ -141,18 +148,20 @@
                                 $count=0;
                                 while ($usr = $us_result->fetch_assoc()) {
 
+                                    $pfp = './user/' . $usr["username"] . '/' . $usr["profile_pic"];
+
                                     echo '<div class="user">';
-                                    echo '<img src="./images/small_pfp.png" alt="pfp"><br>'; // not real pfp stored, will work on that
+                                    echo '<img src="' . $pfp . '" alt="pfp">';    
+
                                     echo '<p>'.$usr["first_name"].', '.$usr["age"].'</p>';
-                                    echo '<p>';
                                     if ($usr["interest1"] != null) {
-                                        echo $usr["interest1"].' ';
+                                        echo '<p>' . $usr["interest1"].'</p>';
                                     }
                                     if ($usr["interest2"] != null) {
-                                        echo ' - '.$usr["interest2"];
+                                        echo '<p>' . $usr["interest2"] . '</p>';
                                     }
-                                    echo '</p>';
                                     // form for user to friend-match
+                                    echo '<div class="dform">';
                                     echo '<form name="f_match'.$count.'" action="logic_fmatch.php" method="post">';
                                     echo '<input type="submit" name="f'.$count.'" value="Friend">';
                                     echo '<input type="hidden" name="target_id" value="'.$usr["user_id"].'">';
@@ -169,7 +178,7 @@
                                     echo '<input type="submit" name="v'.$count.'" value="View">';
                                     echo '<input type="hidden" name="target_id" value="'.$usr["user_id"].'">';
                                     echo '</form>';
-                                    echo '</div><br>';
+                                    echo '</div></div><br>';
 
                                     $count++; // count number of friend matches
                                 }
@@ -180,7 +189,6 @@
 
                         // B. Filter
                         if (isset($_POST["filter"])) {
-                            echo "via filter...<br><br>";
                             // generate the sql query, that will have more or less conditons
                             // based on the filters selected
 
@@ -247,12 +255,14 @@
                                     
                                     // We query user details to print out
                                     $sql = "SELECT U.user_id, U.first_name, U.age, I.interest1, 
-                                        I.interest2, P.profile_pic FROM 
+                                        I.interest2, P.profile_pic, C.username FROM 
                                         personal_info AS U
                                         INNER JOIN interests AS I
                                             ON U.user_id = I.user_id
                                         INNER JOIN images as P
-                                        ON U.user_id = P.user_id
+                                            ON U.user_id = P.user_id
+                                        INNER JOIN credentials as C
+                                            ON U.user_id = C.user_id    
                                         WHERE U.user_id IN ({$ids_str});";
                                     
                                     $us_result = $conn->query($sql);
@@ -260,18 +270,20 @@
                                     $count = 0;
                                     while ($usr = $us_result->fetch_assoc()) {
 
+                                        $pfp = './user/' . $usr["username"] . '/' . $usr["profile_pic"];
                                         echo '<div class="user">';
-                                        echo '<img src="./images/small_pfp.png" alt="pfp"><br>'; // not real pfp stored, will work on that
+                                        echo '<img src="' . $pfp . '" alt="pfp">';       
+
                                         echo '<p>'.$usr["first_name"].', '.$usr["age"].'</p>';
-                                        echo '<p>';
                                         if ($usr["interest1"] != null) {
-                                            echo $usr["interest1"].' ';
+                                            echo '<p>' . $usr["interest1"].'</p>';
                                         }
                                         if ($usr["interest2"] != null) {
-                                            echo ' - '.$usr["interest2"];
+                                            echo '<p>' . $usr["interest2"] . '</p>';
                                         }
-                                        echo '</p>';
+
                                         // form for user to friend-match
+                                        echo '<div class="dform">';
                                         echo '<form name="f_match'.$count.'" action="logic_fmatch.php" method="post">';
                                         echo '<input type="submit" name="f'.$count.'" value="Friend">';
                                         echo '<input type="hidden" name="target_id" value="'.$usr["user_id"].'">';
@@ -289,7 +301,7 @@
                                         echo '<input type="hidden" name="target_id" value="'.$usr["user_id"].'">';
                                         echo '</form>';
 
-                                        echo '</div><br>';
+                                        echo '</div></div><br>';
 
                                         $count++; // count number of friend matches
                                     }

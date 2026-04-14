@@ -25,32 +25,30 @@
                         <h1>Search</h1>
                     </div>
                     <div class="search">
-                        <!--The following form will allow search via username or name
-                            ONLY USERNAME FOR NOW!! -->
                         <form name="search" action="search.php" method="post" autocomplete="on">
-                            <input id="sbar" type="text" name="uname" pattern="[A-Za-z0-9]{1,20}" maxlength="20"
-                                size="50" title="Write target username" placeholder="Search users..." required>
+                            <input id="sbar" type="text" name="uname" minlength="1" maxlength="20"
+                                title="Write target username" placeholder="Search users..." required>
                             <input class="submit" type="submit" name="search" value="Search">
                         </form>
                     </div>
                     <div class="filters">
                         Advanced Filters
                         <form name="filters" action="search.php" method="post" autocomplete="on">
+                        <fieldset><legend>Advanced Filters</legend>
                         <div class="f-container">
                             <?php
                             // 1. gender
                             echo '<div class="f-section">';
                             echo '<select name="gender">';
                             echo '<option value="gender" selected disabled>Gender</option>';
-                            $gender = array("male", "female", "non-binary", "other");
+                            $gender = array("Male", "Female", "Non-binary", "Other");
                             foreach ($gender as $val) {
                                 echo '<option value="'.$val.'">'.$val.'</option>';
                             }
                             echo '</select>';
                             
                             // 2. min age
-                            echo '<label>Age range</label>';
-                            echo '<select name="min_age">';
+                            echo '<select id="min_age" name="min_age">';
                             echo '<option value="min_age" selected disabled>Min Age</option>';
                             for ($i=18; $i<=30; $i++) {
                                 echo '<option value="'.$i.'">'.$i.'</option>';
@@ -77,7 +75,6 @@
                             $interest_ops = array("Sports", "Music", "Gaming", "Reading",
                             "Travel", "Cooking", "Fitness", "Photography", "Art", "Technology",
                             "Movies", "Fashion", "Nature", "Dance", "Writing");
-                            echo '<label>Interests</label>';
                             for ($i=1; $i<3; $i++) {
                                 echo '<select name="interest'.$i.'">';
                                 echo '<option value="interest '.$i.'" selected disabled>Interest '.$i.'</option>';
@@ -94,7 +91,7 @@
                             <input class="submit" type="submit" name="filter" value="Apply Filters">
                             </div>
                         </div>
-                        </form>
+                        </fieldset></form>
                     </div>
                 </div>
 
@@ -110,19 +107,22 @@
 
                             $count = 0;
                             while ($f_user = $f_result->fetch_assoc()) {
+                                $pfp = './user/' . $f_user["username"] . '/' . $f_user["profile_pic"];
+
                                 echo '<div class="user">';
-                                echo '<img src="./images/small_pfp.png" alt="pfp"><br>'; // not real pfp stored, will work on that
+                                echo '<img src="' . $pfp . '" alt="pfp">';
+                                
                                 echo '<p>'.$f_user["first_name"].', '.$f_user["age"].'</p>';
-                                echo '<p>';
+
                                 if ($f_user["interest1"] != null) {
-                                    echo $f_user["interest1"].' ';
+                                    echo '<p>' . $f_user["interest1"].'</p>';
                                 }
                                 if ($f_user["interest2"] != null) {
-                                    echo $f_user["interest2"];
+                                    echo '<p>' . $f_user["interest2"] . '</p>';
                                 }
-                                echo '</p>';
                                 
                                 // form for user to match
+                                echo '<div class="dform">';
                                 echo '<form name="f_match'.$count.'" action="logic_fmatch.php" method="post">';
                                 echo '<input type="submit" name="f'.$count.'" value="Friend">';
                                 echo '<input type="hidden" name="target_id" value="'.$f_user["user_id"].'">';
@@ -134,7 +134,7 @@
                                 echo '<input type="hidden" name="target_id" value="'.$f_user["user_id"].'">';
                                 echo '</form>';
                                 
-                                echo '</div><br>';
+                                echo '</div></div><br>';
 
                                 $count++; // count number of friend matches
                             }
@@ -154,18 +154,21 @@
 
                             $count = 0;
                             while ($f_user = $f_result->fetch_assoc()) {
+                                $pfp = './user/' . $f_user["username"] . '/' . $f_user["profile_pic"];
+
                                 echo '<div class="user">';
-                                echo '<img src="./images/small_pfp.png" alt="pfp"><br>'; // not real pfp stored, will work on that
+                                echo '<img src="' . $pfp . '" alt="pfp">';
+
                                 echo '<p>'.$f_user["first_name"].', '.$f_user["age"].'</p>';
-                                echo '<p>';
                                 if ($f_user["interest1"] != null) {
-                                    echo $f_user["interest1"].' ';
+                                    echo '<p>' . $f_user["interest1"].'</p>';
                                 }
                                 if ($f_user["interest2"] != null) {
-                                    echo $f_user["interest2"];
+                                    echo '<p>' . $f_user["interest2"] . '</p>';
                                 }
-                                echo '</p>';
+
                                 // form for user to match
+                                echo '<div class="dform">';
                                 echo '<form name="r_match'.$count.'" action="logic_rmatch.php" method="post">';
                                 echo '<input type="submit" name="r'.$count.'" value="Match">';
                                 echo '<input type="hidden" name="target_id" value="'.$f_user["user_id"].'">';
@@ -176,7 +179,7 @@
                                 echo '<input type="submit" name="v'.$count.'" value="View">';
                                 echo '<input type="hidden" name="target_id" value="'.$f_user["user_id"].'">';
                                 echo '</form>';
-                                echo '</div><br>';
+                                echo '</div></div><br>';
 
                                 $count++; // count number of friend matches
                             }

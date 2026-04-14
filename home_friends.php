@@ -78,12 +78,14 @@ while($row = $result2->fetch_assoc()) {
 if (!empty($match)) {
     $match_str = implode(",", $match);
     $sql = "SELECT U.user_id, U.first_name, U.age, I.interest1, 
-            I.interest2, P.profile_pic FROM 
+            I.interest2, P.profile_pic, C.username FROM 
             personal_info AS U
             INNER JOIN interests AS I
                 ON U.user_id = I.user_id
             INNER JOIN images as P
-            ON U.user_id = P.user_id
+                ON U.user_id = P.user_id
+            INNER JOIN credentials as C
+                ON U.user_id = C.user_id
             WHERE U.user_id IN ({$match_str});";
     $f_result = $conn->query($sql);
 } else echo "Oh... no matches<br>";
