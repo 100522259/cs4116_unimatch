@@ -39,25 +39,42 @@
                             echo "<thead><tr><th>User</th><th>Reported by</th><th>Category</th><th>Date</th></tr></thead>";
                             echo "<tbody>";
                             while ($row = $res_reports->fetch_assoc()) {
-                                echo "<tr><td>{$row["username1"]}</td><td>{$row["username"]}</td>";
-                                echo "<td>{$row["category"]}</td><td>{$row["timestamp"]}</td>";
+                                echo "<tr>";
+
+                                echo '<td><form action="user_view.php" method="post">';
+                                echo '<input type="submit" name="view'.$i.'" value="'.$row["u_reported"].'">';
+                                echo '<input type="hidden" name="target_id" value="'.$row["id_reported"].'">';
+                                echo "</form></td>";
+
+                                echo '<td><form action="user_view.php" method="post">';
+                                echo '<input type="submit" name="view'.$i.'" value="'.$row["u_reportee"].'">';
+                                echo '<input type="hidden" name="target_id" value="'.$row["id_reportee"].'">';
+                                echo "</form></td>";
+
+                                echo "<td>{$row["category"]}</td><td>{$row["timestamp"]}</td></tr>";
                             }
                             echo "</tbody></table>";
                             ?>
                         </div>
                         <div class="stat-tables">
-                            <h4>Banned Users</h4>
+                            <h4>Offenses</h4>
                             <?php
-                            include "admin_queries.php";
 
                             echo "<table class=\"scroll\">";
                             echo "<thead><tr><th>User</th><th>#Offenses</th><th>Reported</th><th>Ban time</th></tr></thead>";
                             echo "<tbody>";
                             while ($row = $res_offense->fetch_assoc()) {
-                                echo "<tr><td>{$row["username"]}</td><td>{$row["offence_num"]}</td>";
+                                echo "<tr>";
+                                
+                                echo '<td><form action="user_view.php" method="post">';
+                                echo '<input type="submit" name="view'.$i.'" value="'.$row["username"].'">';
+                                echo '<input type="hidden" name="target_id" value="'.$row["user_id"].'">';
+                                echo "</form></td>";
+                                
+                                echo "<td>{$row["offence_num"]}</td>";
                                 echo "<td>";
                                 // If user has been reported, display Y, else display N
-                                if ($row["reported"] == 1) echo "Y";
+                                if ($row["reported"] == 1) echo "Y</td>";
                                 else echo "N</td>"; 
                                 echo "<td>";
                                 // If user has no ban time, display 0;
@@ -71,11 +88,32 @@
                     </div>
                     <div class="data-statistics">
                         <div class="stat-tables">
-                            <h4>User Info</h4>
+                            <h4>Banned Users</h4>
                             <?php
-                            for ($i = 0; $i < 5; $i++) {
-                                echo "<p>Something will go here</p>";
+                            session_start();
+                            $_SESSION["location"] = "/admin.php";
+
+                            echo "<table class=\"scroll\">";
+                            echo "<thead><tr><th>User</th><th>View</th><th>Unban</th></tr></thead>";
+                            echo "<tbody>";
+                            $i=0;
+                            while ($row = $res_offense2->fetch_assoc()) {
+                                if ($row["blocked"] == 1) {
+                                    echo '<tr><td>'.$row["username"].'</td>';
+
+                                    echo '<td><form action="user_view.php" method="post">';
+                                    echo '<input type="submit" name="view'.$i.'" value="View">';
+                                    echo '<input type="hidden" name="target_id" value="'.$row["user_id"].'">';
+                                    echo "</form></td>";
+
+                                    echo '<td><form action="logic_ban.php" method="post">';
+                                    echo '<input type="submit" name="unban'.$i.'" value="Unban">';
+                                    echo '<input type="hidden" name="target_id" value="'.$row["user_id"].'">';
+                                    echo "</form></td></tr>";
+                                }
                             }
+                            echo "</tbody></table>";
+                            
                             ?>
                         </div>
                         <div class="stat-tables">
