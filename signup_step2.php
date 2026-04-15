@@ -79,7 +79,7 @@ if (!empty($_FILES['profile_pic']['name'])) {
         fail2('Could not save the photo. Please try again.');
     }
 
-    // Store just the filename in the DB (matches settings_handler.php convention)
+    // Store just the filename in the DB
     $new_pic_path = $filename;
 }
 
@@ -96,7 +96,7 @@ try {
     $stmt->execute();
     $stmt->close();
 
-    // Update interest1–interest5 in interests table
+    // Update interest1 to interest5 in interests table
     $stmt = $conn->prepare(
         'UPDATE interests
             SET interest1 = ?,
@@ -121,7 +121,7 @@ try {
     // Update profile picture if one was uploaded
     if ($new_pic_path !== null) {
         $stmt = $conn->prepare(
-            'UPDATE images SET profile_pic = ?, pic_num = pic_num + 1 WHERE user_id = ?'
+            'UPDATE images SET profile_pic = ? WHERE user_id = ?'
         );
         $stmt->bind_param('si', $new_pic_path, $user_id);
         $stmt->execute();
