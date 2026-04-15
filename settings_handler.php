@@ -236,6 +236,7 @@ if (isset($_POST["submit_img"])) {
     }
     
     // b. other pics
+    $num = $images["pic_num"];
     for ($i=1; $i<=5; $i++){
         $pic = "pic_".$i;
 
@@ -257,8 +258,8 @@ if (isset($_POST["submit_img"])) {
                 // Success! Now we have to update the database:
                 // a) Check that the file was originally null or not:
                 if ($images[$pic] == null) { // if originally null, +1 to pic_num
-                    $num = $images["pic_num"] + 1;
-                } else $num = $images["pic_num"];
+                    $num++;
+                }
 
                 // b) update databse
                 $stmt_img = $conn->prepare("UPDATE images SET {$pic} = ?, pic_num = ? WHERE user_id = ?");
@@ -266,8 +267,8 @@ if (isset($_POST["submit_img"])) {
                 if (!$stmt_img->execute()) {
                     die("SELECT failed: " . $stmt_img->error);
                 }
-                //echo "File uploaded!<br>";
-            } //else echo "Error uploading file<br>";
+                echo "File uploaded!<br>";
+            } else echo "Error uploading file $i<br>";
         }
     }
 }
