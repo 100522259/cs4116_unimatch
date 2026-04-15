@@ -51,7 +51,7 @@ body {
 }
 
 .logo {
-    border: 1px solid green;
+    /* border: 1px solid green; */
     max-width: 100%;
     align-items: center;
     display: flex;
@@ -65,9 +65,9 @@ body {
 }
 
 .idx_icons{
-    border: 1px solid pink;
-    margin-top: 30px;
+    /* border: 1px solid pink; */
     margin: 0 5px;
+    margin-top: 30px;
 }
 
 .pages {
@@ -75,6 +75,7 @@ body {
     margin: 10px 0px;
     justify-content:flex-start;
     align-items:center;
+    justify-content: center;
     /*border: 1px solid hotpink;*/
 }
 
@@ -84,17 +85,18 @@ body {
     width: 100%;
     height: auto;
     margin-right: 10px;
-    border: 1px solid yellow;
+    /* border: 1px solid yellow; */
 }
 
 .icons p {
-    border: 1px solid yellow;
+    /* border: 1px solid yellow; */
     text-transform: uppercase;
     align-items: center;
+    display: none;
 }
 
 .main {
-    flex: 8;
+    flex: 14;
     margin: 20px 20px;
     margin-top: 100px;
     /*border: 1px solid blue;*/
@@ -201,8 +203,8 @@ h4 {
     display: flex;
     justify-content: space-evenly;
     gap: 30px;
-    background-color: rgb(232, 241, 236);
-    border-radius: 10px;
+    background-color: rgb(232, 241, 236); 
+    border-radius: 20px;
     padding: 10px;
 }
 
@@ -214,7 +216,8 @@ h4 {
 .photo img {
     width: 100%;
     height: auto;
-    border-radius: 20px;
+    border-radius: 30%;
+    border: 1px solid white;
     max-width: 150px;
     min-width: 50px;
 }
@@ -403,7 +406,7 @@ table.scroll thead, table.scroll tbody tr {
 
 .sub-match {
     flex: 1;
-    border: 1px solid red;
+    /* border: 1px solid red; */
 }
 
 .match-title {
@@ -421,7 +424,7 @@ table.scroll thead, table.scroll tbody tr {
 }
 
 .user {
-    border: 1px solid blue;
+    /* border: 1px solid blue; */
     align-items: flex-start;
     display: flex;
     flex-direction: column;
@@ -434,6 +437,7 @@ table.scroll thead, table.scroll tbody tr {
     max-width: 100px;
     align-self: center;
     border-radius: 30%;
+    border: 1px solid white;
 }
 
 .user p {
@@ -463,14 +467,14 @@ table.scroll thead, table.scroll tbody tr {
 
 
 /* SETTINGS */
-form.settings fieldset {
-    width: 90%;
+form fieldset {
+    width: 100%;
     border-radius: 10px;
     padding: 0 5px;
     border-color: rgb(46, 98, 69);
 }
 
-form.settings legend {
+form legend {
     margin-left: 10px;
 }
 

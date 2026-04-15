@@ -1,6 +1,6 @@
 <div class="index">
     <div class="logo">
-        <img class="logo" src="./images\logo5.png">
+        <img class="logo" src="./images\logo5.png" alt="unimatch_logo" title="unimatch">
     </div>
 
     <div class="idx_icons">
@@ -14,8 +14,9 @@
             if ($icon == "admin" && $admin == 0) continue; // do not show admin section if not admin
             echo '<a href="'. $icon . '.php">';    
             echo '<div class="pages">';
-            echo '<div class="icons"><img src="/unimatch/images/'. $icon .'.png"></div>';
-            echo '<div class="icons"><p>' . $icon . '</p></div>';
+            echo '<div class="icons"><img src="/unimatch/images/'. $icon .'.png"
+                    alt="'.$icon.'" title="'.$icon.'"></div>';
+            //echo '<div class="icons"><p>' . $icon . '</p></div>';
             echo '</div></a>';
         }
 
