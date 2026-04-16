@@ -21,7 +21,10 @@
         <div class="container">
             
             <!--vertical container for page index-->
-            <?php include "./sidebar.php"; ?>
+            <?php 
+                include "./sidebar.php"; 
+                //echo $_SESSION["target_id"];
+            ?>
 
             
             <!--Container for the rest of the page-->
@@ -30,8 +33,9 @@
                     // coming from user_view file: button to return to it...
                     if (isset($_POST["target_id"])) {
                         $_SESSION["target_id"] = $_POST["target_id"];
-                        $target_id = $_POST["target_id"];
                     }
+                    $target_id = $_SESSION["target_id"];
+
                     echo '<form action="user_view.php" method="post"">';
                     // so target is not lost...
                     echo '<input type="hidden" name="target_id" value="'.$target_id.'">';
@@ -49,7 +53,7 @@
                         // see user_view.php - line 174 !!
                         include "user_view_queries.php";
                         // hiden input with target id to also let handler know we're not working on sess user
-                        echo '<input type="hidden" name="target_id" value="'.$_POST["target_id"].'">';
+                        echo '<input type="hidden" name="target_id" value="'.$target_id.'">';
                             
 
                         echo '<label for="first_name">First Name: </label>';
@@ -116,7 +120,7 @@
                         // see user_view.php - line 174 !!
                         include "user_view_queries.php";
                         // hiden input with target id to also let handler know we're not working on sess user
-                        echo '<input type="hidden" name="target_id" value="'.$_POST["target_id"].'">';
+                        echo '<input type="hidden" name="target_id" value="'.$target_id.'">';
 
                         echo '<label for="course">Course: </label>';
                         echo '<input type="text" name="course" pattern="[A-Za-z ]{2,20}" maxlength="20" 
@@ -141,7 +145,7 @@
                         // see user_view.php - line 174 !!
                         include "user_view_queries.php";
                         // hiden input with target id to also let handler know we're not working on sess user
-                        echo '<input type="hidden" name="target_id" value="'.$_POST["target_id"].'">';
+                        echo '<input type="hidden" name="target_id" value="'.$target_id.'">';
                         
                         echo '<label for="drink">Drinking habits: </label>';
                         echo '<select name="drink">';
@@ -225,16 +229,23 @@
                 </form><br><br>
 
                 <form class="settings" name="images" action="settings_handler.php" method="post" autocomplete="off">
-                    <fieldset><legend>Image Upload</legend><br>
-                    <?php
-                        
-                        echo '<label for="pfp">Upload Profile Photo: </label>';
-                        echo '<input type="submit" name="rmv'.$i.'" value="Remove image"><br><br>';
+                    <fieldset><legend>Image Settings</legend><br>
+                    <?php       
+                        // hiden input with target id to also let handler know we're not working on sess user
+                        echo '<input type="hidden" name="target_id" value="'.$target_id.'">';
+
+                        //echo '<label for="pfp">Upload Profile Photo: </label>';
+                        //echo '<input type="submit" name="rmv'.$i.'" value="Remove image"><br><br>';
                         // not actual removal, but sets an empty photo??
                     
                         for ($i=1; $i<6; $i++) {
-                            echo '<label for="image'.$i.'">Upload Image '.$i.': </label>';
-                            echo '<input type="submit" name="rmv'.$i.'" value="Remove image"><br><br>';
+                            echo '<label for="image'.$i.'">Manage Image '.$i.': </label>';
+
+                            if ($images["pic_$i"] != null) {
+                            echo '<input type="submit" name="rmv'.$i.'" value="Remove image">';
+                            } else echo 'No image uploaded!';
+                            echo '<br><br>';
+                            
                         }
                     ?>
                     </fieldset>

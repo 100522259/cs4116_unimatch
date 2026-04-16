@@ -26,7 +26,6 @@ $store_dir = "/".$creds["username"]."/";
 // 1. FORM CREDENTIALS
 if(isset($_POST["submit_cred"])) {
     // a. Check that username is changed
-    // TODO: CHECK AGAINST EXISTING USERNAMES
     if ($_POST["username"] != $creds["username"]) {
         // check username uniqueness
         $username = $_POST["username"];

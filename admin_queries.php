@@ -23,3 +23,20 @@ $res_offense2 = $conn->query($sql);
 // Columns we have: username, user_id, phone_warning, offence_num, blocked,
 // reported, last modified, ban_time
     
+
+$sql = "SELECT count(*) as num_rel from relationship where romantic=true and r_status=true ";
+$res = $conn->query($sql);
+$num_rel = $res->fetch_assoc();
+
+$sql = "SELECT count(*) as num_fr from relationship where friendship=true and f_status=true";
+$res = $conn->query($sql);
+$num_fr = $res->fetch_assoc();
+
+$sql = "SELECT count(*) as num_pending from relationship where r_status=false or f_status=false";
+$res = $conn->query($sql);
+$num_pending = $res->fetch_assoc();
+
+$sql = "SELECT count(*) as num_both from relationship where
+    romantic=true and r_status=true and friendship=true and f_status=true";
+$res = $conn->query($sql);
+$num_both = $res->fetch_assoc();

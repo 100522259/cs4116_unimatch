@@ -239,12 +239,15 @@
                     <fieldset><legend>Image Upload</legend><br>
                     <?php
                         echo '<label for="pfp">Upload Profile Photo: </label>';
-                        echo '<input id="pfp" type="file" name="profile_pic" accept=".jpg, .jpeg, .png"><br><br>';
+                        echo '<input id="pfp" type="file" name="profile_pic" accept=".gif, .jpg, .jpeg, .png"><br><br>';
                     
                         for ($i=1; $i<6; $i++) {
                             echo '<label for="pic_'.$i.'">Upload Image '.$i.': </label>';
                             echo '<input id="pic_' . $i . '" type="file" name="pic_'.$i.'" accept=".gif, .jpg, .jpeg, , .png">';
-                            echo '<input type="submit" name="rmv'.$i.'" value="Remove image"><br><br>';
+                            if ($images["pic_$i"] != null) {
+                            echo '<input type="submit" name="rmv'.$i.'" value="Remove image">';
+                            }
+                            echo '<br><br>';
                         }
                     ?>
                     </fieldset>

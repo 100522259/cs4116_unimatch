@@ -117,11 +117,16 @@
                             ?>
                         </div>
                         <div class="stat-tables">
-                            <h4>Matches</h4>
+                            <h4>Matches Data</h4>
                             <?php
-                            for ($i = 0; $i < 5; $i++) {
-                                echo "<p>Something will go here</p>";
-                            }
+                            echo "<table class=\"scroll\">";
+                            echo "<thead><tr><th>#Matches</th><th>#Friends</th><th>#Pending</th><th>#Both</th></tr></thead>";
+                            echo "<tbody>";
+                            echo "<tr><td>{$num_rel["num_rel"]}</td>";
+                            echo "<td>{$num_fr["num_fr"]}</td>";
+                            echo "<td>{$num_pendin["num_pending"]}</td>";
+                            echo "<td>{$num_both["num_both"]}</td></tr>";
+                            echo "</tbody></table>";
                             ?>
                         </div>
                     </div>
