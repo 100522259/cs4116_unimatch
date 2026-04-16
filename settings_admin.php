@@ -228,13 +228,15 @@
                     <input type="submit" name="submit_int" value="Save Changes">
                 </form><br><br>
 
-                <form class="settings" name="images" action="settings_handler.php" method="post" autocomplete="off">
+                <form class="settings" name="images" action="settings_handler.php" method="post" autocomplete="off"
+                        enctype="multipart/form-data">
                     <fieldset><legend>Image Settings</legend><br>
                     <?php       
                         // hiden input with target id to also let handler know we're not working on sess user
                         echo '<input type="hidden" name="target_id" value="'.$target_id.'">';
 
-                        //echo '<label for="pfp">Upload Profile Photo: </label>';
+                        echo '<label for="pfp">Upload Profile Photo: </label>';
+                        echo '<input id="pfp" type="file" name="profile_pic" accept=".gif, .jpg, .jpeg, .png"><br><br>';
                         //echo '<input type="submit" name="rmv'.$i.'" value="Remove image"><br><br>';
                         // not actual removal, but sets an empty photo??
                     
@@ -249,6 +251,7 @@
                         }
                     ?>
                     </fieldset>
+                    <input type="submit" name="submit_img" value="Save Changes">
                 </form><br><br>
             </div>
         </div>
