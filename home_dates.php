@@ -65,7 +65,9 @@ while($row = $result2->fetch_assoc()) {
     // 1. check if student is or has been blocked: prevent display:
     $has_blocked = blocked_user($user_id, $target_id);
     $is_blocked = blocked_user($target_id, $user_id);
-    if ($has_blocked || $is_blocked) {
+    $is_banned = banned_user($target_id);
+
+    if ($has_blocked || $is_blocked || $is_banned) {
         //echo "$target_id blocked...<br>";
         continue; // skip!
     }

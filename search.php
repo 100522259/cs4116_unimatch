@@ -97,7 +97,9 @@
                     <div class="match-display">
                         <?php
                         include "connect_server.php";
-                        session_start();
+                        include_once "./logic_blocked_user.php";
+                        
+                        $admin = $_SESSION["is_admin"];
                         $user_id = $_SESSION["user_id"];
 
                         // A. search by username...
@@ -122,7 +124,10 @@
                             $ids = [];
 
                             while ($row = $result->fetch_assoc()) {
-                                $ids[] = $row["user_id"];
+                                $is_banned = banned_user($row["user_id"]);
+                                if (!$is_banned || $admin) {
+                                    $ids[] = $row["user_id"];
+                                }
                             }
                             
                             if (empty($ids)) { // list empty
