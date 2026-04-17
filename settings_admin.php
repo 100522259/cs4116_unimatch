@@ -43,7 +43,22 @@
                     echo '</form><br>';
                     
                 ?>
-                <!--Credentials cannot be modified by admin-->
+                <!--Password cannot be modified by admin-->
+                <form class="settings" name="credentials_settings" action="settings_handler.php" method="post" autocomplete="off">
+                    <fieldset><legend>Credentials</legend><br>
+                        <?php
+                        include "user_view_queries.php";
+                        echo '<input type="hidden" name="target_id" value="'.$target_id.'">';
+                        
+                        echo '<label for="username">Username: </label>';
+                        echo '<input id="username" type="text" name="username" pattern="[A-Za-z0-9]{5,}" maxlength="20" 
+                                size="20" title="Write your username, between 5 and 20 characters" 
+                                value="'.$creds["username"].'">';
+                        echo '<br><br>';
+                        ?>
+                    </fieldset>
+                    <input type="submit" name="submit_cred" value="Save Changes">
+                </form><br><br>
 
                 <!--Form for the user to change their user details-->
                 <form class="settings" name="basic_settings" action="settings_handler.php" method="post" autocomplete="off">
@@ -51,7 +66,7 @@
                     <?php
                         // ADMIN CAN EDIT USER PROFILE, DETERMINED BY SUBMIT "EDIT"
                         // see user_view.php - line 174 !!
-                        include "user_view_queries.php";
+                        
                         // hiden input with target id to also let handler know we're not working on sess user
                         echo '<input type="hidden" name="target_id" value="'.$target_id.'">';
                             
