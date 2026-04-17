@@ -51,7 +51,11 @@
                         echo '<input type="hidden" name="target_id" value="'.$target_id.'">';
                         
                         echo '<label for="username">Username: </label>';
+<<<<<<< HEAD
                         echo '<input id="username" type="text" name="username" pattern="^[A-Za-z0-9._\-]{5,20}$" maxlength="20" 
+=======
+                        echo '<input id="username" type="text" name="username" pattern="[A-Za-z0-9]{5,}" maxlength="20" 
+>>>>>>> 5e9b6cca602188f300491dd8d47a37c4ed35acd6
                                 size="20" title="Write your username, between 5 and 20 characters" 
                                 value="'.$creds["username"].'">';
                         echo '<br><br>';
