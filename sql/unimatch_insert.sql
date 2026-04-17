@@ -113,3 +113,34 @@ INSERT INTO personal_info VALUES (200000011, 'Elliot', 'Sanchez',21,'','Spanish'
 INSERT INTO academic_info VALUES (200000011, 'Computer Science',3);
 INSERT INTO interests VALUES (200000011,'No',0,'No',0,'Normal',1,'Introvert',1,'lesbian',1,'Gaming','Music','Art','Technology','Travel');
 INSERT INTO images VALUES (200000011,'p1.jpg','1.jpg','2.jpg','3.jpg',null,null,3);
+
+INSERT INTO matches (user_id1, user_id2, romantic, friendship, created_at) VALUES
+-- ❤️ Romantic match (pair)
+(200000001, 200000002, 1, 0, CURRENT_TIMESTAMP),
+(200000002, 200000001, 1, 0, CURRENT_TIMESTAMP),
+
+-- 🤝 Friendship match (pair)
+(200000003, 200000004, 0, 1, CURRENT_TIMESTAMP),
+(200000004, 200000003, 0, 1, CURRENT_TIMESTAMP),
+
+-- 🔄 Pending romantic
+(200000005, 200000006, 1, 0, CURRENT_TIMESTAMP),
+(200000007, 200000008, 1, 0, CURRENT_TIMESTAMP),
+
+-- 🔄 Pending friendship
+(200000009, 200000010, 0, 1, CURRENT_TIMESTAMP),
+(200000011, 200000012, 0, 1, CURRENT_TIMESTAMP),
+
+-- 🔄 More pending (reuse valid IDs)
+(200000001, 200000003, 1, 0, CURRENT_TIMESTAMP),
+(200000002, 200000005, 0, 1, CURRENT_TIMESTAMP),
+(200000006, 200000007, 0, 1, CURRENT_TIMESTAMP),
+
+-- 🔄 Extra pending
+(200000008, 200000009, 1, 0, CURRENT_TIMESTAMP),
+(200000010, 200000011, 0, 1, CURRENT_TIMESTAMP),
+
+-- 🔄 One-sided interactions
+(200000012, 200000001, 1, 0, CURRENT_TIMESTAMP),
+(200000003, 200000006, 0, 1, CURRENT_TIMESTAMP),
+(200000004, 200000007, 1, 0, CURRENT_TIMESTAMP);
