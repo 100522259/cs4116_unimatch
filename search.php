@@ -145,12 +145,41 @@ function echo_user($usr, $user_id, $count) {
                         $admin = $_SESSION["is_admin"];
                         $user_id = $_SESSION["user_id"];
 
+                        // store session: so that if we do any actions like friend or match, 
+                        // the view is still displaying the users we searched for
+                        if (isset($_POST["search"])) { 
+                            $_SESSION["search"] = "search";
+                            $_SESSION["uname"] = $_POST["uname"];
+                        }
+                        if (isset($_POST["filter"])) {
+                            $_SESSION["search"] = "filter";
+                            if (isset($_POST["gender"])) $_SESSION["gender"] = $_POST["gender"];
+                            else unset($_SESSION["gender"]);
+
+                            if (isset($_POST["min_age"])) $_SESSION["min_age"] = $_POST["min_age"];
+                            else unset($_SESSION["min_age"]);
+
+                            if (isset($_POST["max_age"])) $_SESSION["max_age"] = $_POST["max_age"];
+                            else unset($_SESSION["max_age"]);
+
+                            if (isset($_POST["course"])) $_SESSION["course"] = $_POST["course"];
+                            else unset($_SESSION["course"]);
+
+                            if (isset($_POST["interest1"])) $_SESSION["interest1"] = $_POST["interest1"];
+                            else unset($_SESSION["interest1"]);
+                            
+                            if (isset($_POST["interest2"])) $_SESSION["interest2"] = $_POST["interest2"];
+                            else unset($_SESSION["interest2"]);
+
+                            }
+
+
                         // A. search by username...
-                        if (isset($_POST["search"])) {
+                        if ($_SESSION["search"] == "search") {
                             // check that the submitted value is not empty
                             
                             // Use normal sql string, a select doesn't have injection risk
-                            $sname = $_POST["uname"];
+                            $sname = $_SESSION["uname"];
                             $search = '%' . $sname . '%';
 
                             $stmt = $conn->prepare("SELECT P.user_id FROM credentials AS C 
@@ -206,7 +235,7 @@ function echo_user($usr, $user_id, $count) {
                         }
 
                         // B. Filter
-                        if (isset($_POST["filter"])) {
+                        if ($_SESSION["search"] == "filter") {
                             // generate the sql query, that will have more or less conditons
                             // based on the filters selected
 
@@ -218,26 +247,26 @@ function echo_user($usr, $user_id, $count) {
                                     ON p.user_id = a.user_id"; 
                             
                             $conditions = []; // variable to store the string sql conditions
-                            if (isset($_POST["gender"])) {
+                            if (isset($_SESSION["gender"])) {
                                 // add according "where statement
-                                $conditions[] = "gender LIKE '{$_POST["gender"]}'";
+                                $conditions[] = "gender LIKE '{$_SESSION["gender"]}'";
                             }
-                            if (isset($_POST["min_age"])) {
-                                $conditions[] = "age >= {$_POST["min_age"]}";
+                            if (isset($_SESSION["min_age"])) {
+                                $conditions[] = "age >= {$_SESSION["min_age"]}";
                             }
-                            if (isset($_POST["max_age"])) {
-                                $conditions[] = "age <= {$_POST["max_age"]}";
+                            if (isset($_SESSION["max_age"])) {
+                                $conditions[] = "age <= {$_SESSION["max_age"]}";
                             }
-                            if ($_POST["course"] != "") {
-                                $conditions[] = "LOWER(course) LIKE LOWER('%{$_POST["course"]}%')";
+                            if ($_SESSION["course"] != "") {
+                                $conditions[] = "LOWER(course) LIKE LOWER('%{$_SESSION["course"]}%')";
                             }
                             
                             $ints = []; // to store interests
-                            if (isset($_POST["interest1"])) {
-                                $ints[] = $_POST["interest1"];
+                            if (isset($_SESSION["interest1"])) {
+                                $ints[] = $_SESSION["interest1"];
                             }
                             if (isset($_POST["interest2"])) {
-                                $ints[] = $_POST["interest2"];
+                                $ints[] = $_SESSION["interest2"];
                             } 
 
                             if (!empty($ints)) {
@@ -289,7 +318,7 @@ function echo_user($usr, $user_id, $count) {
                                     while ($usr = $us_result->fetch_assoc()) {
 
                                         echo_user($usr, $user_id, $count);
-                                        
+
                                         $count++; // count number of friend matches
                                     }
                                     $_SESSION["location"] = "search.php"; // to go back to home or search page

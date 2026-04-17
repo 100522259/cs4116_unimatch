@@ -411,9 +411,11 @@ table.scroll thead, table.scroll tbody tr {
 }
 
 .match-title {
-    margin: 5px 0;
+    margin: 10px 0;
     text-transform: uppercase;
+    text-decoration: dashed;
     text-align: center;
+    font-weight: bold;
 }
 
 .match-display {
@@ -426,27 +428,30 @@ table.scroll thead, table.scroll tbody tr {
 
 .user {
     /* border: 1px solid blue; */
-    align-items: flex-start;
+    width: 120px;
     display: flex;
     flex-direction: column;
-    align-content: center;
+    justify-content: center;
     flex-wrap: wrap;
     gap: 5px;
+    background-color: rgb(232, 241, 236);
+    border-radius: 10px;
 }
 
 .user img {
+    margin-top: 5px;
     max-width: 100px;
     align-self: center;
-    border-radius: 30%;
+    border-radius: 50%;
     border: 1px solid white;
 }
 
 .user p {
     align-self: center;
     font-size: small;
-    background-color: rgb(232, 241, 236);
+    background-color: rgb(214, 227, 220);
     border-radius: 10px;
-    width: 100%;
+    width: 90%;
     height: 20px;
     margin: 2px 0;
     text-align: center;
@@ -458,9 +463,10 @@ table.scroll thead, table.scroll tbody tr {
 }
 
 .dform {
+    margin-bottom: 5px;
     display: flex;
     flex-direction: row;
-    gap: 5px;
+    gap: 0 5px;
     width: 100%;
     justify-content: center;
     margin-top: 5px;
