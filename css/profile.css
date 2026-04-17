@@ -118,6 +118,8 @@ body {
     max-width: 300px;
     min-width: 200px;
     align-content: center;
+    background-color: rgb(232, 241, 236);
+    border-radius: 50px;
 }
 .pfp img {
     width: 100%;
@@ -217,10 +219,10 @@ h4 {
 .photo img {
     width: 100%;
     height: auto;
-    border-radius: 30%;
+    border-radius: 40%;
     border: 1px solid white;
     max-width: 150px;
-    min-width: 50px;
+    min-width: 100px;
 }
 
 
@@ -465,6 +467,7 @@ table.scroll thead, table.scroll tbody tr {
 .dform {
     margin-bottom: 5px;
     display: flex;
+    flex-wrap: wrap;
     flex-direction: row;
     gap: 0 5px;
     width: 100%;

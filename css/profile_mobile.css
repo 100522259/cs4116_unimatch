@@ -33,6 +33,7 @@
         min-width: 80px;
         flex: 1;
         align-self: center;
+        border-radius: 50%;
         /* margin: 5px; */
         
     }
@@ -68,10 +69,6 @@
         gap: 15px;
     }
 
-    .photo img {
-        max-width: 100px;
-        
-    }
 
     .admin {
         flex: 1;

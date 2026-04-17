@@ -107,7 +107,9 @@
                       placeholder="First name"
                       required
                       autocomplete="given-name"
-                    />
+                      pattern="[A-Za-z]{5,}" 
+                    /> <!-- ADDED PATTERN TO PREVENT USER NAMES LIKE ' OR ; OR . 
+                            ONLY LETTER AND NUMBERS ALLOWED -->
                   </div>
                 </div>
                 <div class="col-6">
@@ -126,7 +128,9 @@
                       placeholder="Last name"
                       required
                       autocomplete="family-name"
-                    />
+                      pattern="[A-Za-z]{5,}"
+                    /> <!-- ADDED PATTERN TO PREVENT USER NAMES LIKE ' OR ; OR . 
+                            ONLY LETTER AND NUMBERS ALLOWED -->
                   </div>
                 </div>
               </div>
@@ -167,7 +171,9 @@
                     placeholder="Choose a username"
                     required
                     autocomplete="username"
-                  />
+                    ^[A-Za-z0-9._\-]{5,20}$
+                  /> <!-- ADDED PATTERN TO PREVENT USER NAMES LIKE ' OR ; OR . 
+                            ONLY LETTER AND NUMBERS ALLOWED -->
                 </div>
               </div>
 

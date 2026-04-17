@@ -129,7 +129,7 @@
 
                 $act_php = array("logic_fmatch.php", "logic_rmatch.php", 
                     "logic_block.php", "logic_ban.php", "settings_admin.php");
-                $act_icons = array("friends", "matches", "block", "disable acc", "edit");
+                $act_icons = array("friends", "match", "block", "disable", "edit");
                 
                 foreach ($act_user as $key=>$act) {
                     echo '<div class="admin_activity">';
