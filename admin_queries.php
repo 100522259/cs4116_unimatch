@@ -3,7 +3,7 @@
 include "connect_server.php";
 
 // 1. select reported users
-$sql = "select C.user_id as id_reportee, C.username as u_reportee, 
+$sql = "SELECT C.user_id as id_reportee, C.username as u_reportee, 
 K.user_id as id_reported, K.username as u_reported,
 R.report_id, R.timestamp, R.report_msg, R.category
 FROM
@@ -16,7 +16,7 @@ credentials as K on R.user_id2 = K.user_id;";
 $res_reports = $conn->query($sql);
 
 
-$sql = "select * from (select username, user_id from credentials) as C 
+$sql = "SELECT * from (select username, user_id from credentials) as C 
         inner join (select * from offense) as O on C.user_id = O.user_id;";
 $res_offense = $conn->query($sql);
 $res_offense2 = $conn->query($sql);
@@ -24,11 +24,19 @@ $res_offense2 = $conn->query($sql);
 // reported, last modified, ban_time
     
 
-$sql = "SELECT count(*) as num_rel from relationship where romantic=true and r_status=true ";
+$sql = "SELECT count(*)/2 as num_rel from 
+        (select user_id1 as u1, user_id2 as u2 from matches where romantic=1) as A
+        INNER JOIN
+        (select user_id1 as u2, user_id2 as u1 from matches where romantic=1) as B
+        ON A.u1 = B.u1 and A.u2 = B.u2;";
 $res = $conn->query($sql);
 $num_rel = $res->fetch_assoc();
 
-$sql = "SELECT count(*) as num_fr from relationship where friendship=true and f_status=true";
+$sql = "SELECT count(*)/2 as num_fr from 
+        (select user_id1 as u1, user_id2 as u2 from matches where friendship=1) as A
+        INNER JOIN
+        (select user_id1 as u2, user_id2 as u1 from matches where friendship=1) as B
+        ON A.u1 = B.u1 and A.u2 = B.u2;";
 $res = $conn->query($sql);
 $num_fr = $res->fetch_assoc();
 

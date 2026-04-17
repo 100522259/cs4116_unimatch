@@ -33,13 +33,31 @@ function r_matched($user_id, $target_id) {
     include "connect_server.php";
 
     // query to see if user is matches romantic
-    $stmt = $conn->prepare("SELECT romantic, r_status FROM relationship WHERE (user_id1 = ? AND user_id2 = ?)
-        OR (user_id1 = ? AND user_id2 = ?)");
-    $stmt->bind_param("iiii", $user_id, $target_id, $target_id, $user_id);
+    $stmt = $conn->prepare("SELECT romantic FROM matches WHERE user_id1 = ? AND user_id2 = ?");
+    $stmt->bind_param("ii", $user_id, $target_id);
     $stmt->execute();
     $result = $stmt->get_result();
     $row = $result->fetch_assoc();
     if ($row) { // if row exists...
+        $r_matched = $row["romantic"];
+    } else $r_matched = 0;
 
-    }
+    return $r_matched;
+}
+
+
+function f_matched($user_id, $target_id) {
+    include "connect_server.php";
+
+    // query to see if user is matches romantic
+    $stmt = $conn->prepare("SELECT friendship FROM matches WHERE user_id1 = ? AND user_id2 = ?");
+    $stmt->bind_param("ii", $user_id, $target_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $row = $result->fetch_assoc();
+    if ($row) { // if row exists...
+        $f_matched = $row["friendship"];
+    } else $f_matched = 0;
+
+    return $f_matched;
 }

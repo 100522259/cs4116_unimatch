@@ -11,10 +11,12 @@ echo "here";
  *  a. Row 1: id1 = U1, id2 = U2, romantic = 1
  *  b. Row 2: id2 = U2, id2 = U1, romantic = 1
  * 
- * 2) Friend-ing involves:
+ * 2) matching-ing involves:
  *  a. Create a row such that:
  *      id1 = U1, id2 = U2, romantic = 1
  *  b. Update the row where id1 = U1 and id2 = to romantic = 1
+ * 
+ * 3) If already matched -> unmatch (set to 0)
 */
 
 // we a series of prepared statements for each case:
@@ -30,12 +32,19 @@ $stmt_upd = $conn->prepare("UPDATE matches SET romantic=1, created_at=CURRENT_TI
     // case 1: id1 is sess id, case 2: id2 is sess id
 echo " stmt_upd";
 
+// 3. row exists, romantic is 1: unmatch
+$stmt_unm = $conn->prepare("UPDATE matches SET romantic=0, created_at=CURRENT_TIMESTAMP
+    WHERE user_id1 = ? AND user_id2 = ?");
+echo " stmt_upd 2";
+
 // In addition, we need the queries to see if the row exists
 $stmt_exist = $conn->prepare("SELECT romantic from matches WHERE
     user_id1 = ? AND user_id2 = ?");
 // we don't care about the case where id1 = U2 and id2 = U1
 // if romantic = 1, don't do anything
 echo " stmt_exist<br>";
+
+
 
 // for each possible matches: -> insert in database a new match
 if (isset($_POST["target_id"])) {
@@ -68,7 +77,13 @@ if (isset($_POST["target_id"])) {
         	if (!$stmt_upd->execute()) {
             	die("UPDATE failed: " . $stmt_upd->error);
         	} echo "done upd<br>";
-    	} else echo "already dating";
+    	} else {
+            echo "already dating - unmatch!";
+            $stmt_unm->bind_param("ii", $sess_id, $target_id);
+            if (!$stmt_unm->execute()) {
+            	die("UPDATE failed: " . $stmt_unm->error);
+        	} echo "done unm<br>";
+        }
     }
 }
 

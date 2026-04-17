@@ -103,6 +103,7 @@
                             session_start();
 
                             include "home_friends.php";
+                            include_once "logic_blocked_user.php";
 
                             $count = 0;
                             while ($f_user = $f_result->fetch_assoc()) {
@@ -120,10 +121,13 @@
                                     echo '<p>' . $f_user["interest2"] . '</p>';
                                 }
                                 
+                                $friends = f_matched($user_id, $f_user["user_id"]);
                                 // form for user to match
                                 echo '<div class="dform">';
                                 echo '<form name="f_match'.$count.'" action="logic_fmatch.php" method="post">';
-                                echo '<input type="submit" name="f'.$count.'" value="Friend">';
+                                echo '<input type="submit" name="f'.$count.'" value="';
+                                if ($friends) echo 'Unfriend">';
+                                else echo 'Friend">';
                                 echo '<input type="hidden" name="target_id" value="'.$f_user["user_id"].'">';
                                 echo '</form>';
 
@@ -150,6 +154,7 @@
                             <!-- Approx two users displayed in a scrollable section-->
                             <?php
                             include "home_dates.php";
+                            include_once "logic_blocked_user.php";
 
                             $count = 0;
                             while ($f_user = $f_result->fetch_assoc()) {
@@ -166,10 +171,13 @@
                                     echo '<p>' . $f_user["interest2"] . '</p>';
                                 }
 
+                                $dates = r_matched($user_id, $f_user["user_id"]);
                                 // form for user to match
                                 echo '<div class="dform">';
                                 echo '<form name="r_match'.$count.'" action="logic_rmatch.php" method="post">';
-                                echo '<input type="submit" name="r'.$count.'" value="Match">';
+                                echo '<input type="submit" name="r'.$count.'" value="';
+                                if ($dates) echo 'Unmatch">';
+                                else echo 'Match">';
                                 echo '<input type="hidden" name="target_id" value="'.$f_user["user_id"].'">';
                                 echo '</form>';
 

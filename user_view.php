@@ -28,8 +28,11 @@
                 $target_id = $_SESSION["target_id"];
                 include "./user_view_queries.php";
                 include "./logic_blocked_user.php";
+
                 $blocked = blocked_user($sess_id, $target_id); // sess id comde from view queries
-                
+                $friends = f_matched($sess_id, $target_id);
+                $dates = r_matched($sess_id, $target_id);
+
                 // blocked  admin   no display
                 //    0     0 -> 1        0
                 //    0     1 -> 0        0
@@ -135,10 +138,12 @@
                     // form:
                     echo '<form name="'.$sct.'" action="'.$act_php[$key].'" method="post">';
                     echo '<input type="submit" name="'.$act.'" value="';
-                    if ($act == "Block" && $blocked) {
-                        // if we are displaying the blocked button and user is blocked, write Unblock
-                        echo "Unblock";
-                    } else echo $act; // otherwise, display activity as appears in array
+
+                    // if we are displaying the blocked button and user is blocked, write Unblock
+                    if ($act == "Block" && $blocked) echo "Unblock";
+                    elseif ($act == "Friend" && $friends) echo "Unfriend";
+                    elseif ($act == "Match" && $dates) echo "Unmatch";
+                    else echo $act; // otherwise, display activity as appears in array
                     echo '">';
                     echo '<input type="hidden" name="target_id" value="'.$target_id.'">';
                     echo '</form>';

@@ -122,8 +122,10 @@
                             echo "<table class=\"scroll\">";
                             echo "<thead><tr><th>#Matches</th><th>#Friends</th><th>#Pending</th><th>#Both</th></tr></thead>";
                             echo "<tbody>";
-                            echo "<tr><td>{$num_rel["num_rel"]}</td>";
-                            echo "<td>{$num_fr["num_fr"]}</td>";
+                            $int_num = (int) $num_rel["num_rel"];
+                            echo "<tr><td>{$int_num}</td>";
+                            $int_num = (int) $num_fr["num_fr"];
+                            echo "<td>{$int_num}</td>";
                             echo "<td>{$num_pendin["num_pending"]}</td>";
                             echo "<td>{$num_both["num_both"]}</td></tr>";
                             echo "</tbody></table>";

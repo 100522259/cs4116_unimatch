@@ -1,3 +1,46 @@
+<?php
+function echo_user($usr, $user_id, $count) {
+    $pfp = './user/' . $usr["username"] . '/' . $usr["profile_pic"];
+
+    echo '<div class="user">';
+    echo '<img src="' . $pfp . '" alt="pfp">';    
+
+    echo '<p>'.$usr["first_name"].', '.$usr["age"].'</p>';
+    if ($usr["interest1"] != null) {
+        echo '<p>' . $usr["interest1"].'</p>';
+    }
+    if ($usr["interest2"] != null) {
+        echo '<p>' . $usr["interest2"] . '</p>';
+    }
+
+    $friends = f_matched($user_id, $usr["user_id"]);
+    // form for user to friend-match
+    echo '<div class="dform">';
+    echo '<form name="f_match'.$count.'" action="logic_fmatch.php" method="post">';
+    echo '<input type="submit" name="f'.$count.'" value="';
+    if ($friends) echo 'Unfriend">';
+    else echo 'Friend">';
+    echo '<input type="hidden" name="target_id" value="'.$usr["user_id"].'">';
+    echo '</form>';
+    
+    $dates = r_matched($user_id, $usr["user_id"]);
+    // form for user to date-match
+    echo '<form name="r_match'.$count.'" action="logic_rmatch.php" method="post">';
+    echo '<input type="submit" name="r'.$count.'" value="';
+    if ($dates) echo 'Unmatch">';
+    else echo 'Match">';
+    echo '<input type="hidden" name="target_id" value="'.$usr["user_id"].'">';
+    echo '</form>';
+    
+    // form for user to view profile
+    echo '<form name="r_match'.$count.'" action="user_view.php" method="post">';
+    echo '<input type="submit" name="v'.$count.'" value="View">';
+    echo '<input type="hidden" name="target_id" value="'.$usr["user_id"].'">';
+    echo '</form>';
+    echo '</div></div><br>';
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -97,7 +140,7 @@
                     <div class="match-display">
                         <?php
                         include "connect_server.php";
-                        include_once "./logic_blocked_user.php";
+                        include_once "logic_blocked_user.php";
                         
                         $admin = $_SESSION["is_admin"];
                         $user_id = $_SESSION["user_id"];
@@ -153,37 +196,7 @@
                                 $count=0;
                                 while ($usr = $us_result->fetch_assoc()) {
 
-                                    $pfp = './user/' . $usr["username"] . '/' . $usr["profile_pic"];
-
-                                    echo '<div class="user">';
-                                    echo '<img src="' . $pfp . '" alt="pfp">';    
-
-                                    echo '<p>'.$usr["first_name"].', '.$usr["age"].'</p>';
-                                    if ($usr["interest1"] != null) {
-                                        echo '<p>' . $usr["interest1"].'</p>';
-                                    }
-                                    if ($usr["interest2"] != null) {
-                                        echo '<p>' . $usr["interest2"] . '</p>';
-                                    }
-                                    // form for user to friend-match
-                                    echo '<div class="dform">';
-                                    echo '<form name="f_match'.$count.'" action="logic_fmatch.php" method="post">';
-                                    echo '<input type="submit" name="f'.$count.'" value="Friend">';
-                                    echo '<input type="hidden" name="target_id" value="'.$usr["user_id"].'">';
-                                    echo '</form>';
-                                    
-                                    // form for user to date-match
-                                    echo '<form name="r_match'.$count.'" action="logic_rmatch.php" method="post">';
-                                    echo '<input type="submit" name="r'.$count.'" value="Match">';
-                                    echo '<input type="hidden" name="target_id" value="'.$usr["user_id"].'">';
-                                    echo '</form>';
-                                    
-                                    // form for user to view profile
-                                    echo '<form name="r_match'.$count.'" action="user_view.php" method="post">';
-                                    echo '<input type="submit" name="v'.$count.'" value="View">';
-                                    echo '<input type="hidden" name="target_id" value="'.$usr["user_id"].'">';
-                                    echo '</form>';
-                                    echo '</div></div><br>';
+                                    echo_user($usr, $user_id, $count);
 
                                     $count++; // count number of friend matches
                                 }
@@ -275,39 +288,8 @@
                                     $count = 0;
                                     while ($usr = $us_result->fetch_assoc()) {
 
-                                        $pfp = './user/' . $usr["username"] . '/' . $usr["profile_pic"];
-                                        echo '<div class="user">';
-                                        echo '<img src="' . $pfp . '" alt="pfp">';       
-
-                                        echo '<p>'.$usr["first_name"].', '.$usr["age"].'</p>';
-                                        if ($usr["interest1"] != null) {
-                                            echo '<p>' . $usr["interest1"].'</p>';
-                                        }
-                                        if ($usr["interest2"] != null) {
-                                            echo '<p>' . $usr["interest2"] . '</p>';
-                                        }
-
-                                        // form for user to friend-match
-                                        echo '<div class="dform">';
-                                        echo '<form name="f_match'.$count.'" action="logic_fmatch.php" method="post">';
-                                        echo '<input type="submit" name="f'.$count.'" value="Friend">';
-                                        echo '<input type="hidden" name="target_id" value="'.$usr["user_id"].'">';
-                                        echo '</form>';
-
-                                        // form for user to date-match
-                                        echo '<form name="r_match'.$count.'" action="logic_rmatch.php" method="post">';
-                                        echo '<input type="submit" name="r'.$count.'" value="Match">';
-                                        echo '<input type="hidden" name="target_id" value="'.$usr["user_id"].'">';
-                                        echo '</form>';
-
-                                        // form for user to view profile
-                                        echo '<form name="r_match'.$count.'" action="user_view.php" method="post">';
-                                        echo '<input type="submit" name="v'.$count.'" value="View">';
-                                        echo '<input type="hidden" name="target_id" value="'.$usr["user_id"].'">';
-                                        echo '</form>';
-
-                                        echo '</div></div><br>';
-
+                                        echo_user($usr, $user_id, $count);
+                                        
                                         $count++; // count number of friend matches
                                     }
                                     $_SESSION["location"] = "search.php"; // to go back to home or search page
