@@ -126,8 +126,10 @@
                             echo "<tr><td>{$int_num}</td>";
                             $int_num = (int) $num_fr["num_fr"];
                             echo "<td>{$int_num}</td>";
-                            echo "<td>{$num_pendin["num_pending"]}</td>";
-                            echo "<td>{$num_both["num_both"]}</td></tr>";
+                            $int_num = $f_pen["f_pen"] + $r_pen["r_pen"];
+                            echo "<td>{$int_num}</td>";
+                            $int_num = (int)$num_both["num_both"];
+                            echo "<td>{$int_num}</td></tr>";
                             echo "</tbody></table>";
                             ?>
                         </div>

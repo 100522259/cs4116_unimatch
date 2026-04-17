@@ -40,11 +40,29 @@ $sql = "SELECT count(*)/2 as num_fr from
 $res = $conn->query($sql);
 $num_fr = $res->fetch_assoc();
 
-$sql = "SELECT count(*) as num_pending from relationship where r_status=false or f_status=false";
-$res = $conn->query($sql);
-$num_pending = $res->fetch_assoc();
 
-$sql = "SELECT count(*) as num_both from relationship where
-    romantic=true and r_status=true and friendship=true and f_status=true";
+$sql = "SELECT count(*) as f_pen FROM
+        (select user_id1 as u1, user_id2 as u2 from matches where friendship=1) as A
+        LEFT OUTER JOIN
+        (select user_id1 as u2, user_id2 as u1, friendship from matches) as B
+        ON A.u1 = B.u1 and A.u2 = B.u2
+        WHERE B.u2 is null or B.friendship=0;";
+$res = $conn->query($sql);
+$f_pen = $res->fetch_assoc();
+
+$sql = "SELECT count(*) as r_pen FROM
+        (select user_id1 as u1, user_id2 as u2 from matches where romantic=1) as A
+        LEFT OUTER JOIN
+        (select user_id1 as u2, user_id2 as u1, romantic from matches) as B
+        ON A.u1 = B.u1 and A.u2 = B.u2
+        WHERE B.u2 is null or B.romantic=0;";
+$res = $conn->query($sql);
+$r_pen = $res->fetch_assoc();
+
+$sql = "SELECT count(*)/2 as num_both FROM
+        (select user_id1 as u1, user_id2 as u2 from matches where romantic=1 and friendship=1) as A
+        INNER JOIN
+        (select user_id1 as b2, user_id2 as b1 from matches where romantic=1 and friendship=1) as B
+        ON A.u1 = B.b1 and A.u2 = B.b2;";
 $res = $conn->query($sql);
 $num_both = $res->fetch_assoc();
