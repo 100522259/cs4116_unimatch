@@ -104,14 +104,13 @@
                                 value="'.$pers_info["nationality"].'">';
                         echo '<br><br>';
 
-                        // TODO: TURN INTO ITERATIVE PROCESSES
+                        $gender = array("Male", "Female", "Non-Binary", "Other");
                         echo '<label for="gender">Gender: </label>';
                         echo '<select name="gender">';
                         echo '<option value="'.$pers_info["gender"].'" selected>'.$pers_info["gender"].'</option>';
-                        echo '<option value="Male">Male</option>';
-                        echo '<option value="Female">Female</option>';
-                        echo '<option value="Non-Binary">Non-binary</option>';
-                        echo '<option value="Other">Other</option>';
+                        foreach($gender as $val) {
+                            echo '<option value="'.$val.'">'.$val.'</option>';
+                        }
                         echo '</select>';
                         echo '<br><br>';
 
@@ -161,42 +160,40 @@
                         // hiden input with target id to also let handler know we're not working on sess user
                         echo '<input type="hidden" name="target_id" value="'.$target_id.'">';
                         
+                        $opts = array("No", "Yes", "Socially", "Occasionally");
                         echo '<label for="drink">Drinking habits: </label>';
-                        echo '<select name="drink">';
+                        echo '<select id="drink" name="drink">';
                         echo '<option value="'.$ints["drink"].'" selected>'.$ints["drink"].'</option>';
-                        echo '<option value="no">No</option>';
-                        echo '<option value="yes">Yes</option>';
-                        echo '<option value="socially">Socially</option>';
-                        echo '<option value="occasionally">Occasionally</option>';
+                        foreach($opts as $val) {
+                            echo '<option value="'.$val.'">'.$val.'</option>';    
+                        }
                         echo '</select>';
                         echo '<br><br>';
 
                         echo '<label for="smoke">Smoking habits: </label>';
-                        echo '<select name="smoke">';
-                        echo '<option value="'.$ints["smoke"].'" selected>'.$ints["drink"].'</option>';
-                        echo '<option value="no">No</option>';
-                        echo '<option value="yes">Yes</option>';
-                        echo '<option value="socially">Socially</option>';
-                        echo '<option value="occasionally">Occasionally</option>';
+                        echo '<select id="smoke" name="smoke">';
+                        echo '<option value="'.$ints["smoke"].'" selected>'.$ints["smoke"].'</option>';
+                        foreach($opts as $val) {
+                            echo '<option value="'.$val.'">'.$val.'</option>';    
+                        }
                         echo '</select>';
                         echo '<br><br>';
 
-                        echo '<label for="food_lifestyle">Food Lifestyle: </label>';
-                        echo '<select name="food_lifestyle">';
+                        $food = array("Normal", "Vegetarian", "Vegan", "Pescatarian", "Other");
+                        echo '<label for="food">Food Lifestyle: </label>';
+                        echo '<select id="food" name="food_lifestyle">';
                         echo '<option value="'.$ints["food_lifestyle"].'" selected>'.$ints["food_lifestyle"].'</option>';
-                        echo '<option value="Normal">Normal</option>';
-                        echo '<option value="Vegetarian">Vegetarian</option>';
-                        echo '<option value="Vegan">Vegan</option>';
-                        echo '<option value="Pescatarian">Pescatarian</option>';
-                        echo '<option value="Other">Other</option>';
+                        foreach($food as $val) {
+                            echo '<option value="'.$val.'">'.$val.'</option>';
+                        }
                         echo '</select>';
                         echo '<br>';
                         echo '<label for="food_display">Display: </label>';
-                        echo '<input type="checkbox" checked name="food_display" value="true">';
+                        echo '<input id="food_display" type="checkbox" checked name="food_display" value="true">';
                         echo '<br><br>';
 
                         echo '<label for="personality">Personality: </label>';
-                        echo '<select name="personality">';
+                        echo '<select id="personality" name="personality">';
                         echo '<option value="'.$ints["personality"].'" selected>'.$ints["personality"].'</option>';
                         echo '<option value="Extrovert">Extrovert</option>';
                         echo '<option value="Introvert">Introvert</option>';
@@ -204,25 +201,21 @@
                         echo '</select>';
                         echo '<br>';
                         echo '<label for="personality_display">Display: </label>';
-                        echo '<input type="checkbox" checked name="personality_display" value="true">';
+                        echo '<input id="personality_display" type="checkbox" checked name="personality_display" value="true">';
                         echo '<br><br>';
 
+                        $sexuality = array("Straight", "Gay", "Lesbian", "Bisexual", "Pansexual", "Asexual", "Other");
                         echo '<label for="sexuality">Sexuality: </label>';
-                        echo '<select name="sexuality">';
+                        echo '<select id="sexuality" name="sexuality">';
                         echo '<option value="'.$ints["sexuality"].'" selected>'.$ints["sexuality"].'</option>';
-                        echo '<option value="Straight">Straight</option>';
-                        echo '<option value="Gay">Gay</option>';
-                        echo '<option value="Lesbian">Lesbian</option>';
-                        echo '<option value="Bisexual">Bisexual</option>';
-                        echo '<option value="Pansexual">Pansexual</option>';
-                        echo '<option value="Asexual">Asexual</option>';
-                        echo '<option value="Other">Other</option>';
+                        foreach($sexuality as $val) {
+                            echo '<option value="'.$val.'">'.$val.'</option>';
+                        }
                         echo '</select>';
                         echo '<br>';
                         echo '<label for="sexuality_display">Display: </label>';
-                        echo '<input type="checkbox" checked name="sexuality_display" value="true">';
+                        echo '<input id0"sexuality_display" type="checkbox" checked name="sexuality_display" value="true">';
                         echo '<br><br>';
-
                         // Section for interest, repeated five times
                         $interest_ops = array("Sports", "Music", "Gaming", "Reading",
                         "Travel", "Cooking", "Fitness", "Photography", "Art", "Technology",
