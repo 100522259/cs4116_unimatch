@@ -25,6 +25,7 @@
 
             
             <!--Container for the rest of the page-->
+            <!--line 43 was pre-filling the input exposing the hashed password-->
             <div class="main">
                 <form class="settings" name="credentials_settings" action="settings_handler.php" method="post" autocomplete="off">
                     <fieldset><legend>Credentials</legend><br>
@@ -36,11 +37,10 @@
                                 size="20" title="Write your username, between 5 and 20 characters" 
                                 value="'.$creds["username"].'">';
                         echo '<br><br>';
-
-                        echo '<label for="password">Password: </label>';
-                        echo '<input id="password" type="password" name="password" id="myPsw" pattern="[^;]+" minlength="8" maxlength="20" 
-                        		size="20" title="Write your password, between 8 and 20 characters"
-                                value="'.$creds["password"].'">';
+                        echo '<label for="password">New Password: </label>';
+                        echo '<input id="password" type="password" name="password" id="myPsw" pattern="[^;]+" minlength="7" maxlength="20"
+                        		size="20" title="Write your new password, between 7 and 20 characters"
+                                placeholder="Leave blank to keep current">';
                         echo '<br>';
 
                         echo '<label for="visibility">Show Password </label>';

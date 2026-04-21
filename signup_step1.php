@@ -75,7 +75,7 @@ if ($username_exists) {
     fail('That username is already taken.');
 }
 
-$stored_password = $signup_password;
+$hashed_password = password_hash($signup_password, PASSWORD_DEFAULT);
 
 // cast age to integer for the DB insert
 $age_int = (int)$age;
@@ -93,7 +93,7 @@ try {
         'INSERT INTO credentials (user_id, email, username, password)
          VALUES (?, ?, ?, ?)'
     );
-    $stmt->bind_param('isss', $user_id, $signup_email, $signup_username, $stored_password);
+    $stmt->bind_param('isss', $user_id, $signup_email, $signup_username, $hashed_password);
     $stmt->execute();
     $stmt->close();
 

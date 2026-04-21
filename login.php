@@ -19,7 +19,7 @@ if (empty($login_email) || empty($login_password)) {
     exit;
 }
 
-// look up user in credentials table
+// look up user in credentials table (bind_result only — no mysqlnd on InfinityFree)
 $stmt = $conn->prepare(
     'SELECT user_id, username, password
        FROM credentials
@@ -32,8 +32,7 @@ $stmt->bind_result($db_user_id, $db_username, $db_password);
 $found = $stmt->fetch();
 $stmt->close();
 
-// verify credentials
-if (!$found || $login_password !== $db_password) {
+if (!$found || !password_verify($login_password, $db_password)) {
     header('Location: html/login.html?error=' . urlencode('Invalid email or password.'));
     exit;
 }

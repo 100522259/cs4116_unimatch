@@ -53,16 +53,19 @@ if(isset($_POST["submit_cred"])) {
 
 
     // b. password:
-    if ($_POST["password"] != $creds["password"] &&
-            $_POST["password"] == $_POST["password2"]) {
-        // if new and both are equal:
-        $stmt = $conn->prepare("UPDATE credentials SET password = ? WHERE user_id = {$user_id};");
-        $stmt->bind_param("s", $_POST["password"]);
-        if ($stmt === false) echo "Something bad happened :( <br>";
-        $stmt->execute();
-    } elseif ($_POST["password"] != $creds["password"] &&
-            $_POST["password"] != $_POST["password2"]) {
-        fail("Different passwords", $loc);
+    // code block modified to adapt hashing password
+    $new_pw = $_POST["password"] ?? '';
+    if (!empty($new_pw)) {
+        if ($new_pw !== ($_POST["password2"] ?? '')) {
+            fail("Different passwords", $loc);
+        }
+        if (!password_verify($new_pw, $creds["password"])) {
+            $hashed = password_hash($new_pw, PASSWORD_DEFAULT);
+            $stmt = $conn->prepare("UPDATE credentials SET password = ? WHERE user_id = {$user_id};");
+            $stmt->bind_param("s", $hashed);
+            if ($stmt === false) echo "Something bad happened :( <br>";
+            $stmt->execute();
+        }
     }
 }
 

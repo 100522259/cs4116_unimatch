@@ -14,7 +14,7 @@ create table credentials (
     email char(27) unique not null, 
     -- studentmail emails are 26 characters long
     username varchar(20) unique not null,
-    password varchar(20) not null,
+    password varchar(100) not null,
     -- we should php to limit min len of password
 
     primary key(user_id)
