@@ -101,7 +101,7 @@ try {
         'INSERT INTO personal_info (user_id, first_name, last_name, age, gender, administrator)
          VALUES (?, ?, ?, ?, ?, 0)'
     );
-    $stmt->bind_param('isssi', $user_id, $first_name, $last_name, $age_int, $gender);
+    $stmt->bind_param('issss', $user_id, $first_name, $last_name, $age_int, $gender);
     $stmt->execute();
     $stmt->close();
 

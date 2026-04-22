@@ -27,7 +27,8 @@
                     <div class="search">
                         <form name="search" action="search.php" method="post" autocomplete="on">
                             <input id="sbar" type="text" name="uname" minlength="1" maxlength="20"
-                                title="Write target username" placeholder="Search users..." required>
+                                title="Write target username" placeholder="Search users by username or first name..." 
+                                required>
                             <input class="submit" type="submit" name="search" value="Search">
                         </form>
                     </div>

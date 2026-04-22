@@ -409,6 +409,9 @@ table.scroll thead, table.scroll tbody tr {
 
 .sub-match {
     flex: 1;
+    background-color: white;
+    border-radius: 20px;
+    padding: 15px;
     /* border: 1px solid red; */
 }
 

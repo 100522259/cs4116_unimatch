@@ -66,8 +66,9 @@ while($row = $result2->fetch_assoc()) {
     $has_blocked = blocked_user($user_id, $target_id);
     $is_blocked = blocked_user($target_id, $user_id);
     $is_banned = banned_user($target_id);
+    $is_matched = r_matched($user_id, $target_id);
 
-    if ($has_blocked || $is_blocked || $is_banned) {
+    if ($has_blocked || $is_blocked || $is_banned || $is_matched) {
         //echo "$target_id blocked...<br>";
         continue; // skip!
     }

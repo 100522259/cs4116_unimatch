@@ -69,7 +69,8 @@ function echo_user($usr, $user_id, $count) {
                     <div class="search">
                         <form name="search" action="search.php" method="post" autocomplete="on">
                             <input id="sbar" type="text" name="uname" minlength="1" maxlength="20"
-                                title="Write target username" placeholder="Search users..." required>
+                                title="Write target username" placeholder="Search users by username or first name..."
+                                required>
                             <input class="submit" type="submit" name="search" value="Search">
                         </form>
                     </div>
@@ -133,6 +134,9 @@ function echo_user($usr, $user_id, $count) {
                             </div>
                         </div>
                         </fieldset></form>
+                        <form action="home.php" method="post">
+                            <input type="submit" value="Return" name="return">
+                        </form>
                     </div>
                 </div>
                 
@@ -174,7 +178,7 @@ function echo_user($usr, $user_id, $count) {
                             }
 
 
-                        // A. search by username...
+                        // A. search by username or first name...
                         if ($_SESSION["search"] == "search") {
                             // check that the submitted value is not empty
                             
@@ -186,10 +190,9 @@ function echo_user($usr, $user_id, $count) {
                                     INNER JOIN personal_info as P
                                         ON C.user_id = P.user_id
                                     WHERE (LOWER(C.username) LIKE LOWER(?)
-                                    OR LOWER(P.first_name) LIKE LOWER(?)
-                                    OR LOWER(P.last_name) LIKE LOWER(?))
+                                    OR LOWER(P.first_name) LIKE LOWER(?))
                                     AND C.user_id != ?");
-                            $stmt->bind_param("sssi", $search, $search, $search, $user_id);
+                            $stmt->bind_param("ssi", $search, $search, $user_id);
                             $stmt->execute();
                             $result = $stmt->get_result();
 
