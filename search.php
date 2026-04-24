@@ -1,4 +1,9 @@
 <?php
+// Check if session is set, if not: go to login:
+include 'session_check.php';
+?>
+
+<?php
 function echo_user($usr, $user_id, $count) {
     $pfp = './user/' . $usr["username"] . '/' . $usr["profile_pic"];
 

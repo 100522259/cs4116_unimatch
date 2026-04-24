@@ -1,3 +1,9 @@
+<?php
+// Check if session is set, if not: go to login:
+include 'session_check.php';
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
     <head>

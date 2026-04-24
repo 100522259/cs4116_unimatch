@@ -1,4 +1,9 @@
 <?php
+// Check if session is set, if not: go to login:
+include 'session_check.php';
+?>
+
+<?php
 session_start();
 include "./connect_server.php";
 
@@ -128,9 +133,12 @@ function renderCard(array $m, bool $isPending = false): string {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Matches — UniMatch</title>
     <link rel="stylesheet" href="css/style.css">
+    <link href="css\profile.css" rel="stylesheet">
+    <link href="css\profile_mobile.css" rel="stylesheet">
+    
     <style>
         *, *::before, *::after { box-sizing: border-box; }
-        body { background: #f0f5f1; margin: 0; font-family: Arial, sans-serif; color: #1F2937; }
+        /**body { background: #f0f5f1; margin: 0; font-family: Arial, sans-serif; color: #1F2937; }**/
 
         .um-nav {
             background: #1B5E3B; padding: 0 28px;
@@ -264,7 +272,7 @@ function renderCard(array $m, bool $isPending = false): string {
 </head>
 <body>
 
-<nav class="um-nav">
+<!--<nav class="um-nav">
     <a href="home.php" class="um-nav-brand">UniMatch 💚</a>
     <div class="um-nav-links">
         <a href="home.php">Home</a>
@@ -273,57 +281,61 @@ function renderCard(array $m, bool $isPending = false): string {
         <a href="user.php">Profile</a>
         <a href="logout.php" class="logout">Log Out</a>
     </div>
-</nav>
+</nav>-->
+<div class="container">
+    <!--vertical container for page index-->
+    <?php include "./sidebar.php"; ?>
+    
+    <div class="main">
+        <h1 class="page-title">Your Matches</h1>
+        <p class="page-sub">Welcome back, <?php echo $username; ?></p>
 
-<div class="page-wrap">
-    <h1 class="page-title">Your Matches</h1>
-    <p class="page-sub">Welcome back, <?php echo $username; ?></p>
+        <div class="tabs" role="tablist">
+            <button class="tab-btn active" id="btn-relationship" onclick="switchTab('relationship')">
+                ❤️ Relationships <span class="tab-count"><?php echo count($relationship_matches); ?></span>
+            </button>
+            <button class="tab-btn" id="btn-friendship" onclick="switchTab('friendship')">
+                🤝 Friendships <span class="tab-count"><?php echo count($friendship_matches); ?></span>
+            </button>
+            <button class="tab-btn pending-tab" id="btn-pending" onclick="switchTab('pending')">
+                ⏳ Pending <span class="tab-count"><?php echo count($pending); ?></span>
+            </button>
+        </div>
 
-    <div class="tabs" role="tablist">
-        <button class="tab-btn active" id="btn-relationship" onclick="switchTab('relationship')">
-            ❤️ Relationships <span class="tab-count"><?php echo count($relationship_matches); ?></span>
-        </button>
-        <button class="tab-btn" id="btn-friendship" onclick="switchTab('friendship')">
-            🤝 Friendships <span class="tab-count"><?php echo count($friendship_matches); ?></span>
-        </button>
-        <button class="tab-btn pending-tab" id="btn-pending" onclick="switchTab('pending')">
-            ⏳ Pending <span class="tab-count"><?php echo count($pending); ?></span>
-        </button>
-    </div>
+        <div class="tab-pane active" id="tab-relationship">
+            <?php if (empty($relationship_matches)): ?>
+                <div class="empty-state">
+                    <div class="empty-icon">💛</div>
+                    <p>No relationship matches yet</p>
+                    <a href="home.php">Keep Exploring</a>
+                </div>
+            <?php else: ?>
+                <?php foreach ($relationship_matches as $m): echo renderCard($m); endforeach; ?>
+            <?php endif; ?>
+        </div>
 
-    <div class="tab-pane active" id="tab-relationship">
-        <?php if (empty($relationship_matches)): ?>
-            <div class="empty-state">
-                <div class="empty-icon">💛</div>
-                <p>No relationship matches yet</p>
-                <a href="home.php">Keep Exploring</a>
-            </div>
-        <?php else: ?>
-            <?php foreach ($relationship_matches as $m): echo renderCard($m); endforeach; ?>
-        <?php endif; ?>
-    </div>
+        <div class="tab-pane" id="tab-friendship">
+            <?php if (empty($friendship_matches)): ?>
+                <div class="empty-state">
+                    <div class="empty-icon">🤝</div>
+                    <p>No friendship matches yet</p>
+                    <a href="home.php">Keep Exploring</a>
+                </div>
+            <?php else: ?>
+                <?php foreach ($friendship_matches as $m): echo renderCard($m); endforeach; ?>
+            <?php endif; ?>
+        </div>
 
-    <div class="tab-pane" id="tab-friendship">
-        <?php if (empty($friendship_matches)): ?>
-            <div class="empty-state">
-                <div class="empty-icon">🤝</div>
-                <p>No friendship matches yet</p>
-                <a href="home.php">Keep Exploring</a>
-            </div>
-        <?php else: ?>
-            <?php foreach ($friendship_matches as $m): echo renderCard($m); endforeach; ?>
-        <?php endif; ?>
-    </div>
-
-    <div class="tab-pane" id="tab-pending">
-        <?php if (empty($pending)): ?>
-            <div class="empty-state">
-                <div class="empty-icon">⏳</div>
-                <p>No pending requests right now</p>
-            </div>
-        <?php else: ?>
-            <?php foreach ($pending as $m): echo renderCard($m, true); endforeach; ?>
-        <?php endif; ?>
+        <div class="tab-pane" id="tab-pending">
+            <?php if (empty($pending)): ?>
+                <div class="empty-state">
+                    <div class="empty-icon">⏳</div>
+                    <p>No pending requests right now</p>
+                </div>
+            <?php else: ?>
+                <?php foreach ($pending as $m): echo renderCard($m, true); endforeach; ?>
+            <?php endif; ?>
+        </div>
     </div>
 </div>
 
