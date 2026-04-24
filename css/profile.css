@@ -19,8 +19,8 @@ html {
 
 body {
     font-family:'Inter', sans-serif;
-    background: #f0f5f1;
-    color: #1F2937;
+    background: #a5d6a7;
+    color: #2e6245;
     min-height: 100vh;
 }
 
@@ -39,7 +39,7 @@ body {
     top: 0;
 
     flex: 1;
-    background-color: #1B5E3B;
+    background-color: #2e6245;
     /*border: 1px solid blue;*/
 }
 
