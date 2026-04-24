@@ -1,6 +1,6 @@
 <div class="index">
     <div class="logo">
-        <img class="logo" src="./images\logo5.png" alt="unimatch_logo" title="unimatch">
+        <img class="logo" src="./images/logo5.png" alt="unimatch_logo" title="unimatch">
     </div>
 
     <div class="idx_icons">

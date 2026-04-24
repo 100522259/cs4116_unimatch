@@ -33,13 +33,13 @@
         min-width: 80px;
         flex: 1;
         align-self: center;
-        border-radius: 50%;
+        border-radius: 20px;
         /* margin: 5px; */
         
     }
 
     .pfp img {
-        border-radius: 50%;
+        border-radius: 20px;
     }
 
     .info {
@@ -119,6 +119,3 @@
         max-width: 250px;
     }
 }
-
-
-    

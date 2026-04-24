@@ -19,8 +19,11 @@ include 'session_check.php';
             integrity="sha512-dOjUSaLkr6G2pwQ7ry9juX+iXw5602zg1kg8yH+guR3uSEidGyCnOEQnGlr7xwu/8WE+pVm1ZNqaIs5ETTIJQg==" 
             crossorigin="anonymous" referrerpolicy="no-referrer"/>-->
 
-        <link href="css\profile.css" rel="stylesheet">
-        <link href="css\profile_mobile.css" rel="stylesheet">
+        <link href="css/profile.css" rel="stylesheet">
+        <link href="css/profile_mobile.css" rel="stylesheet">
+        <link rel="preconnect" href="https://fonts.googleapis.com" /> 
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin /> 
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
     </head>
 
     <body>

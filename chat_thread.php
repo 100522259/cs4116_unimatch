@@ -21,13 +21,16 @@ $other_name = $other_user['display_name'] ?? 'Chat';
 <html>
 <head>
     <title>UniMatch - Chat with <?php echo htmlspecialchars($other_name); ?></title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com" /> 
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin /> 
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
     <style>
         /* Chat thread specific styling */
         .chat-container {
             max-width: 600px;
             margin: 20px auto;
-            border: 1px solid #ccc;
+            border: 1px solid #D1D5DB;
             border-radius: 8px;
             background: white;
             display: flex;
@@ -36,7 +39,7 @@ $other_name = $other_user['display_name'] ?? 'Chat';
         }
 
         .chat-header {
-            background: #2e7d32;
+            background: #1B5E3B;
             color: white;
             padding: 10px 15px;
             border-top-left-radius: 8px;
@@ -48,7 +51,7 @@ $other_name = $other_user['display_name'] ?? 'Chat';
             flex: 1;
             padding: 10px;
             overflow-y: auto;
-            background: #e8f5e9;
+            background: #1B5E3B;
         }
 
         .message-bubble {
@@ -60,14 +63,14 @@ $other_name = $other_user['display_name'] ?? 'Chat';
         }
 
         .sent-bubble {
-            background: #4caf50;
+            background: #2E7D52;
             color: white;
             margin-left: auto;
             text-align: right;
         }
 
         .received-bubble {
-            background: #c8e6c9;
+            background: #e8f1ec;
             color: black;
             margin-right: auto;
             text-align: left;
@@ -75,9 +78,9 @@ $other_name = $other_user['display_name'] ?? 'Chat';
 
         .chat-input {
             display: flex;
-            border-top: 1px solid #ccc;
+            border-top: 1px solid #D1D5DB;
             padding: 10px;
-            background: #f1f8f1;
+            background: #f0f5f1;
             border-bottom-left-radius: 8px;
             border-bottom-right-radius: 8px;
         }
@@ -86,7 +89,7 @@ $other_name = $other_user['display_name'] ?? 'Chat';
             flex: 1;
             padding: 10px;
             border-radius: 20px;
-            border: 1px solid #ccc;
+            border: 1px solid #D1D5DB;
             outline: none;
         }
 
@@ -95,14 +98,14 @@ $other_name = $other_user['display_name'] ?? 'Chat';
             padding: 10px 20px;
             border: none;
             border-radius: 20px;
-            background: #2e7d32;
+            background: #1B5E3B;
             color: white;
             font-weight: bold;
             cursor: pointer;
         }
 
         .chat-input button:hover {
-            background: #1b5e20;
+            background: #245F3F;
         }
     </style>
 </head>

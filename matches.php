@@ -175,9 +175,11 @@ function renderCard(array $m, bool $isPending = false): string {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Matches — UniMatch</title>
     <link rel="stylesheet" href="css/style.css">
-    <link href="css\profile.css" rel="stylesheet">
-    <link href="css\profile_mobile.css" rel="stylesheet">
-    
+    <link href="css/profile.css" rel="stylesheet">
+    <link href="css/profile_mobile.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
     <style>
         *, *::before, *::after { box-sizing: border-box; }
         /**body { background: #f0f5f1; margin: 0; font-family: Arial, sans-serif; color: #1F2937; }**/
