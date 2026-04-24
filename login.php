@@ -19,8 +19,8 @@ if ($login_email == '' || $login_password == '') {
 
 // look up the user by email
 // NOTE: can't use get_result() on infinityfree (no mysqlnd), so we use bind_result
-$stmt = $conn->prepare("SELECT user_id, username, password FROM credentials WHERE email = ? LIMIT 1");
-$stmt->bind_param('s', $login_email);
+$stmt = $conn->prepare("SELECT user_id, username, password FROM credentials WHERE email = ? OR username = ? LIMIT 1");
+$stmt->bind_param('ss', $login_email, $login_email);
 $stmt->execute();
 $stmt->bind_result($db_user_id, $db_username, $db_password);
 $found = $stmt->fetch();
