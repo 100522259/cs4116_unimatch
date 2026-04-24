@@ -19,7 +19,7 @@ $username        = htmlspecialchars($_SESSION['username'] ?? 'User');
 
 // Relationship matches
 $relationship_matches = [];
-$stmt = $conn->prepare(
+/*$stmt = $conn->prepare(
     "SELECT
          CASE WHEN r.user_id1 = ? THEN r.user_id2 ELSE r.user_id1 END AS other_id,
          p.first_name, p.age, i.interest1, i.interest2, img.profile_pic
@@ -31,8 +31,21 @@ $stmt = $conn->prepare(
       WHERE (r.user_id1 = ? OR r.user_id2 = ?)
         AND r.romantic = 1 AND r.r_status = 1
       ORDER BY r.created_at DESC"
-);
-$stmt->bind_param('iiii', $current_user_id, $current_user_id, $current_user_id, $current_user_id);
+);*/
+$stmt = $conn->prepare(
+    "SELECT m.user_id2 as other_id, p.first_name, p.age, i.interest1, i.interest2, img.profile_pic
+    FROM matches m
+    INNER JOIN matches m2
+        ON m.user_id1 = m2.user_id2 AND m.user_id2 = m2.user_id1
+    INNER JOIN personal_info p
+        ON p.user_id = m.user_id2
+    LEFT JOIN interests i
+        ON i.user_id = p.user_id
+    LEFT JOIN images img
+        ON img.user_id = p.user_id
+    WHERE m.user_id1 = ? AND m.romantic = 1
+    ORDER BY m.created_at DESC");
+$stmt->bind_param('i', $current_user_id);
 $stmt->execute();
 $result = $stmt->get_result();
 while ($row = $result->fetch_assoc()) $relationship_matches[] = $row;
@@ -40,7 +53,7 @@ $stmt->close();
 
 // Friendship matches
 $friendship_matches = [];
-$stmt = $conn->prepare(
+/*$stmt = $conn->prepare(
     "SELECT
          CASE WHEN r.user_id1 = ? THEN r.user_id2 ELSE r.user_id1 END AS other_id,
          p.first_name, p.age, i.interest1, i.interest2, img.profile_pic
@@ -52,8 +65,21 @@ $stmt = $conn->prepare(
       WHERE (r.user_id1 = ? OR r.user_id2 = ?)
         AND r.friendship = 1 AND r.f_status = 1
       ORDER BY r.created_at DESC"
-);
-$stmt->bind_param('iiii', $current_user_id, $current_user_id, $current_user_id, $current_user_id);
+);*/
+$stmt = $conn->prepare(
+    "SELECT m.user_id2 as other_id, p.first_name, p.age, i.interest1, i.interest2, img.profile_pic
+    FROM matches m
+    INNER JOIN matches m2
+        ON m.user_id1 = m2.user_id2 AND m.user_id2 = m2.user_id1
+    INNER JOIN personal_info p
+        ON p.user_id = m.user_id2
+    LEFT JOIN interests i
+        ON i.user_id = p.user_id
+    LEFT JOIN images img
+        ON img.user_id = p.user_id
+    WHERE m.user_id1 = ? AND m.friendship = 1
+    ORDER BY m.created_at DESC");
+$stmt->bind_param('i', $current_user_id);
 $stmt->execute();
 $result = $stmt->get_result();
 while ($row = $result->fetch_assoc()) $friendship_matches[] = $row;
@@ -61,7 +87,7 @@ $stmt->close();
 
 // Pending
 $pending = [];
-$stmt = $conn->prepare(
+/*$stmt = $conn->prepare(
     "SELECT
          r.user_id1 AS other_id,
          p.first_name, p.age, i.interest1, i.interest2, img.profile_pic,
@@ -73,12 +99,28 @@ $stmt = $conn->prepare(
       WHERE r.user_id2 = ?
         AND ((r.romantic = 1 AND r.r_status = 0) OR (r.friendship = 1 AND r.f_status = 0))
       ORDER BY r.created_at DESC"
-);
+);*/
+$stmt = $conn->prepare(
+    "SELECT A.u1 as other_id, p.first_name, p.age, i.interest1, i.interest2, img.profile_pic,
+         A.romantic, B.friendship FROM
+        (select user_id1 as u1, user_id2 as u2, romantic, friendship, created_at from matches where romantic=1 or friendship=1) as A
+        LEFT OUTER JOIN
+        (select user_id1 as u2, user_id2 as u1, romantic, friendship from matches) as B
+        ON A.u1 = B.u1 and A.u2 = B.u2
+        JOIN personal_info p   
+        	ON p.user_id = A.u1
+        LEFT JOIN interests i
+        	ON i.user_id = p.user_id
+        LEFT JOIN images img   
+        	ON img.user_id = p.user_id
+        WHERE (B.u2 is null OR B.romantic=0 OR B.friendship=0) AND A.u2 = ?
+        ORDER BY A.created_at DESC");
+
 $stmt->bind_param('i', $current_user_id);
 $stmt->execute();
 $result = $stmt->get_result();
 while ($row = $result->fetch_assoc()) {
-    if (!($row['romantic'] == 1 && $row['r_status'] == 1)) {
+    if (!($row['romantic'] == 1 || $row['friendship'] == 1)) {
         $pending[] = $row;
     }
 }
@@ -288,7 +330,7 @@ function renderCard(array $m, bool $isPending = false): string {
     
     <div class="main">
         <h1 class="page-title">Your Matches</h1>
-        <p class="page-sub">Welcome back, <?php echo $username; ?></p>
+        <p class="page-sub">Welcome back, <?php echo $_SESSION["username"]; ?></p>
 
         <div class="tabs" role="tablist">
             <button class="tab-btn active" id="btn-relationship" onclick="switchTab('relationship')">
