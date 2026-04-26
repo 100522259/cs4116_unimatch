@@ -6,23 +6,34 @@
     <title>UniMatch - Log In</title>
 
     <!-- bootstrap, needs to be loaded first so our css overrides it -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+    />
 
     <link rel="stylesheet" href="../css/style.css" />
     <link rel="stylesheet" href="../css/login.css" />
 
     <!-- font awesome for icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
 
     <!-- google fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body>
     <div class="container-fluid p-0">
       <div class="row g-0 min-vh-100">
-        <div class="col-lg-5 auth-left d-none d-lg-flex flex-column justify-content-center align-items-center">
+        <div
+          class="col-lg-5 auth-left d-none d-lg-flex flex-column justify-content-center align-items-center"
+        >
           <!-- background icons -->
           <i class="fa-solid fa-heart decor-icon d1"></i>
           <i class="fa-solid fa-star decor-icon d2"></i>
@@ -44,7 +55,9 @@
           </div>
         </div>
 
-        <div class="col-lg-7 col-12 auth-right d-flex flex-column justify-content-center align-items-center">
+        <div
+          class="col-lg-7 col-12 auth-right d-flex flex-column justify-content-center align-items-center"
+        >
           <div class="auth-card rounded-4 shadow-lg w-100">
             <h1 class="fw-bold mb-1">Welcome back to Unimatch!</h1>
             <p class="auth-subtext text-muted mb-4">
@@ -52,34 +65,68 @@
             </p>
 
             <!-- error box, shown when php redirects with ?error=... -->
-            <div id="login-error" class="alert alert-danger alert-dismissible fade show d-none" role="alert">
+            <div
+              id="login-error"
+              class="alert alert-danger alert-dismissible fade show d-none"
+              role="alert"
+            >
               <span id="login-error-msg"></span>
-              <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="alert"
+              ></button>
             </div>
 
             <form id="login-form" action="../login.php" method="POST">
               <div class="mb-3">
-                <label for="email" class="form-label fw-semibold">Email or Username</label>
+                <label for="email" class="form-label fw-semibold"
+                  >Email or Username</label
+                >
                 <div class="input-group">
-                  <span class="input-group-text"><i class="fa-solid fa-envelope"></i></span>
-                  <input type="text" id="email" name="email" class="form-control" placeholder="Enter your UL email or username" required />
+                  <span class="input-group-text"
+                    ><i class="fa-solid fa-envelope"></i
+                  ></span>
+                  <input
+                    type="text"
+                    id="email"
+                    name="email"
+                    class="form-control"
+                    placeholder="Enter your UL email or username"
+                    required
+                  />
                 </div>
               </div>
 
               <div class="mb-3">
-                <label for="password" class="form-label fw-semibold">Password</label>
+                <label for="password" class="form-label fw-semibold"
+                  >Password</label
+                >
                 <div class="input-group">
-                  <span class="input-group-text"><i class="fa-solid fa-lock"></i></span>
-                  <input type="password" id="password" name="password" class="form-control" placeholder="Enter your password" required />
-                  <button type="button" class="input-group-text toggle-password" onclick="togglePassword('password', this)">
+                  <span class="input-group-text"
+                    ><i class="fa-solid fa-lock"></i
+                  ></span>
+                  <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    class="form-control"
+                    placeholder="Enter your password"
+                    required
+                  />
+                  <button
+                    type="button"
+                    class="input-group-text toggle-password"
+                    onclick="togglePassword('password', this)"
+                  >
                     <i class="fa-solid fa-eye"></i>
                   </button>
                 </div>
               </div>
 
-              <a href="../forgot_password.php" class="forgot-link d-block text-end mb-3">Forgot password?</a>
-
-              <button type="submit" class="btn btn-primary btn-lg w-100">Log In</button>
+              <button type="submit" class="btn btn-primary btn-lg w-100">
+                Log In
+              </button>
             </form>
 
             <p class="auth-alt-text text-center mt-3">
@@ -114,7 +161,8 @@
       var params = new URLSearchParams(window.location.search);
       if (params.get("error")) {
         var alertEl = document.getElementById("login-error");
-        document.getElementById("login-error-msg").textContent = params.get("error");
+        document.getElementById("login-error-msg").textContent =
+          params.get("error");
         alertEl.classList.remove("d-none");
       }
     </script>
