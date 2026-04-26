@@ -17,20 +17,42 @@ define('TZ_OFFSET', 28800); // 8 hours in seconds
 $current_user_id = (int)$_SESSION['user_id'];
 $username        = htmlspecialchars($_SESSION['username'] ?? 'User');
 $active_chat_id  = isset($_GET['with']) ? (int)$_GET['with'] : 0;
+$send_error      = '';
+
+// Phone number detection — catches Irish and international numbers
+function containsPhoneNumber(string $text): bool {
+    $patterns = [
+        '/\b0\d{9}\b/',                               // 08xxxxxxxxx - irish number
+        '/\b0\d{2}[\s\-]?\d{3}[\s\-]?\d{4}\b/',      // 083 123 4567
+        '/\+353[\s\-]?\d{2}[\s\-]?\d{3}[\s\-]?\d{4}/', // +353 83 123 4567
+        '/\+\d{1,3}[\s\-]?\d{6,12}/',                 // International 
+        '/\b\d{3}[\s\-]\d{3}[\s\-]\d{4}\b/',          // 123 456 7890
+        '/\b\d{10,11}\b/',                             // 10-11 digit number
+    ];
+    foreach ($patterns as $p) {
+        if (preg_match($p, $text)) return true;
+    }
+    return false;
+}
 
 // Handle plain POST send
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $to_user_id = (int)($_POST['to_user_id'] ?? 0);
     $body       = trim($_POST['body'] ?? '');
     if ($to_user_id > 0 && $body !== '') {
-        $ins = $conn->prepare("INSERT INTO messages (from_user_id, to_user_id, body) VALUES (?, ?, ?)");
-        $ins->bind_param('iis', $current_user_id, $to_user_id, $body);
-        $ins->execute();
-        $ins->close();
+        if (containsPhoneNumber($body)) {
+            $send_error = 'Your message appears to contain a phone number. For your safety, please keep conversations on UniMatch and do not share personal contact details.';
+            $active_chat_id = $to_user_id;
+        } else {
+            $ins = $conn->prepare("INSERT INTO messages (from_user_id, to_user_id, body) VALUES (?, ?, ?)");
+            $ins->bind_param('iis', $current_user_id, $to_user_id, $body);
+            $ins->execute();
+            $ins->close();
+            header("Location: messaging.php?with={$to_user_id}");
+            $conn->close();
+            exit;
+        }
     }
-    header("Location: messaging.php?with={$to_user_id}");
-    $conn->close();
-    exit;
 }
 
 // Fetch confirmed matches for sidebar
@@ -127,7 +149,6 @@ function convAvatar(string $name, ?string $pic, int $size = 44): string {
     
     <style>
         *, *::before, *::after { box-sizing: border-box; }
-        /*body { background: #f0f5f1; margin: 0; font-family: Arial, sans-serif; }*/
 
         .um-nav {
             background: #1B5E3B; padding: 0 28px;
@@ -201,9 +222,49 @@ function convAvatar(string $name, ?string $pic, int $size = 44): string {
         .msg-header-name { font-size: 16px; font-weight: 700; color: #111827; margin: 0; }
         .msg-header-sub  { font-size: 12px; color: #9CA3AF; margin: 2px 0 0; }
 
+        /* In-app error toast */
+        .error-toast {
+            display: none;
+            position: absolute;
+            bottom: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #c62828;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 500;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+            z-index: 200;
+            max-width: 90%;
+            text-align: center;
+            animation: fadeInUp 0.2s ease;
+        }
+        .error-toast.visible { display: block; }
+
+        /* Server-side error banner */
+        .error-banner {
+            background: #fce4e4;
+            border-left: 4px solid #c62828;
+            color: #c62828;
+            padding: 12px 18px;
+            font-size: 13px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateX(-50%) translateY(10px); }
+            to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+        }
+
         .msg-list {
             flex: 1; overflow-y: auto; padding: 24px 22px;
             display: flex; flex-direction: column; gap: 10px;
+            position: relative;
         }
 
         .bubble-wrap { display: flex; flex-direction: column; }
@@ -229,7 +290,7 @@ function convAvatar(string $name, ?string $pic, int $size = 44): string {
         .msg-empty .e-icon { font-size: 52px; }
         .msg-empty p { font-size: 15px; margin: 0; }
 
-        .msg-input-bar { padding: 14px 18px; border-top: 1px solid #e8f5e9; background: white; flex-shrink: 0; }
+        .msg-input-bar { padding: 14px 18px; border-top: 1px solid #e8f5e9; background: white; flex-shrink: 0; position: relative; }
         .msg-input-bar form { display: flex; gap: 10px; align-items: center; }
         .msg-input-bar input[type="text"] {
             flex: 1; border: 1.5px solid #c8e6c9; border-radius: 26px;
@@ -239,6 +300,10 @@ function convAvatar(string $name, ?string $pic, int $size = 44): string {
         .msg-input-bar input[type="text"]:focus {
             border-color: #2e7d32; background: white;
             box-shadow: 0 0 0 3px rgba(46,125,50,0.10);
+        }
+        .msg-input-bar input[type="text"].input-error {
+            border-color: #c62828;
+            box-shadow: 0 0 0 3px rgba(198,40,40,0.10);
         }
         .send-btn {
             background: #1B5E3B; color: white; border: none; border-radius: 50%;
@@ -268,18 +333,7 @@ function convAvatar(string $name, ?string $pic, int $size = 44): string {
 </head>
 <body>
 
-<!-- <nav class="um-nav">
-    <a href="home.php" class="um-nav-brand">UniMatch 💚</a>
-    <div class="um-nav-links">
-        <a href="home.php">Home</a>
-        <a href="matches.php">Matches</a>
-        <a href="messaging.php" class="active">Messages</a>
-        <a href="user.php">Profile</a>
-        <a href="logout.php" class="logout">Log Out</a>
-    </div>
-</nav> -->
 <div class="container">
-    <!--vertical container for page index-->
     <?php include "./sidebar.php"; ?>
 
     <div class="main">
@@ -322,7 +376,18 @@ function convAvatar(string $name, ?string $pic, int $size = 44): string {
                     </div>
                 </div>
 
+                <?php if ($send_error): ?>
+                    <div class="error-banner">
+                        ⚠️ <?php echo htmlspecialchars($send_error); ?>
+                    </div>
+                <?php endif; ?>
+
                 <div class="msg-list" id="msg-list">
+                    <!-- In-app error toast (client-side) -->
+                    <div class="error-toast" id="error-toast">
+                        ⚠️ Your message appears to contain a phone number. Please keep conversations on UniMatch.
+                    </div>
+
                     <?php
                     $last_date = '';
                     foreach ($messages as $msg):
@@ -349,7 +414,7 @@ function convAvatar(string $name, ?string $pic, int $size = 44): string {
                 </div>
 
                 <div class="msg-input-bar">
-                    <form method="POST" action="messaging.php?with=<?php echo $active_chat_id; ?>">
+                    <form method="POST" action="messaging.php?with=<?php echo $active_chat_id; ?>" onsubmit="return validateMessage()">
                         <input type="hidden" name="to_user_id" value="<?php echo $active_chat_id; ?>">
                         <input type="text" name="body" id="msg-input"
                             placeholder="Message <?php echo $active_chat_name; ?>…"
@@ -382,6 +447,55 @@ var ACTIVE_CHAT_ID  = <?php echo $active_chat_id; ?>;
     if (list) list.scrollTop = list.scrollHeight;
 })();
 
+// Client-side phone number detection
+function containsPhoneNumber(text) {
+    var patterns = [
+        /\b0\d{9}\b/,
+        /\b0\d{2}[\s\-]?\d{3}[\s\-]?\d{4}\b/,
+        /\+353[\s\-]?\d{2}[\s\-]?\d{3}[\s\-]?\d{4}/,
+        /\+\d{1,3}[\s\-]?\d{6,12}/,
+        /\b\d{3}[\s\-]\d{3}[\s\-]\d{4}\b/,
+        /\b\d{10,11}\b/
+    ];
+    for (var i = 0; i < patterns.length; i++) {
+        if (patterns[i].test(text)) return true;
+    }
+    return false;
+}
+
+var errorToast   = document.getElementById('error-toast');
+var errorTimeout = null;
+
+function showErrorToast() {
+    if (!errorToast) return;
+    errorToast.classList.add('visible');
+    clearTimeout(errorTimeout);
+    errorTimeout = setTimeout(function() {
+        errorToast.classList.remove('visible');
+    }, 4000); // auto-hide after 4 seconds
+}
+
+function validateMessage() {
+    var input = document.getElementById('msg-input');
+    if (!input) return true;
+    var body = input.value.trim();
+    if (containsPhoneNumber(body)) {
+        input.classList.add('input-error');
+        showErrorToast();
+        return false;
+    }
+    input.classList.remove('input-error');
+    return true;
+}
+
+var msgInput = document.getElementById('msg-input');
+if (msgInput) {
+    msgInput.addEventListener('input', function() {
+        this.classList.remove('input-error');
+        if (errorToast) errorToast.classList.remove('visible');
+    });
+}
+
 function fetchMessages() {
     if (ACTIVE_CHAT_ID === 0) return;
     var xhr = new XMLHttpRequest();
@@ -401,7 +515,9 @@ function renderMessages(msgs) {
     var list = document.getElementById('msg-list');
     if (!list) return;
     var atBottom = (list.scrollHeight - list.clientHeight - list.scrollTop) < 60;
+    var toast = document.getElementById('error-toast');
     list.innerHTML = '';
+    if (toast) list.appendChild(toast); // keep the toast inside msg-list
     var lastDate = '';
     msgs.forEach(function(msg) {
         if (msg.date && msg.date !== lastDate) {
