@@ -17,7 +17,8 @@ function blocked_user($user_id, $target_id) {
 function banned_user($target_id) {
     include "connect_server.php";
     // query to see if user is blocked or has blocked target:
-    $stmt_block = $conn->prepare("SELECT blocked FROM offense
+
+    $stmt_block = $conn->prepare("SELECT blocked FROM offense 
         WHERE user_id = ?");
 
     $stmt_block->bind_param("i", $target_id);

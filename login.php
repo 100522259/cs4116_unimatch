@@ -1,6 +1,7 @@
 <?php
 session_start();
 include "connect_server.php";
+include "logic_blocked_user.php";
 
 // only accept POST
 if ($_SERVER['REQUEST_METHOD'] != 'POST') {
@@ -25,7 +26,9 @@ $stmt->bind_result($db_user_id, $db_username, $db_password);
 $found = $stmt->fetch();
 $stmt->close();
 
-if (!$found || !password_verify($login_password, $db_password)) {
+$banned = banned_user($db_user_id);
+
+if (!$found || !password_verify($login_password, $db_password) || $banned) {
     header('Location: html/login.html?error=' . urlencode('Invalid email or password.'));
     exit;
 }
