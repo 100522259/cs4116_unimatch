@@ -1,8 +1,3 @@
-<?php
-// Check if session is set, if not: go to login:
-include 'session_check.php';
-?>
-
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -29,6 +24,9 @@ include 'session_check.php';
                 <div class="main_info">               
                 <?php
                 session_start();
+                if (isset($_GET['id'])) {
+                    $_SESSION["target_id"] = (int)$_GET['id'];
+                }
                 if (isset($_POST["target_id"])) {
                     $_SESSION["target_id"] = $_POST["target_id"];;
                     $_SESSION["location"] = "user_view.php";

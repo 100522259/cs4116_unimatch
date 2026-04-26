@@ -1,12 +1,12 @@
 body {
-    font-family: 'Inter', sans-serif;
-    background: #f0f5f1;
+    font-family: Arial, sans-serif;
+    background: #e8f5e9;
     margin: 0;
     padding: 0;
 }
 
 header {
-    background: #1B5E3B;
+    background: #2e7d32;
     color: white;
     padding: 10px 20px;
 }
@@ -21,6 +21,10 @@ nav a {
     margin-left: 15px;
     text-decoration: none;
     font-weight: bold;
+}
+
+.container {
+    padding: 20px;
 }
 
 .banner {
@@ -90,12 +94,19 @@ nav a {
     text-align: left;
 }
 
+/* ================================================================
+   AUTH PAGES — shared styles
+   Used by: login.html, signup_step1.html, signup_step2.html
+   These classes are not used by any other page so they are safe
+   to add here without affecting existing pages.
+   ================================================================ */
+
 @keyframes fadeInUp {
     from { opacity: 0; transform: translateY(22px); }
     to   { opacity: 1; transform: translateY(0);    }
 }
 
-/*  Two-panel page layout  */
+/* ----- Two-panel page layout ----- */
 .auth-left {
     /* flex: 0 0 40%; -- REMOVED: Bootstrap col-lg-5 now controls the column width */
     background: linear-gradient(135deg, #1B5E3B 0%, #2E7D52 40%, #A8D5BA 100%);
@@ -133,13 +144,16 @@ nav a {
 }
 
 .auth-right {
+    /* flex: 1; -- REMOVED: Bootstrap col-lg-7 now controls the column width */
+    /* display/flex-direction/justify-content/align-items -- Bootstrap utilities handle these in HTML */
     padding: 40px 50px;
     background: #f0f5f1;
+    /* min-height: 100vh; -- REMOVED: Bootstrap min-vh-100 on the row handles it */
     overflow-y: auto;
     position: relative;
 }
 
-/*  Decorative floating icons  */
+/* ----- Decorative floating icons ----- */
 .decor-icon {
     position: absolute;
     color: rgba(255, 255, 255, 0.08);
@@ -156,7 +170,7 @@ nav a {
 .decor-icon.d7 { font-size: 58px;  bottom: 9%; left: 6%;   transform: rotate(-12deg); }
 .decor-icon.d8 { font-size: 46px;  top: 3%;    left: 42%;  transform: rotate(18deg);  }
 
-/*  Brand block  */
+/* ----- Brand block ----- */
 .auth-brand {
     position: relative;
     z-index: 1;
@@ -203,7 +217,7 @@ nav a {
     margin: 0 auto;
 }
 
-/*  Auth card  */
+/* ----- Auth card ----- */
 .auth-card {
     background: #ffffff;
     border-radius: 20px;
@@ -231,7 +245,7 @@ nav a {
     margin-bottom: 28px;
 }
 
-/*  Form groups  */
+/* ----- Form groups ----- */
 .form-group {
     margin-bottom: 18px;
 }
@@ -245,7 +259,7 @@ nav a {
     margin-bottom: 7px;
 }
 
-/*  Input with icon  */
+/* ----- Input with icon ----- */
 .input-wrapper {
     position: relative;
     display: flex;
@@ -285,7 +299,7 @@ nav a {
     box-shadow: 0 0 0 3px rgba(46, 125, 82, 0.10);
 }
 
-/*  Password eye toggle  */
+/* ----- Password eye toggle ----- */
 .toggle-password {
     position: absolute;
     right: 13px;
@@ -304,7 +318,7 @@ nav a {
     color: #1B5E3B;
 }
 
-/*  Primary button (Log In / Sign Up / Next)  */
+/* ----- Primary button (Log In / Sign Up / Next) ----- */
 .btn-primary {
     display: block;
     width: 100%;
@@ -334,7 +348,7 @@ nav a {
     box-shadow: none;
 }
 
-/*  "Already have an account?" / "Don't have an account?"  */
+/* ----- "Already have an account?" / "Don't have an account?" ----- */
 .auth-alt-text {
     text-align: center;
     font-family: 'Inter', sans-serif;
@@ -355,7 +369,7 @@ nav a {
     text-decoration: underline;
 }
 
-/*  Shared responsive breakpoints  */
+/* ----- Shared responsive breakpoints ----- */
 @media (max-width: 768px) {
     .auth-left {
         flex: none;
@@ -391,7 +405,12 @@ nav a {
     }
 }
 
-/*  Green focus ring on all form controls  */
+/* ================================================================
+   BOOTSTRAP 5 OVERRIDES — UniMatch green theme
+   Bootstrap loads BEFORE our CSS so these rules win.
+   ================================================================ */
+
+/* ----- Green focus ring on all form controls ----- */
 .form-control:focus,
 .form-select:focus {
     border-color: #2E7D52 !important;
@@ -399,7 +418,7 @@ nav a {
     outline: none;
 }
 
-/*  Icon container in input-groups  */
+/* ----- Icon container in input-groups ----- */
 .input-group-text {
     background-color: #f5f8f6;
     border-color: #D1D5DB;
@@ -412,7 +431,7 @@ nav a {
     border-color: #2E7D52;
 }
 
-/*  Ensure form-control / form-select match our design  */
+/* ----- Ensure form-control / form-select match our design ----- */
 .form-control,
 .form-select {
     font-family: 'Inter', sans-serif;
@@ -428,7 +447,7 @@ nav a {
     font-style: normal;
 }
 
-/*  input-group border-radius: rounded on outer edges only  */
+/* ----- input-group border-radius: rounded on outer edges only ----- */
 .input-group > .input-group-text:first-child {
     border-radius: 10px 0 0 10px !important;
 }
@@ -445,7 +464,7 @@ nav a {
     border-radius: 0 10px 10px 0 !important;
 }
 
-/*  Password toggle button used as input-group-text  */
+/* ----- Password toggle button used as input-group-text ----- */
 .input-group .toggle-password {
     /* Override the absolute positioning from .toggle-password in style.css —
        Bootstrap's input-group handles placement as a flex child */
@@ -471,7 +490,7 @@ nav a {
     border-color: #2E7D52;
 }
 
-/*  Override Bootstrap's blue .btn-primary with UniMatch green  */
+/* ----- Override Bootstrap's blue .btn-primary with UniMatch green ----- */
 .btn-primary {
     background-color: #1B5E3B !important;
     border-color: #1B5E3B !important;
@@ -505,14 +524,14 @@ nav a {
     box-shadow: 0 0 0 3px rgba(46, 125, 82, 0.35) !important;
 }
 
-/*  Bootstrap alert styling tweaks  */
+/* ----- Bootstrap alert styling tweaks ----- */
 .alert-danger {
     font-family: 'Inter', sans-serif;
     font-size: 14px;
     border-radius: 10px;
 }
 
-/*  Bootstrap form-label font match  */
+/* ----- Bootstrap form-label font match ----- */
 .form-label {
     font-family: 'Inter', sans-serif;
     font-size: 14px;

@@ -19,19 +19,6 @@ $username        = htmlspecialchars($_SESSION['username'] ?? 'User');
 
 // Relationship matches
 $relationship_matches = [];
-/*$stmt = $conn->prepare(
-    "SELECT
-         CASE WHEN r.user_id1 = ? THEN r.user_id2 ELSE r.user_id1 END AS other_id,
-         p.first_name, p.age, i.interest1, i.interest2, img.profile_pic
-       FROM relationship r
-       JOIN personal_info p
-         ON p.user_id = CASE WHEN r.user_id1 = ? THEN r.user_id2 ELSE r.user_id1 END
-       LEFT JOIN interests i  ON i.user_id   = p.user_id
-       LEFT JOIN images img   ON img.user_id = p.user_id
-      WHERE (r.user_id1 = ? OR r.user_id2 = ?)
-        AND r.romantic = 1 AND r.r_status = 1
-      ORDER BY r.created_at DESC"
-);*/
 $stmt = $conn->prepare(
     "SELECT m.user_id2 as other_id, p.first_name, p.age, i.interest1, i.interest2, img.profile_pic
     FROM matches m
@@ -53,19 +40,6 @@ $stmt->close();
 
 // Friendship matches
 $friendship_matches = [];
-/*$stmt = $conn->prepare(
-    "SELECT
-         CASE WHEN r.user_id1 = ? THEN r.user_id2 ELSE r.user_id1 END AS other_id,
-         p.first_name, p.age, i.interest1, i.interest2, img.profile_pic
-       FROM relationship r
-       JOIN personal_info p
-         ON p.user_id = CASE WHEN r.user_id1 = ? THEN r.user_id2 ELSE r.user_id1 END
-       LEFT JOIN interests i  ON i.user_id   = p.user_id
-       LEFT JOIN images img   ON img.user_id = p.user_id
-      WHERE (r.user_id1 = ? OR r.user_id2 = ?)
-        AND r.friendship = 1 AND r.f_status = 1
-      ORDER BY r.created_at DESC"
-);*/
 $stmt = $conn->prepare(
     "SELECT m.user_id2 as other_id, p.first_name, p.age, i.interest1, i.interest2, img.profile_pic
     FROM matches m
@@ -87,19 +61,6 @@ $stmt->close();
 
 // Pending
 $pending = [];
-/*$stmt = $conn->prepare(
-    "SELECT
-         r.user_id1 AS other_id,
-         p.first_name, p.age, i.interest1, i.interest2, img.profile_pic,
-         r.romantic, r.friendship, r.r_status, r.f_status
-       FROM relationship r
-       JOIN personal_info p   ON p.user_id   = r.user_id1
-       LEFT JOIN interests i  ON i.user_id   = r.user_id1
-       LEFT JOIN images img   ON img.user_id = r.user_id1
-      WHERE r.user_id2 = ?
-        AND ((r.romantic = 1 AND r.r_status = 0) OR (r.friendship = 1 AND r.f_status = 0))
-      ORDER BY r.created_at DESC"
-);*/
 $stmt = $conn->prepare(
     "SELECT A.u1 as other_id, p.first_name, p.age, i.interest1, i.interest2, img.profile_pic,
          A.romantic, B.friendship FROM
@@ -154,7 +115,7 @@ function renderCard(array $m, bool $isPending = false): string {
         $action = '<div class="pending-notice"><span class="pending-dot"></span>' . $label . ' — go to <a href="home.php">Home</a> to match back</div>';
     } else {
         $action = '<a href="messaging.php?with=' . $other . '" class="msg-btn">Message</a>
-                   <a href="user.php?id=' . $other . '" class="profile-btn">View Profile</a>';
+                   <a href="user_view.php?id=' . $other . '" class="profile-btn">View Profile</a>';
     }
 
     return '
@@ -175,14 +136,11 @@ function renderCard(array $m, bool $isPending = false): string {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Matches — UniMatch</title>
     <link rel="stylesheet" href="css/style.css">
-    <link href="css/profile.css" rel="stylesheet">
-    <link href="css/profile_mobile.css" rel="stylesheet">
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+    <link href="css\profile.css" rel="stylesheet">
+    <link href="css\profile_mobile.css" rel="stylesheet">
+    
     <style>
         *, *::before, *::after { box-sizing: border-box; }
-        /**body { background: #f0f5f1; margin: 0; font-family: Arial, sans-serif; color: #1F2937; }**/
 
         .um-nav {
             background: #1B5E3B; padding: 0 28px;
@@ -316,18 +274,7 @@ function renderCard(array $m, bool $isPending = false): string {
 </head>
 <body>
 
-<!--<nav class="um-nav">
-    <a href="home.php" class="um-nav-brand">UniMatch 💚</a>
-    <div class="um-nav-links">
-        <a href="home.php">Home</a>
-        <a href="matches.php" class="active">Matches</a>
-        <a href="messaging.php">Messages</a>
-        <a href="user.php">Profile</a>
-        <a href="logout.php" class="logout">Log Out</a>
-    </div>
-</nav>-->
 <div class="container">
-    <!--vertical container for page index-->
     <?php include "./sidebar.php"; ?>
     
     <div class="main">
