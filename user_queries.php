@@ -4,7 +4,7 @@ include "connect_server.php";
 // start session
 session_start();
 
-$user_id = $_SESSION["user_id"];
+$user_id = isset($_GET['id']) ? (int)$_GET['id'] : (int)$_SESSION["user_id"];
 
 // 1. select image content
 $sql = "select * from images where user_id={$user_id};";
