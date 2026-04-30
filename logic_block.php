@@ -26,6 +26,11 @@ $stmt_sel = $conn->prepare("SELECT * FROM blocked
 $stmt_del = $conn->prepare("DELETE FROM blocked 
     WHERE user_id = ? AND student_blocked = ?");
 
+// 4. delete from matches -> unmatch fully by deleting both rows (if exist)
+$stmt_del_match = $conn->prepare("DELETE FROM matches
+    WHERE (user_id1 = ? AND user_id2 = ?)
+    OR (user_id1 = ? AND user_id2 = ?)");
+
 
 
 if (isset($_POST["target_id"])) { // submit has been pressed, target_id has been set
@@ -42,6 +47,10 @@ if (isset($_POST["target_id"])) { // submit has been pressed, target_id has been
         $stmt_ins->bind_param("ii", $sess_id, $target_id);
         if (!$stmt_ins->execute()) {
             die("INSERT failed: " . $stmt_ins->error);
+        }
+        $stmt_del_match->bind_param("iiii", $sess_id, $target_id, $target_id, $sess_id);
+        if (!$stmt_del_match->execute()) {
+            die("DELETE failed: " . $stmt_del_match->error);
         }
     } else { // UNBLOCK
         $stmt_del->bind_param("ii", $sess_id, $target_id);

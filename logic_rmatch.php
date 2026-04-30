@@ -1,10 +1,24 @@
 <?php
 include "connect_server.php";
+include "logic_blocked_user.php";
 session_start();
 $sess_id = (int)$_SESSION["user_id"];
 $loc = $_SESSION["location"];
 
 echo "here";
+
+// Note, if user is blocked, nothing happens:
+if (isset($_POST["target_id"])) {
+    $has_blocked = blocked_user($sess_id, $_POST["target_id"]);
+    $is_blocked = blocked_user($_POST["target_id"], $sess_id);
+    if ($is_blocked || $has_blocked) {
+        echo "blocked";
+        // redirect to original location
+        header("Location: {$loc}");
+        exit;
+    }
+}
+
 /** 
  * Consider table matches.
  * 1) Romantic match has 2 requirements for U1 - U2
