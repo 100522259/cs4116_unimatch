@@ -1,6 +1,12 @@
 <?php
 // Check if session is set, if not: go to login:
 include 'session_check.php';
+
+// Prevent non-admin users from entering admin page
+if (!$_SESSION["is_admin"]) {
+    header("Location: home.php");
+    exit;
+}
 ?>
 
 
