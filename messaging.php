@@ -89,6 +89,14 @@ if ($active_chat_id === 0 && !empty($conversations)) {
     $active_chat_id = (int)$conversations[0]['other_id'];
 }
 
+// Mark messages as read when opening a conversation
+if ($active_chat_id > 0) {
+    $stmt = $conn->prepare("UPDATE messages SET is_read = 1 WHERE from_user_id = ? AND to_user_id = ? AND is_read = 0");
+    $stmt->bind_param('ii', $active_chat_id, $current_user_id);
+    $stmt->execute();
+    $stmt->close();
+}
+
 // Fetch messages
 $messages         = [];
 $active_chat_name = '';

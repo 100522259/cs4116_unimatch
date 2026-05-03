@@ -122,6 +122,7 @@ CREATE TABLE messages (
     to_user_id int(9) NOT NULL,
     body TEXT NOT NULL,
     sent_at timestamp DEFAULT CURRENT_TIMESTAMP,
+    is_read int(1) DEFAULT 0,
 
     foreign key(from_user_id) references credentials(user_id) on delete cascade,
     foreign key (to_user_id) references credentials(user_id) on delete cascade

@@ -80,6 +80,23 @@ body {
     /*border: 1px solid hotpink;*/
 }
 
+.msg-badge {
+    position: absolute;
+    top: 0px;
+    right: 5px;
+    background: #e63946;
+    color: white;
+    font-size: 11px;
+    font-weight: bold;
+    min-width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+}
+
 .icons img {
     max-width: 30px;
     min-width: 20px;
