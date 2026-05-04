@@ -60,7 +60,7 @@ $conversations = [];
 $stmt = $conn->prepare(
     "SELECT
          CASE WHEN r.user_id1 = ? THEN r.user_id2 ELSE r.user_id1 END AS other_id,
-         p.first_name, img.profile_pic,
+         p.first_name, img.profile_pic, c.username,
          (SELECT body FROM messages m
            WHERE (m.from_user_id = ? AND m.to_user_id = CASE WHEN r.user_id1 = ? THEN r.user_id2 ELSE r.user_id1 END)
               OR (m.to_user_id   = ? AND m.from_user_id = CASE WHEN r.user_id1 = ? THEN r.user_id2 ELSE r.user_id1 END)
@@ -74,6 +74,7 @@ $stmt = $conn->prepare(
        FROM relationship r
        JOIN personal_info p ON p.user_id = CASE WHEN r.user_id1 = ? THEN r.user_id2 ELSE r.user_id1 END
        LEFT JOIN images img ON img.user_id = p.user_id
+       LEFT JOIN credentials c ON c.user_id = p.user_id
       WHERE (r.user_id1 = ? OR r.user_id2 = ?)
         AND (r.r_status = 1 OR r.f_status = 1)
       ORDER BY r.created_at DESC"
@@ -111,18 +112,21 @@ $active_chat_pic  = '';
 
 if ($active_chat_id > 0) {
     $nm = $conn->prepare(
-        "SELECT p.first_name, img.profile_pic
+        "SELECT p.first_name, img.profile_pic, c.username
            FROM personal_info p
            LEFT JOIN images img ON img.user_id = p.user_id
+           LEFT JOIN credentials c ON c.user_id = p.user_id
           WHERE p.user_id = ? LIMIT 1"
     );
     $nm->bind_param('i', $active_chat_id);
     $nm->execute();
-    $nm->bind_result($active_chat_name, $active_chat_pic);
+    $nm->bind_result($active_chat_name, $active_chat_pic_file, $active_chat_username);
     $nm->fetch();
     $nm->close();
     $active_chat_name = htmlspecialchars($active_chat_name ?? '');
-    $active_chat_pic  = htmlspecialchars($active_chat_pic  ?? '');
+    $active_chat_pic  = (!empty($active_chat_pic_file) && !empty($active_chat_username))
+        ? './user/' . $active_chat_username . '/' . $active_chat_pic_file
+        : '';
 
     $stmt = $conn->prepare(
         "SELECT from_user_id, body, sent_at FROM messages
@@ -383,7 +387,10 @@ function convAvatar(string $name, ?string $pic, int $size = 44): string {
                         $cname    = htmlspecialchars($conv['first_name'] ?? '?');
                         $preview  = htmlspecialchars($conv['last_message'] ?? 'Say hello! 👋');
                         $isActive = ($oid === $active_chat_id) ? 'active' : '';
-                        $av       = convAvatar($conv['first_name'] ?? '?', $conv['profile_pic'] ?? null, 46);
+                        $conv_pic = (!empty($conv['profile_pic']) && !empty($conv['username']))
+                            ? './user/' . $conv['username'] . '/' . $conv['profile_pic']
+                            : null;
+                        $av       = convAvatar($conv['first_name'] ?? '?', $conv_pic, 46);
                         $conv_unread = (int)($conv['unread_count'] ?? 0);
                     ?>
                         <a class="conv-item <?php echo $isActive; ?>" href="messaging.php?with=<?php echo $oid; ?>">
