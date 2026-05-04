@@ -17,7 +17,9 @@ $res_reports = $conn->query($sql);
 
 
 $sql = "SELECT * from (select username, user_id from credentials) as C 
-        inner join (select * from offense) as O on C.user_id = O.user_id;";
+        inner join 
+        (select * from offense where offence_num != 0 or reported = 1 or blocked = 1) as O
+        on C.user_id = O.user_id;";
 $res_offense = $conn->query($sql);
 $res_offense2 = $conn->query($sql);
 // Columns we have: username, user_id, phone_warning, offence_num, blocked,
