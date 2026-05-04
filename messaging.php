@@ -65,7 +65,12 @@ $stmt = $conn->prepare(
            WHERE (m.from_user_id = ? AND m.to_user_id = CASE WHEN r.user_id1 = ? THEN r.user_id2 ELSE r.user_id1 END)
               OR (m.to_user_id   = ? AND m.from_user_id = CASE WHEN r.user_id1 = ? THEN r.user_id2 ELSE r.user_id1 END)
            ORDER BY m.sent_at DESC LIMIT 1
-         ) AS last_message
+         ) AS last_message,
+         (SELECT COUNT(*) FROM messages m2
+           WHERE m2.from_user_id = CASE WHEN r.user_id1 = ? THEN r.user_id2 ELSE r.user_id1 END
+             AND m2.to_user_id = ?
+             AND m2.is_read = 0
+         ) AS unread_count
        FROM relationship r
        JOIN personal_info p ON p.user_id = CASE WHEN r.user_id1 = ? THEN r.user_id2 ELSE r.user_id1 END
        LEFT JOIN images img ON img.user_id = p.user_id
@@ -73,8 +78,10 @@ $stmt = $conn->prepare(
         AND (r.r_status = 1 OR r.f_status = 1)
       ORDER BY r.created_at DESC"
 );
-$stmt->bind_param('iiiiiiii',
+
+$stmt->bind_param('iiiiiiiiii',
     $current_user_id,
+    $current_user_id, $current_user_id,
     $current_user_id, $current_user_id,
     $current_user_id, $current_user_id,
     $current_user_id,
@@ -211,6 +218,24 @@ function convAvatar(string $name, ?string $pic, int $size = 44): string {
         .conv-preview {
             font-size: 12px; color: #9CA3AF; margin-top: 3px;
             white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        }
+        .conv-name.unread {
+            font-weight: 800;
+            color: #000;
+        }
+
+        .conv-badge {
+            background: #e63946;
+            color: white;
+            font-size: 11px;
+            font-weight: bold;
+            min-width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
         }
         .no-conv {
             padding: 40px 20px; text-align: center;
@@ -359,13 +384,17 @@ function convAvatar(string $name, ?string $pic, int $size = 44): string {
                         $preview  = htmlspecialchars($conv['last_message'] ?? 'Say hello! 👋');
                         $isActive = ($oid === $active_chat_id) ? 'active' : '';
                         $av       = convAvatar($conv['first_name'] ?? '?', $conv['profile_pic'] ?? null, 46);
+                        $conv_unread = (int)($conv['unread_count'] ?? 0);
                     ?>
                         <a class="conv-item <?php echo $isActive; ?>" href="messaging.php?with=<?php echo $oid; ?>">
                             <?php echo $av; ?>
                             <div class="conv-text">
-                                <div class="conv-name"><?php echo $cname; ?></div>
+                                <div class="conv-name <?php if ($conv_unread > 0) echo 'unread'; ?>"><?php echo $cname; ?></div>
                                 <div class="conv-preview"><?php echo $preview; ?></div>
                             </div>
+                            <?php if ($conv_unread > 0): ?>
+                                <span class="conv-badge"><?php echo $conv_unread; ?></span>
+                            <?php endif; ?>
                         </a>
                     <?php endforeach; ?>
                 <?php endif; ?>
