@@ -45,8 +45,8 @@ include 'session_check.php';
                                 size="20" title="Write your username, between 5 and 20 characters" 
                                 value="'.$creds["username"].'">';
                         echo '<br><br>';
-                        echo '<label for="password">New Password: </label>';
-                        echo '<input id="password" type="password" name="password" id="myPsw" pattern="[^;]+" minlength="7" maxlength="20"
+                        echo '<label for="myPsw">New Password: </label>';
+                        echo '<input type="password" name="password" id="myPsw" pattern="[^;]+" minlength="7" maxlength="20"
                         		size="20" title="Write your new password, between 7 and 20 characters"
                                 placeholder="Leave blank to keep current">';
                         echo '<br>';
@@ -55,8 +55,8 @@ include 'session_check.php';
                         echo '<input id="visibility" type="checkbox" name="visibility" onclick="toggleVisib()">';
                         echo '<br><br>';
 
-                        echo '<label for="password2">Confirm new Password: </label>';
-                        echo '<input id="password2" type="password" name="password2" id="myPsw2" pattern="[^;]+" minlength="8" maxlength="20" size="20" 
+                        echo '<label for="myPsw2">Confirm new Password: </label>';
+                        echo '<input type="password" name="password2" id="myPsw2" pattern="[^;]+" minlength="8" maxlength="20" size="20" 
                         		title="Write your password again, between 8 and 20 characters">';
                         echo '<br>';
 
