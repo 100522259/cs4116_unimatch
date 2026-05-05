@@ -55,38 +55,38 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// Fetch confirmed matches for sidebar
+// Fetch confirmed matches for sidebar — using matches table (self join for mutual matches)
 $conversations = [];
 $stmt = $conn->prepare(
     "SELECT
-         CASE WHEN r.user_id1 = ? THEN r.user_id2 ELSE r.user_id1 END AS other_id,
+         m.user_id2 AS other_id,
          p.first_name, img.profile_pic, c.username,
-         (SELECT body FROM messages m
-           WHERE (m.from_user_id = ? AND m.to_user_id = CASE WHEN r.user_id1 = ? THEN r.user_id2 ELSE r.user_id1 END)
-              OR (m.to_user_id   = ? AND m.from_user_id = CASE WHEN r.user_id1 = ? THEN r.user_id2 ELSE r.user_id1 END)
-           ORDER BY m.sent_at DESC LIMIT 1
+         (SELECT body FROM messages msg
+           WHERE (msg.from_user_id = ? AND msg.to_user_id = m.user_id2)
+              OR (msg.to_user_id   = ? AND msg.from_user_id = m.user_id2)
+           ORDER BY msg.sent_at DESC LIMIT 1
          ) AS last_message,
          (SELECT COUNT(*) FROM messages m2
-           WHERE m2.from_user_id = CASE WHEN r.user_id1 = ? THEN r.user_id2 ELSE r.user_id1 END
+           WHERE m2.from_user_id = m.user_id2
              AND m2.to_user_id = ?
              AND m2.is_read = 0
          ) AS unread_count
-       FROM relationship r
-       JOIN personal_info p ON p.user_id = CASE WHEN r.user_id1 = ? THEN r.user_id2 ELSE r.user_id1 END
-       LEFT JOIN images img ON img.user_id = p.user_id
-       LEFT JOIN credentials c ON c.user_id = p.user_id
-      WHERE (r.user_id1 = ? OR r.user_id2 = ?)
-        AND (r.r_status = 1 OR r.f_status = 1)
-      ORDER BY r.created_at DESC"
+       FROM matches m
+       INNER JOIN matches m2r
+         ON m.user_id1 = m2r.user_id2 AND m.user_id2 = m2r.user_id1
+       JOIN personal_info p ON p.user_id = m.user_id2
+       LEFT JOIN images img ON img.user_id = m.user_id2
+       LEFT JOIN credentials c ON c.user_id = m.user_id2
+      WHERE m.user_id1 = ?
+        AND (m.romantic = 1 OR m.friendship = 1)
+      ORDER BY m.created_at DESC"
 );
 
-$stmt->bind_param('iiiiiiiiii',
+$stmt->bind_param('iiii',
     $current_user_id,
-    $current_user_id, $current_user_id,
-    $current_user_id, $current_user_id,
-    $current_user_id, $current_user_id,
     $current_user_id,
-    $current_user_id, $current_user_id
+    $current_user_id,
+    $current_user_id
 );
 $stmt->execute();
 $result = $stmt->get_result();
@@ -516,7 +516,7 @@ function showErrorToast() {
     clearTimeout(errorTimeout);
     errorTimeout = setTimeout(function() {
         errorToast.classList.remove('visible');
-    }, 4000); // auto-hide after 4 seconds
+    }, 4000);
 }
 
 function validateMessage() {
@@ -561,7 +561,7 @@ function renderMessages(msgs) {
     var atBottom = (list.scrollHeight - list.clientHeight - list.scrollTop) < 60;
     var toast = document.getElementById('error-toast');
     list.innerHTML = '';
-    if (toast) list.appendChild(toast); // keep the toast inside msg-list
+    if (toast) list.appendChild(toast);
     var lastDate = '';
     msgs.forEach(function(msg) {
         if (msg.date && msg.date !== lastDate) {

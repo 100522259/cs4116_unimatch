@@ -20,7 +20,7 @@ $username        = htmlspecialchars($_SESSION['username'] ?? 'User');
 // Relationship matches
 $relationship_matches = [];
 $stmt = $conn->prepare(
-    "SELECT m.user_id2 as other_id, p.first_name, p.age, i.interest1, i.interest2, img.profile_pic
+    "SELECT m.user_id2 as other_id, p.first_name, p.age, i.interest1, i.interest2, img.profile_pic, c.username
     FROM matches m
     INNER JOIN matches m2
         ON m.user_id1 = m2.user_id2 AND m.user_id2 = m2.user_id1
@@ -30,6 +30,8 @@ $stmt = $conn->prepare(
         ON i.user_id = p.user_id
     LEFT JOIN images img
         ON img.user_id = p.user_id
+    LEFT JOIN credentials c
+        ON c.user_id = p.user_id
     WHERE m.user_id1 = ? AND m.romantic = 1
     ORDER BY m.created_at DESC");
 $stmt->bind_param('i', $current_user_id);
@@ -41,7 +43,7 @@ $stmt->close();
 // Friendship matches
 $friendship_matches = [];
 $stmt = $conn->prepare(
-    "SELECT m.user_id2 as other_id, p.first_name, p.age, i.interest1, i.interest2, img.profile_pic
+    "SELECT m.user_id2 as other_id, p.first_name, p.age, i.interest1, i.interest2, img.profile_pic, c.username
     FROM matches m
     INNER JOIN matches m2
         ON m.user_id1 = m2.user_id2 AND m.user_id2 = m2.user_id1
@@ -51,6 +53,8 @@ $stmt = $conn->prepare(
         ON i.user_id = p.user_id
     LEFT JOIN images img
         ON img.user_id = p.user_id
+    LEFT JOIN credentials c
+        ON c.user_id = p.user_id
     WHERE m.user_id1 = ? AND m.friendship = 1
     ORDER BY m.created_at DESC");
 $stmt->bind_param('i', $current_user_id);
@@ -62,7 +66,7 @@ $stmt->close();
 // Pending
 $pending = [];
 $stmt = $conn->prepare(
-    "SELECT A.u1 as other_id, p.first_name, p.age, i.interest1, i.interest2, img.profile_pic,
+    "SELECT A.u1 as other_id, p.first_name, p.age, i.interest1, i.interest2, img.profile_pic, c.username,
          A.romantic, B.friendship FROM
         (select user_id1 as u1, user_id2 as u2, romantic, friendship, created_at from matches where romantic=1 or friendship=1) as A
         LEFT OUTER JOIN
@@ -74,6 +78,8 @@ $stmt = $conn->prepare(
         	ON i.user_id = p.user_id
         LEFT JOIN images img   
         	ON img.user_id = p.user_id
+        LEFT JOIN credentials c
+            ON c.user_id = p.user_id
         WHERE (B.u2 is null OR B.romantic=0 OR B.friendship=0) AND A.u2 = ?
         ORDER BY A.created_at DESC");
 
@@ -88,12 +94,13 @@ while ($row = $result->fetch_assoc()) {
 $stmt->close();
 $conn->close();
 
-function avatarHtml(string $name, ?string $pic): string {
+function avatarHtml(string $name, ?string $pic, ?string $uname): string {
     $initial = strtoupper(substr($name, 0, 1));
     $colors  = ['#2e7d32','#1565c0','#6a1b9a','#c62828','#e65100','#00695c','#4527a0'];
     $color   = $colors[ord($initial) % count($colors)];
-    if (!empty($pic)) {
-        return '<img src="' . htmlspecialchars($pic) . '" alt="' . htmlspecialchars($name) . '" class="card-avatar">';
+    if (!empty($pic) && !empty($uname)) {
+        $path = './user/' . htmlspecialchars($uname) . '/' . htmlspecialchars($pic);
+        return '<img src="' . $path . '" alt="' . htmlspecialchars($name) . '" class="card-avatar">';
     }
     return '<div class="card-avatar avatar-initials" style="background:' . $color . ';">' . $initial . '</div>';
 }
@@ -104,7 +111,7 @@ function renderCard(array $m, bool $isPending = false): string {
     $int1    = !empty($m['interest1']) ? htmlspecialchars($m['interest1']) : '';
     $int2    = !empty($m['interest2']) ? htmlspecialchars($m['interest2']) : '';
     $other   = (int)$m['other_id'];
-    $avatar  = avatarHtml($m['first_name'] ?? '?', $m['profile_pic'] ?? null);
+    $avatar  = avatarHtml($m['first_name'] ?? '?', $m['profile_pic'] ?? null, $m['username'] ?? null);
 
     $tags = '';
     if ($int1) $tags .= '<span class="tag">' . $int1 . '</span>';
